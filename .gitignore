@@ -1,0 +1,11 @@
+/*
+!/.gitignore
+!/package.json
+!/game/
+!/scripts/
+/scripts/*
+!/scripts/build.mjs
+!/scripts/serve.mjs
+!/.openai/
+/.openai/*
+!/.openai/hosting.json
