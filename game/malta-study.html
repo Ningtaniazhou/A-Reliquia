@@ -1,0 +1,15 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>圣遗物 · 马耳他场景与对话样稿</title><link rel="stylesheet" href="./styles/malta/study.css"><link rel="stylesheet" href="./styles/ui/scholar-attention.css"><body>
+<main><header class="review"><div><span class="eyebrow">圣遗物<br><small>A Relíquia</small> · 3—2</span><h1>马耳他，一次相遇</h1><p>场景 · 人物 · 对话 · 配乐样稿</p></div><nav aria-label="样稿视图"><button id="sceneView">看场景</button><button id="dialogueView">试对话</button><button id="portraitView">看头像状态</button></nav></header>
+<div class="frame"><section id="scene" aria-label="马耳他大首长宫外场景" tabindex="0">
+<img class="background" src="./assets/malta/malta.webp" alt="清晨的马耳他石砌宫墙与紫罗兰花摊"><div class="location">马耳他 · 大首长宫外</div>
+<div class="toolbar"><button id="sound" aria-label="播放配乐">♪</button><button id="settings" aria-label="设置与键位">⚙</button></div>
+<img id="hero" class="actor hero" src="./assets/malta/teodorico-idle.png" alt="青年特奥多里科"><img id="scholar" class="actor scholar" src="./assets/malta/topsius-measure.png" alt="用伞测量宫墙的托普修斯">
+<button id="meet" class="meet"><kbd>E</kbd> 对话</button>
+<button id="portrait" class="portrait" hidden aria-label="R 询问托普修斯"><img src="./assets/malta/topsius-portrait.png" alt="托普修斯"><span class="unread"></span><kbd>R</kbd></button>
+<section id="speech" class="speech" hidden aria-live="polite"><div class="speaker"></div><p class="zh"></p><p class="pt" lang="pt-PT"></p><button id="next">继续 <kbd aria-label="空格键">␣</kbd></button></section>
+<section id="choices" class="choices" hidden aria-label="特奥多里科的追问"><span class="caption">特奥多里科</span><div id="options"></div><small>W / S 选择　␣ 空格确认　Esc 暂离</small></section>
+<div id="hint" class="hint" hidden>R · 询问 托普修斯</div>
+</section></div>
+<footer><div><span class="eyebrow">海风与石墙</span><p>原创电子配乐 · 108 BPM · 轻快探索</p><button id="musicToggle">试听配乐</button><label>音量 <input id="volume" type="range" min="0" max="1" step="0.05" value="0.35"></label></div><div><p>W / S 选择话题 · E 交互 · ␣ 确认 · ␣ 继续 · R 退出／回看</p><p>这是视觉交互样稿：没有买花任务、关卡移动或正式存档。</p><details><summary>文本依据与改编说明</summary><p>依据 IN-CM 2021 印刷页129–131；对白为依原作改写与原创衔接，均非逐字引文。相遇改为顺叙；家世信息改由人物直接讲述。卖花女子服饰为美术设计，不推定其宗教身份。详细逐句记录见本轮设计稿。</p></details></div></footer></main>
+<dialog id="pause"><h2>样稿已暂停</h2><p>W / S　选择话题<br>E　交互<br>␣ 空格键　确认<br>␣ 空格键　继续<br>R　退出／回看（结伴后解锁）<br>Esc　暂离对话／设置</p><p>这一版不移动人物，也不写入游戏存档。</p><button id="resume">继续查看</button></dialog>
+<audio id="music" src="./assets/music/01-ancient-stone-loop.wav" loop preload="metadata"></audio><script type="module" src="./src/malta/study.js"></script><script type="module" src="./src/ui/paged-dialogues.js"></script><script type="module" src="src/ui/nonverbal.js"></script></body></html>

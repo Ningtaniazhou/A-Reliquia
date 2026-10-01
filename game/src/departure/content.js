@@ -1,0 +1,37 @@
+import {nodes as romance} from '../adelia/content.js';
+export const people={teo:'特奥多里科',adelia:'阿德里亚',aunt:'姨姨',casimiro:'卡西米罗神父',pinheiro:'皮涅罗神父',margaride:'马加里德博士'};
+const n=(id,scene,person,text,page,kind='A',extra={})=>({id:'DEP-'+id,key:id,scene,person,text,page,kind,...extra});
+export const script=[
+ n('cooling','black',null,romance.bridge.text,'110–115'),
+ ...['who','open','refusal','threat','dismiss'].map(key=>n(key,'door',romance[key].speaker.startsWith('阿')?'adelia':'teo',romance[key].text,'115','T',{pt:romance[key].pt})),
+ n('paris-bridge','black',null,'分手后，我想离开里斯本。朋友林尚从巴黎归来，谈起那里的宴饮与艳遇。一个星期日，姨姨家的客人们在饭桌上谈起各自的愿望。','117–119'),
+ n('ambition','dinner','margaride','那么，我们的特奥多里科呢？你还没有说自己的愿望。','119','A',{time:'一个星期日 · 晚饭'}),
+ n('pious','dinner','teo','我只盼陪姨姨念经，安安稳稳地过日子。','120'),
+ n('encourage','dinner','margaride','有个正当的愿望，既不是背离上帝，也不是辜负姨姨。','120'),
+ n('paris','dinner','teo','我很想去看看巴黎。','120','T',{pt:'Gostava muito de ver Paris.',dream:'paris'}),
+ n('horror','dinner','aunt','天哪！去巴黎！……','120','T',{pt:'Cruzes! Ir a Paris!…',dream:'paris'}),
+ n('churches','dinner','teo','去看教堂，姨姨！','120','T',{pt:'Para ver as igrejas, titi!',dream:'paris'}),
+ n('no-paris','dinner','aunt','看漂亮教堂，用不着走那么远。论宗教庆典，谁也比不过我们葡萄牙人！','120'),
+ n('holy-land','dinner','margaride','要是我，就去圣地！去巴勒斯坦，看看耶路撒冷和约旦河！','120','A',{dream:'jerusalem'}),
+ n('lovely','dinner','casimiro','好一趟旅行！','121','T',{pt:'Linda viagem!',dream:'jerusalem'}),
+ n('indulgence','dinner','pinheiro','虔诚地去朝圣，便能领受全大赦。听说，也能为无法亲自前往的虔诚家人求得——当然，要付双份费用。','121','A',{dream:'jerusalem'}),
+ n('for-aunt','dinner','margaride','譬如，为一位好姨姨，一位可亲可敬、满怀美德与慷慨的姨姨！','121'),
+ n('next-day','black',null,'第二天早晨，我去见姨姨时，她已经拿定了主意。','122'),
+ n('commission','salon','aunt','我和卡西米罗神父商量过了。我要让一个与我有血缘的人，代我去圣地朝圣。','122','A',{time:'次日清晨'}),
+ n('money','salon','aunt','你去耶路撒冷，去所有神圣的地方。钱我不缺，你尽可以舒舒服服地走。这一个月内就动身。','122'),
+ n('thanks','salon','teo','非常感谢，姨姨。','123','T',{pt:'Muito agradecido, titi.'}),
+ n('route','guide',null,'','124–125','A',{action:'unfold'}),
+ n('packing','black',null,'我的航线定下了：乘“马拉加”号，经直布罗陀、马耳他，到亚历山大港；再转船去雅法，骑马沿公路前往耶路撒冷。我买好了《东方指南》和软木帽。临行前夜，众人又聚在姨姨家。','124–126'),
+ n('warning','dinner','aunt','你要处处虔诚。可要是让我知道，你在外面放荡、追逐女人，就算去过耶路撒冷，我也要把你赶到街上，连一块面包都不给！','126','A',{time:'临行前夜'}),
+ n('debt','dinner','aunt','我抚养你，给你衣穿，也照看着你的灵魂。若你觉得这些值得一点报答……','127'),
+ n('relic','dinner','aunt','就从圣地给我带一件圣遗物回来。一件能显灵的圣遗物，让我在痛苦时有所依靠，能治我的病。','127','A',{tear:true,note:'姨姨短暂流泪见同页。画面停顿为演出改编。'}),
+ n('promise','dinner','teo','姨姨，我以拉波藏的名义保证，一定给您带回一件了不起的圣遗物！','127','T',{pt:'Titi, palavra de Raposão que lhe hei de trazer uma tremenda relíquia!'}),
+ n('morning','black',null,'翌日清晨，我戴上软木帽，带着《东方指南》，去向姨姨道别。','127'),
+ n('farewell-knock','exit','teo','姨姨，我来向您道别。今天就要动身了。','127','A'),
+ n('farewell-remind','exit','aunt','到了那些圣地，别忘了给我带一件圣遗物回来。','127','A',{note:'将前夜嘱托压缩移用于清晨告别；非原作此处直接引语。'}),
+ n('farewell-assure','exit','teo','我记着呢，姨姨。一定给您带回一件了不起的圣遗物。','127','A'),
+ n('farewell','exit','aunt','再见，孩子……替我多多问候主！','127','T',{pt:'Adeus, menino… Dá muitas saudades ao Senhor!'}),
+ n('leave','exit',null,'','127','A',{action:'leave'}),
+ n('harbor','harbor',null,'','127–128','A',{end:true}),
+];
+export const sourceNote='依据《圣遗物》IN-CM 2021印刷110–127页。中文引文为工作译文，其余为压缩改写。神父关于赎罪的说法属于小说人物对白。想象框是特奥多里科的主观幻想：巴黎的享乐、荒凉的耶路撒冷、亚历山大港的欢宴。行程纸合并了地图幻想与本雅明建议；不把幻想中的城市都当作实际停靠点。姨姨短暂落泪据127页；黑幕与像素港口衔接为演出改编。';

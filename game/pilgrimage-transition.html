@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>《圣遗物》· 海港转入第三章样片</title>
+  <link rel="stylesheet" href="./styles/pilgrimage-transition/main.css">
+</head>
+<body>
+  <main id="preview" aria-label="第二章海港画面转入第三章像素横轴模式的样片">
+    <img id="painted" src="./assets/departure/harbor.webp" alt="黎明时的里斯本港口，一艘轮船停靠在码头">
+    <canvas id="pixels" aria-hidden="true"></canvas>
+    <div id="grain" aria-hidden="true"></div>
+    <div id="wave" aria-hidden="true"></div>
+
+    <div id="teodorico" aria-label="青年特奥多里科拿着旅行帽和行李走入码头">
+      <img src="./assets/pilgrimage-transition/teodorico-walk-4f-runtime.png" alt="">
+    </div>
+    <div id="foot-shadow" aria-hidden="true"></div>
+
+    <section id="chapter" aria-live="polite">
+      <span>第三章</span>
+      <h1>朝圣之路</h1>
+      <p>A caminho da Terra Santa</p>
+    </section>
+
+    <p id="hint">画面会自动演示一次</p>
+    <nav aria-label="样片控制">
+      <button id="replay" type="button">重播转场</button>
+      <button id="motion" type="button" aria-pressed="false">减少动态</button>
+    </nav>
+  </main>
+  <script type="module" src="./src/pilgrimage-transition/app.js"></script>
+<script type="module" src="src/ui/nonverbal.js"></script></body>
+</html>

@@ -1,0 +1,11 @@
+.road-frame{--night:0;--blackout:0;--city:0;--sunset:0}
+.journey-country{position:absolute;inset:0 auto 0 0;width:max(450vw,640svh);background:url('../assets/journey-continuous.webp') left center/100% 100% no-repeat;filter:brightness(calc(1 - var(--night)*.60 - var(--city)*.12)) saturate(calc(1 - var(--night)*.2 - var(--city)*.24));will-change:transform}
+.road-vehicle{opacity:1;filter:brightness(calc(1 - var(--night)*.55)) saturate(calc(1 - var(--night)*.2))}
+.journey-atmosphere{position:absolute;inset:0;background:#182a63;opacity:calc(var(--night)*.23);mix-blend-mode:color;pointer-events:none}
+.journey-moon{position:absolute;left:62%;top:3%;width:clamp(65px,13svh,115px);height:clamp(65px,13svh,115px);object-fit:contain;opacity:var(--night);transform:translateY(calc((1 - var(--night))*35px));pointer-events:none}
+.journey-rain{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.journey-raindrop{position:absolute;top:0;left:0;width:8px;height:24px;fill:#bac4c7;opacity:0;will-change:transform,opacity}
+.journey-blackout{position:absolute;inset:0;background:#070708;opacity:var(--blackout);pointer-events:none;z-index:8}
+.mini-landscape{background-image:url('../assets/journey-continuous.webp')}
+.travel-speed{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:22;display:flex;gap:9px;align-items:center;min-height:44px;padding:10px 15px;border:1px solid #dac29099;border-radius:4px;background:#231b13df;color:#f4e7ce;font:14px var(--ui);box-shadow:0 3px 14px #0004}
+.travel-speed.active{background:#715b34;color:#fff4d9}.travel-speed>span:first-child{letter-spacing:-3px;padding-right:3px}.paused .travel-speed,.orientation-paused .travel-speed{visibility:hidden}

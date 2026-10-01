@@ -1,0 +1,21 @@
+@font-face{font-family:TravelHand;src:url('../assets/fonts/wenkai-plan.woff2') format('woff2');font-display:swap}
+.plan-sheet{background-image:url('../assets/departure/paper-no-pen.webp')}
+.plan-sheet h1{font-family:TravelHand,'Kaiti SC',cursive;font-weight:400;font-size:clamp(28px,3.6vw,49px);letter-spacing:.14em;top:6%;left:12%;transform:rotate(-2deg)}
+#route #med-map{display:block;left:12%;top:23%;width:76%;aspect-ratio:885/320;border:0;box-shadow:none;filter:drop-shadow(1px 5px 3px #49332166)}
+.map-scrap{position:absolute;inset:0;overflow:hidden;background:#e4d2a9;clip-path:polygon(0 2%,3% 1%,6% 2%,9% 0,15% 1%,21% 0,28% 1.5%,37% 0,47% 1%,57% 0,63% 2%,73% 0,83% 1%,89% 0,94% 1%,100% 0,99.5% 12%,100% 23%,99% 36%,100% 45%,99.6% 56%,100% 70%,99.3% 85%,100% 99%,92% 100%,86% 98.5%,80% 100%,71% 99%,63% 100%,55% 99%,48% 100%,39% 98.5%,31% 100%,20% 99%,13% 100%,6% 99%,0 100%,.7% 83%,0 76%,.7% 61%,0 49%,.6% 34%,0 21%,.5% 9%)}
+.map-scrap img{width:100%;height:100%;opacity:.83;filter:sepia(.1);display:block}
+#route-ink{filter:none}.route-line{stroke-width:2.1}.route-marker text{font-size:17px;stroke-width:4px;cursor:pointer}.route-marker circle{stroke-width:1.5}.route-marker:focus{outline:none}.route-marker:focus text{fill:#ae3030}
+#route #unfold{position:absolute;right:auto;bottom:auto;width:48px;height:48px;transform:translate(-50%,-50%);border:0;z-index:6;padding:0;touch-action:manipulation}
+#route-fantasy{left:33%;top:65%;width:38%;height:25%}#route-fantasy>div{height:82%}#route-fantasy figcaption{font-size:clamp(13px,1.25vw,18px)}
+#route-status{left:13%;right:auto;bottom:7%;font-size:13px}#door-leaf{display:none!important}#play[data-scene=exit] #leave{display:none!important}#curtain-black{transition:opacity 1.7s ease}#play.fading #curtain-black{transition-duration:.85s}
+@media(max-height:450px) and (min-aspect-ratio:1/1){.plan-sheet h1{top:5%;font-size:29px}#route #med-map{top:24%;left:14%;width:72%}#route-fantasy{top:69%;height:24%;left:33%;width:40%}#route-fantasy figcaption{font-size:11px}#route-status{bottom:5%;font-size:10px}}
+@media(max-aspect-ratio:1/1){.plan-sheet{background-size:100% 100%}.plan-sheet h1{top:9%;font-size:32px;left:13%}#route #med-map{left:7%;width:86%;top:31%}#route #unfold{width:44px;height:44px}#route-fantasy{top:53%;left:12%;width:76%;height:25%}#route-status{left:12%;bottom:14%}.route-marker text{font-size:22px}}
+/* Fit ordinary spoken lines above the reserved navigation row. Keep long prose scrollable. */
+#play:not([data-scene=black]) #dialogue{height:auto;min-height:var(--dialogue-h);max-height:none;overflow:visible}
+#play:not([data-scene=black]) #dialogue #line{flex:none;max-height:none;overflow:visible}
+#route #unfold.plan-complete{left:auto;top:auto;right:8%;bottom:6%;width:auto;height:auto;min-height:44px;padding:10px 18px;transform:none;border:1px solid #866740;background:#f5e8cddd;color:#493523;font-size:clamp(15px,1.35vw,20px);box-shadow:0 2px 7px #4c342522;white-space:nowrap}
+#route #unfold.plan-complete:hover{background:#ead6ad}
+#route #unfold.plan-complete:focus-visible{outline:2px solid #80552f;outline-offset:4px}
+@media(max-height:450px){#route #unfold.plan-complete{right:7%;bottom:5%;padding:7px 12px;font-size:14px}}
+
+.utilities button{position:relative}.utilities button>kbd{position:absolute;right:1px;bottom:0;font:9px sans-serif;color:#f5dfb7;background:#111d2b}

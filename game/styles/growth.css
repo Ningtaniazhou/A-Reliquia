@@ -1,0 +1,47 @@
+.writing-return{position:relative;height:100svh;background:#090705;overflow:hidden}
+.writing-closeup{position:absolute;inset:0;background:url('../assets/study-shelf.webp') center/cover;transform-origin:46% 90%;animation:return-closeup 5.8s ease-in-out both}
+.writing-shade{position:absolute;inset:0;background:#090705;animation:return-shade 5.8s linear both}
+@keyframes return-closeup{0%{transform:scale(1.04)}100%{transform:scale(1.5)}}
+@keyframes return-shade{0%{opacity:1}22%,76%{opacity:0}100%{opacity:1}}
+#game[data-scene=writing-return] .toolbar{visibility:hidden}
+.growth-book .illustration{display:flex;align-items:center;justify-content:center}
+.growth-book .page-prose{width:100%}
+.dining-frame{position:relative;width:100%;aspect-ratio:var(--stage-ratio,1.77778);background:#342331}
+
+.dining-slot{position:absolute;inset:0}
+.dining-hotspot{position:absolute;left:22%;top:46%;width:48px;height:48px;transform:translate(-50%,-50%);z-index:45}
+.chapter-portal{position:fixed;left:0;top:0;width:0;height:0;overflow:hidden;z-index:31;pointer-events:none;background:#30212b;transform-origin:0 0}
+.chapter-portal iframe{position:absolute;inset:0;border:0;transform-origin:0 0;max-width:none;background:#30212b}
+.chapter-portal.active{pointer-events:auto;z-index:50}
+.chapter-portal.expanding{z-index:50}
+.chapter-entry-busy .dining-hotspot{visibility:hidden}
+.chapter-entry-busy .toolbar{visibility:hidden}
+.growth-book .dining-illustration{position:relative;z-index:32}
+.growth-book .page:has(.dining-frame){z-index:33}
+.growth-book .dining-frame{isolation:auto}
+.reduce-motion .writing-closeup{animation:none;transform:scale(1.25)}.reduce-motion .writing-shade{animation:none;opacity:0}
+@media(max-height:500px){.growth-book .illustration{flex:1;min-height:80px}.growth-book .page-prose{flex:0 1 auto;max-height:48%;overflow:auto;font-size:15px;line-height:1.4}.growth-book .original{font-size:13px;line-height:1.3}.growth-book .page-content{gap:6px}}
+.chapter-portal .portal-point{position:absolute;left:31%;top:58%;width:48px;height:48px;transform:translate(-50%,-50%);z-index:2;pointer-events:auto}
+.chapter-portal:not(.active) iframe{pointer-events:none}
+.dining-hotspot{visibility:hidden}
+.chapter-portal:not(.active):not(.expanding){animation:portal-appear 2.2s ease both}
+@keyframes portal-appear{from{opacity:0}to{opacity:1}}
+@media(max-height:350px) and (orientation:landscape){
+ .growth-book .book-wrap{width:min(calc(100vw - 56px),172svh)}
+ .growth-book .page{padding-left:13px;padding-right:13px}
+ .growth-book .page-prose{max-height:57%;font-size:14px;line-height:1.38}
+ .growth-book .original{font-size:12.5px;line-height:1.28}
+}
+/* The same salon retreats into the left page; there is no cut to the study. */
+.memory-return{height:100svh;background:#100d09;overflow:hidden}
+.memory-return-art{position:absolute;inset:0;background:url('../assets/aunt-evening.webp') center/cover no-repeat;z-index:35;pointer-events:none;box-shadow:0 0 0 1px #a28a5c66}
+.memory-return-dialogue{position:absolute;inset:0;z-index:36;pointer-events:none}
+.memory-return .book-wrap{pointer-events:none}
+.memory-return .write-page{visibility:hidden}
+#game[data-scene=writing-return] .toolbar{visibility:hidden}
+.arrival-memory-art{width:100%;aspect-ratio:1800/1013;background:url('../assets/aunt-evening.webp') center/cover no-repeat;box-shadow:0 0 0 1px #a28a5c88}
+.growth-book .write-page{inset:0;width:100%;height:100%;transform:none;border-radius:0}
+.growth-book .write-page .page-pen{position:absolute;left:50%;top:48%;width:100px;height:130px;margin-left:-50px;margin-top:-65px}
+@media(max-height:500px){.growth-book .write-page .page-pen{width:80px;height:105px;margin-left:-40px;margin-top:-52px}}
+/* The final illustration now occupies the left page; keep its back arrow reachable. */
+.growth-book .turn-page{z-index:40}

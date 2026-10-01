@@ -1,0 +1,82 @@
+*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;background:#170d13;color:#f6e7c9;font-family:'Songti SC','Noto Serif CJK SC',serif}button,a,input{font:inherit}button,a{color:inherit}button{cursor:pointer;background:#31202a;border:1px solid #ab8a55;padding:10px 20px}button:focus-visible,a:focus-visible{outline:3px solid #f7d398;outline-offset:4px}[hidden]{display:none!important}#game{height:100dvh;position:relative;overflow:hidden;--curtain:0}#stage{position:absolute;inset:0;margin:auto;width:min(100vw,177.778vh);height:min(100vh,56.25vw);overflow:hidden;background:#291c22}#backdrop{width:100%;height:100%;object-fit:cover}#light{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 55% 50%,transparent 20%,#130a16a0);transition:background 1s,opacity 1s}#cast,#props{position:absolute;inset:0;pointer-events:none}.actor{position:absolute;object-fit:contain;object-position:bottom;transform-origin:center bottom;filter:drop-shadow(5px 8px 5px #190b1590);transition:transform .8s,left .6s,opacity .6s,bottom .6s}.aunt{left:63%;bottom:10%;width:24%;height:62%}.teo{left:14%;bottom:10%;width:25%;height:65%}.prop{position:absolute;object-fit:contain;filter:drop-shadow(2px 5px 4px #120c1370)}button.prop{background:transparent;border:0;padding:0;pointer-events:auto}button.prop img{width:100%;height:100%;object-fit:contain}button.prop:hover{filter:drop-shadow(0 0 12px #f4d68c)}.guest{position:absolute;bottom:24%;width:15%;height:45%;filter:drop-shadow(2px 6px 4px #160b16)}.guest .chair{position:absolute;bottom:0;width:100%;height:100%;object-fit:contain;filter:saturate(.5)}.guest .person{position:absolute;top:0;left:5%;width:90%;height:77%;object-fit:contain;object-position:bottom}.guest.uneasy{transform:rotate(-3deg) translateY(2%);filter:saturate(.7)}.candle-glow{position:absolute;width:6%;height:11%;border-radius:50%;background:radial-gradient(ellipse,#fff8cbaf,#edb65955 20%,transparent 65%);filter:blur(3px);mix-blend-mode:screen}.stage-edge{position:absolute;bottom:0;width:100%;height:3%;border-top:3px solid #ad8247;background:linear-gradient(#63402b,#2a1419);box-shadow:0 -5px 20px #0008}header{position:absolute;top:0;left:0;width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 22px;z-index:15;background:linear-gradient(#140c1bbe,transparent);font-size:16px;letter-spacing:2px}header nav{display:flex;gap:8px}header button{padding:7px 12px;background:#1d121cd9}#cards{position:absolute;left:8%;right:8%;bottom:6%;z-index:16}#card-hint{position:absolute;bottom:0;left:0;width:100%;text-align:center;font-size:14px;color:#f1d3a0;text-shadow:0 2px 5px #000}#dialogue{position:absolute;bottom:3%;left:5%;width:90%;padding:18px 28px 14px;background:linear-gradient(90deg,#241622f5,#291c27ec);border:1px solid #a58b5c;border-left:3px solid #d0ad68;z-index:14;min-height:126px;box-shadow:0 5px 24px #0008}#speaker{display:block;font-size:17px;letter-spacing:3px;color:#edcc91;margin:0 0 9px}#words{font-size:clamp(19px,1.65vw,27px);line-height:1.6;margin:0 0 6px;white-space:pre-line}#dialogue.narration{border-left-width:1px;background:#201922ef}#dialogue.narration #speaker,#dialogue.narration #portrait{display:none}.dialogue-nav{display:flex;justify-content:space-between;gap:8px}.dialogue-nav button{background:transparent;border:0;padding:2px 7px;font-size:14px}.dialogue-nav button:disabled{opacity:.3}kbd{font-size:12px;opacity:.65;margin-left:7px}#portrait{position:absolute;bottom:100%;left:10px;width:130px;height:132px;overflow:hidden;pointer-events:none}#portrait img{width:100%;height:100%;object-fit:contain;object-position:bottom}#portrait.full img{height:270%;width:220%;max-width:none;object-fit:contain;position:absolute;left:-60%;top:0}#action{position:absolute;bottom:6%;left:50%;transform:translateX(-50%);z-index:15;padding:13px 32px;font-size:19px;background:#21141eea;box-shadow:0 0 35px #f0c88235}#focus-scene{position:absolute;inset:5% 7% 4%;z-index:8;background:radial-gradient(ellipse at center,#4e35249c,#140d18f5);border:1px solid #b18c5355;box-shadow:0 0 100px #120814}.focus-altar{position:absolute;inset:44% 5% 6%;background:linear-gradient(#d6c9ac,#978f7d);border-top:8px solid #eee5d1;box-shadow:0 10px 40px #0008}.focus-object{position:absolute;left:25%;top:12%;width:50%;height:72%;object-fit:contain;filter:drop-shadow(5px 15px 14px #08050a90);animation:object-arrive .8s both}.focus-aunt{position:absolute;left:0;top:4%;height:67%;width:28%;object-fit:contain;opacity:.95;filter:drop-shadow(2px 4px 5px #0007)}.focus-cotton{position:absolute;left:34%;top:36%;width:31%;height:24%;object-fit:contain}.focus-lid{position:absolute;right:1%;top:12%;width:26%;height:40%;object-fit:contain;opacity:.75}#dedication{position:absolute;z-index:18;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-1deg);width:min(680px,76vw);background:#ece0c5;color:#332329;border:1px solid #a88b64;padding:40px;box-shadow:0 15px 100px #000c;font-size:clamp(21px,2vw,30px);line-height:1.9}#dedication p{margin:0}#dedication small{display:block;text-align:right;margin:12px 0;font-size:20px}#dedication button{background:#513d30;color:#f4e4c4;display:block;margin:20px auto 0;font-size:16px}#fx{position:absolute;inset:0;z-index:12;pointer-events:none}.flying-object{position:absolute;left:35%;top:20%;width:30%;height:45%;object-fit:contain;filter:drop-shadow(0 0 20px #ffefb0);animation:cast-object 2.3s both}.cast-wave{position:absolute;left:15%;top:0;width:80%;height:100%;background:repeating-conic-gradient(from 0deg,transparent 0deg 14deg,#ffe0a299 17deg 19deg,transparent 22deg 30deg);mask-image:radial-gradient(ellipse,black,transparent 66%);animation:cast-wave 1.9s .6s both;mix-blend-mode:screen}.water .cast-wave{filter:hue-rotate(140deg)}.wood .cast-wave{filter:sepia(.6)}#curtains{position:absolute;inset:0;z-index:30;pointer-events:none;overflow:hidden}.cloth{position:absolute;top:0;width:51%;height:100%;background:repeating-linear-gradient(90deg,#230b17 0%,#711f31 5%,#3c0b1b 11%,#922c3f 14%,#380e1c 19%);border-bottom:14px solid #a47b37;box-shadow:inset -12px 0 25px #100610;transform:translateX(calc((1 - var(--curtain))*-102%))}.cloth.left{left:0}.cloth.right{right:0;transform:translateX(calc((1 - var(--curtain))*102%));background-position:30px}#reopen{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;z-index:31;font-size:20px;letter-spacing:5px;text-shadow:0 3px 7px #000}#ending{position:absolute;inset:0;background:#160e19f5;z-index:35;display:flex;align-items:center;justify-content:center;gap:25px;flex-direction:column}#ending p{font-size:28px;letter-spacing:8px}#ending a{font-size:16px}#load{position:absolute;inset:0;background:#20121c;z-index:60;display:grid;place-content:center;text-align:center;font-size:22px}#save-warning{position:absolute;top:65px;left:50%;transform:translateX(-50%);z-index:50;background:#512724;padding:8px;font-size:14px}dialog{background:#281c26;color:#f6e6c8;border:1px solid #b49868;max-width:570px;width:85vw;max-height:85vh;overflow:auto;padding:30px;line-height:1.8}dialog::backdrop{background:#100914ba}dialog label{display:flex;gap:10px;align-items:center;margin:18px 0}dialog input[type=range]{flex:1}dialog button{margin:7px 5px 0 0}#inventory-items{display:flex;gap:15px;flex-wrap:wrap}#inventory-items figure{margin:0;flex:1;min-width:160px;font-size:15px}#inventory-items img{width:100%;height:145px;object-fit:contain}.paused *{animation-play-state:paused!important}.reduced .actor{transition:none}.reduced .focus-object,.reduced .flying-object,.reduced .cast-wave{animation:none}.reduced .cast-wave{opacity:.22}.hidden-stage{filter:brightness(.25)}@keyframes object-arrive{from{transform:translateY(12px);opacity:.3}to{transform:none;opacity:1}}@keyframes cast-object{0%{transform:translate(-80%,75%) scale(.35);opacity:0}30%{transform:scale(1.25);opacity:1}65%{transform:translate(40%,-10%) scale(1);opacity:1}100%{transform:translate(75%,-5%) scale(.55);opacity:0}}@keyframes cast-wave{0%{transform:scale(.1);opacity:0}30%{opacity:.8}100%{transform:scale(1.4) rotate(12deg);opacity:0}}@media(max-height:650px){header{padding:7px 14px}#dialogue{padding:10px 18px;bottom:2%;min-height:100px}#words{font-size:18px;line-height:1.45}#speaker{font-size:15px;margin-bottom:5px}#portrait{height:96px;width:105px}#action{font-size:17px;padding:10px 22px}#dedication{padding:25px}#cards{bottom:5%}#card-hint{margin:4px 0}}@media(max-width:1000px){header>span{font-size:14px}.relic-cards{gap:12px}#dialogue{left:3%;width:94%}}.nonverbal #speaker{display:none}
+
+#props{z-index:1}#cast{z-index:2}.focus-altar{inset:68% 5% 3%;border:0;border-radius:50%;background:radial-gradient(ellipse,#d3b37738,transparent 70%);box-shadow:none}.focus-object{z-index:2}.focus-aunt{z-index:3}.focus-cotton{z-index:4}
+
+/* Match chapter 2: whole panel click, quiet corner arrows. */
+#dialogue{cursor:pointer;padding-bottom:44px}.dialogue-nav{position:absolute;left:7px;right:7px;bottom:0;height:44px;pointer-events:none}.dialogue-nav button{pointer-events:auto;color:#d7bd8b;font:28px/1 Georgia,serif;width:44px;height:44px;padding:0}.dialogue-nav button:disabled{opacity:.25;cursor:default}
+
+.closeup #cast>.aunt{visibility:hidden}.dress-holder{position:absolute;left:1%;top:4%;width:33%;height:84%}.holding-aunt{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:top}.held-dress{position:absolute;left:18%;top:29%;width:64%;height:68%;object-fit:contain;object-position:top}.revealed-dress{left:43%;top:2%;width:42%;height:88%}
+.held-dress{left:20%;top:12%;width:90%;height:80%;transform:rotate(-8deg);transform-origin:center top}
+
+#seats{position:absolute;inset:0;pointer-events:none;z-index:2}#cast{z-index:3}.held-dress{top:16%}
+
+/* Aunt Boss HUD; the final role reversal uses a halo instead of a second HUD. */
+#boss-hud{position:absolute;width:220px;z-index:11;pointer-events:none;text-align:center;color:#f5dca8;text-shadow:0 2px 4px #160d13;font-size:18px}
+#boss-name{display:block;margin-bottom:5px;letter-spacing:3px}#boss-meter{height:13px;border:2px solid #bfa16b;background:#21101b;box-shadow:0 2px 10px #0008}#boss-health{display:block;height:100%;background:linear-gradient(#d75764,#8d172c);transition:width .8s ease-out}
+
+/* Clip rounded portrait bases behind the dialogue's straight upper edge. */
+#portrait{bottom:calc(100% - 1px);height:132px;width:140px;overflow:hidden}
+#portrait:not(.full) img{position:absolute;left:0;bottom:-20%;width:100%;height:120%;object-fit:cover;object-position:center top}
+#portrait.full img{bottom:auto;top:0}
+#dedication{top:44%;padding-bottom:32px}
+#dedication #read-done{position:absolute;top:calc(100% + 18px);left:50%;transform:translateX(-50%) rotate(1deg);margin:0;white-space:nowrap;background:#291a23;border:1px solid #b59760;box-shadow:0 5px 18px #0008;padding:12px 28px}
+
+.actor.startled{animation:chapel-recoil .55s ease-out both}@keyframes chapel-recoil{0%{translate:0 0;rotate:0deg}35%{translate:0 -3px;rotate:-.6deg}100%{translate:0 0;rotate:0deg}}.reduced .actor.startled{animation:none}
+
+/* Shared chapter 1–2 click guidance, including the closed theatre curtain. */
+#action{padding-left:54px}
+#action>.interaction-point{left:25px}
+#reopen:focus-visible{outline-offset:-6px}
+.reduced .interaction-point,.reduced .interaction-point::before{animation:none}
+
+/* v06: object-led actions and the returning saint's theatrical glow. */
+#boss-hud{width:min(450px,45vw);font-weight:400;background:linear-gradient(90deg,transparent,#211322b3,transparent)}
+#boss-name{font-size:clamp(15px,1.6vw,26px);line-height:1.25;letter-spacing:1px;font-weight:400}
+#boss-hud .meter-line{display:flex;gap:13px;align-items:center;margin:5px 8% 0}
+#boss-hud .meter-line>span{font-size:clamp(12px,1.05vw,16px);white-space:nowrap}
+#boss-meter{flex:1;height:10px;padding:2px;border:1px solid #c6a270;background:#100b0d}
+#boss-health{background:linear-gradient(#c56d65,#76343c)}
+#saint-halo{position:absolute;z-index:12;height:28px;border:3px solid #ffefb3;border-radius:50%;transform:translate(-50%,-50%) rotate(-7deg);box-shadow:0 0 7px #fff6ce,0 0 24px #f6cf6599,inset 0 0 8px #fff4b788;pointer-events:none;animation:halo-arrive 1.2s ease-out both}
+@keyframes halo-arrive{from{opacity:0;filter:blur(6px)}to{opacity:1;filter:blur(0)}}
+#scene-hotspot{position:absolute;z-index:19;width:88px;height:88px;transform:translate(-50%,-50%);border:0;background:none;padding:0;box-shadow:none}
+#hotspot-caption{position:absolute;z-index:19;left:50%;bottom:5%;margin:0;transform:translateX(-50%);white-space:nowrap;color:#fff0cd;font-size:clamp(17px,1.4vw,23px);text-shadow:0 2px 4px #100914,0 0 9px #100914;pointer-events:none}
+#scene-hotspot:hover .interaction-point{box-shadow:0 0 0 2px #ffe4a7,0 0 22px 10px #f5cc68aa}
+.focus-aunt{left:auto;right:1%;width:28%}
+.focus-object{left:16%;width:50%}
+.focus-cotton{left:25%}
+.dress-holder{left:auto;right:1%;width:30%}
+.revealed-dress{left:15%;width:46%}
+.reduced #saint-halo{animation:none}
+
+#reopen{inset:auto;left:50%;top:50%;width:100px;height:100px;transform:translate(-50%,-50%);padding:0}
+.unwrapping .focus-object{filter:drop-shadow(0 0 12px #f4d39466) drop-shadow(5px 15px 14px #08050a90)}
+
+#dedication #read-done{top:auto;left:10%;bottom:4px;width:56px;height:56px;transform:none;background:none;border:0;box-shadow:none;padding:0;margin:0}
+
+/* Handwritten dedication stays live text over a generated blank paper sheet. */
+@font-face{font-family:MaryHand;src:url('../../assets/fonts/wenkai-mary.woff2') format('woff2');font-display:swap}
+#dedication{background:transparent url('../../assets/chapter6/v08/dedication-paper.webp') center/100% 100% no-repeat;border:0;box-shadow:none;filter:drop-shadow(3px 13px 18px #12090ac0);padding:56px 62px 58px;width:min(790px,85vw);font-family:MaryHand,'Kaiti SC',KaiTi,cursive;font-size:clamp(22px,2.15vw,31px);color:#493526;line-height:1.9;transform:translate(-50%,-50%) rotate(-2deg)}
+#dedication p{transform:rotate(.5deg);text-shadow:.2px .3px #57403255}
+#dedication small{font-family:'Snell Roundhand','Segoe Script',MaryHand,cursive;font-size:36px;margin:9px 6% 0;transform:rotate(-4deg);font-style:italic}
+#dedication #read-done{left:10%;bottom:7%}
+#scene-hotspot.grasped{cursor:grabbing}
+#scene-hotspot{touch-action:none}
+.unwrapping .focus-object,.unwrapping .focus-cotton{animation:none;transition:opacity .4s,clip-path .45s,transform .2s}
+.unwrap-under{opacity:0;pointer-events:none}
+@media(max-height:650px){#dedication{padding:38px 48px 48px;font-size:23px}#dedication small{font-size:30px}}
+
+/* Cotton follows the held pointer; the rest of the package is a direct click target. */
+.unwrapping .focus-object{cursor:pointer;user-select:none;-webkit-user-drag:none}
+.unwrapping .focus-cotton{cursor:grab;user-select:none;-webkit-user-drag:none;transition:none;touch-action:none}
+#seats .prop{object-position:center bottom}
+
+/* Keep the compact boss title and meter entirely above the head. */
+#boss-hud{width:min(560px,60vw)}
+#boss-name{font-size:clamp(14px,1.4vw,23px);white-space:nowrap}
+
+#stage[data-phase=seat] .teo-empty-chair,#stage[data-phase=lights] .aunt{pointer-events:auto;cursor:pointer}
+
+#scene-fade{position:absolute;inset:0;background:#080608;z-index:24;pointer-events:auto}
+#intertitle{position:absolute;inset:0;z-index:25;width:100%;height:100%;display:grid;place-items:center;background:#080608;border:0;padding:12vh 12vw;color:#eee2cc;text-align:left}
+#intertitle-words{display:block;width:min(800px,100%);font-size:clamp(21px,2.2vw,31px);line-height:2.1;letter-spacing:.06em}
+.intertitle-next{position:absolute;right:8%;bottom:8%;font-size:30px;color:#c5ad7e}

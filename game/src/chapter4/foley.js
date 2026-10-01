@@ -1,0 +1,2 @@
+// Quiet breath-led waking gesture; no sustained bass oscillator or pitch sweep.
+export function yawnSamples(rate=22050){const duration=3.3,out=new Float32Array(Math.ceil(rate*duration));let smooth=0,phase=0;for(let i=0;i<out.length;i++){const t=i/rate;const inhale=t<1?Math.sin(Math.PI*t):0,exhale=t>=1?Math.sin(Math.PI*(t-1)/2.3):0;smooth=.80*smooth+.20*(Math.random()*2-1);phase+=162/rate;const voice=.008*Math.sin(phase*2*Math.PI)+.004*Math.sin(phase*6*Math.PI);out[i]=smooth*(.15*inhale+.12*exhale)+voice*Math.pow(Math.max(0,exhale),2);}return out;}

@@ -1,0 +1,4 @@
+// Original game introduction and production credits; not quotations from the novel.
+export const introduction=`<section><h2>关于这本书</h2><p>一个追逐遗产与享乐的青年，踏上朝圣之旅。多年后，他以回忆录重述人生，虔诚与欲望在其中交织。</p></section><section><h2>关于作者</h2><p>埃萨·德·凯罗斯（1845—1900），葡萄牙作家，以敏锐的观察和讽刺描绘社会与人性。</p></section><section><h2>关于游戏</h2><p>改编自1887年出版的同名小说。点击物件、书写与翻页，走进特奥多里科讲述的往事。</p></section>`;
+export const credits=`<section><h2>故事原作</h2><p>埃萨·德·凯罗斯<br><span class="book-latin">José Maria Eça de Queirós</span></p><p class="book-fine">《圣遗物》（1887）<br>文本依据：IN-CM，2021 年校勘本</p></section><section><h2>互动改编</h2><p>《圣遗物》文学游戏项目</p><p class="book-fine">制作者：周宁</p><p class="book-fine">中文叙事 · 场景与交互设计 · 原作核对</p><p class="book-fine">制作辅助：Codex<br>场景插画与人物美术：AI 生成，按项目角色参照修订</p></section><footer><h1>感谢游玩</h1></footer>`;
+export const beacon=`<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="9" fill="#ffe6a1"/><circle cx="24" cy="24" r="4" fill="#fff9df"/></svg>`;

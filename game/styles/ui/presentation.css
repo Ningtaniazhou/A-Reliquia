@@ -1,0 +1,23 @@
+/* Shared desktop contract; added by shared-controls in every playable chapter. */
+body .shared-black{position:fixed!important;inset:0!important;width:100%!important;height:100dvh!important;max-height:none!important;box-sizing:border-box!important;background:#000!important;color:#e8e1d5!important;border:0!important;box-shadow:none!important;transform:none!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;gap:20px!important;padding:82px 10% 90px!important;overflow:auto!important;text-align:left!important;z-index:25}
+body .shared-black[hidden]{display:none!important}
+body .shared-black>p,body .shared-black #line,body .shared-black #speech,body .shared-black #intertitle-words,body .shared-black #journey-words,body .shared-black .arrival-zh,body .shared-black .page-review p{font:clamp(22px,2vw,32px)/1.9 'Songti SC','Noto Serif CJK SC',serif!important;letter-spacing:.03em!important;white-space:pre-line!important;width:100%!important;max-width:900px!important;flex:none!important;padding:0!important;margin:0!important;color:#e8e1d5!important;text-align:left!important}
+body .shared-black .arrival-reading{flex:none!important;display:block!important;max-width:900px!important;width:100%!important;max-height:calc(100dvh - 190px);padding:0!important;overflow:auto}
+body .shared-black>#speaker,body .shared-black>.speaker{display:none!important}
+body .shared-black>.arrival-actions,body .shared-black>footer,body .shared-black>.dialogue-nav{position:absolute!important;left:10%!important;right:10%!important;bottom:28px!important;width:auto!important}
+body .shared-black>.page-back{position:absolute!important;bottom:28px!important;left:10%!important}
+body .shared-black>.page-forward{position:absolute!important;bottom:28px!important;right:10%!important}
+body .shared-black .page-review{inset:0!important;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:20px;padding:82px 10% 90px!important;background:#000!important;box-sizing:border-box}
+body .shared-black .page-review small:empty{display:none}
+body .shared-black .page-review small{font:17px/1.5 'Songti SC',serif;color:#dec18c}
+body .shared-black>small{font:17px/1.5 'Songti SC',serif!important;margin:0!important}
+body .shared-pixel-dialogue{top:var(--talk-top)!important;left:var(--talk-left)!important;right:auto!important;bottom:auto!important;transform:translateX(-50%)!important;width:var(--talk-width)!important;max-height:var(--talk-max-height)!important;box-sizing:border-box!important;padding:20px 28px 58px!important;overflow:auto!important}
+body .shared-pixel-dialogue>p,body .shared-pixel-dialogue .page-review p{font:clamp(20px,1.65vw,26px)/1.7 'Songti SC',serif!important;margin:10px 0!important}
+body .shared-pixel-dialogue.is-scholar,body .shared-pixel-dialogue.interjection,body .shared-pixel-dialogue .page-review.is-scholar{background:#30223df5!important;border-color:#b49bcb!important;color:#f1e4ff!important}
+body .shared-pixel-dialogue.is-scholar>small,body .shared-pixel-dialogue.is-scholar>span,body .shared-pixel-dialogue.interjection>small{color:#d9b9ef!important}
+body .shared-pixel-dialogue .page-review{background:#172730;padding:20px 28px 0;box-sizing:border-box}
+.malta-departure-hint{position:absolute;left:24px;bottom:24px;padding:12px 18px;background:#111b2ded;border:1px solid #c6a96d;color:#ffe8b6;font:18px/1.5 'Songti SC',serif;z-index:9;pointer-events:none}
+.malta-departure-hint[hidden]{display:none}
+
+body #dialogue.shared-black{padding-bottom:90px!important}
+body:has(#dialogue.shared-black) .dialogue-corner-nav{left:10%!important;top:auto!important;bottom:28px!important;width:80%!important}

@@ -70,3 +70,10 @@
 .illustration{position:relative}
 .illustration .enter-road{inset:0;width:100%;height:100%}
 @media(max-height:350px) and (orientation:landscape){.illustration{min-height:100px}.page-prose{overflow-y:auto}}
+/* Reserve a quiet lower margin; Chinese captions follow art rather than the page edge. */
+.book-scene:not(.preface-scene) .page-content{padding-bottom:clamp(20px,5svh,48px)}
+.book-scene:not(.preface-scene) .page-number{position:absolute;bottom:14px;left:0;right:0;text-align:center}
+.mini-road{height:auto;width:min(100%,52svh);aspect-ratio:1;flex-shrink:0}
+@media(max-height:500px){.mini-road{width:min(100%,49svh)}}
+.illustration{container-type:size}
+.illustration .mini-road{width:min(100cqw,100cqh,52svh);height:min(100cqw,100cqh,52svh);max-height:none}

@@ -1,0 +1,43 @@
+.interaction-point{position:absolute;left:50%;top:50%;width:13px;height:13px;border-radius:50%;background:#fff8da;box-shadow:0 0 5px 2px #fff1b4,0 0 17px 7px #eabe6577;transform:translate(-50%,-50%);animation:point-breathe 2.6s ease-in-out infinite;pointer-events:none}
+.interaction-point::before{content:'';position:absolute;inset:-13px;border:1px solid #ffebbd66;border-radius:50%;background:radial-gradient(circle,#fff2bc2b,transparent 72%)}
+@keyframes point-breathe{0%,100%{opacity:.65;transform:translate(-50%,-50%) scale(.85)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.16)}}
+.studied .interaction-point{animation:none;opacity:.38;width:8px;height:8px;box-shadow:0 0 7px #ffe9a999}.studied:hover .interaction-point,.studied:focus-visible .interaction-point{opacity:.85}
+.notebook-hotspot::before,.page-ready::before{display:none}
+.studying~.toolbar,.studying .toolbar{visibility:hidden}
+.study-return{align-self:flex-end;justify-content:center;width:auto;min-width:112px;padding:10px 16px;border:1px solid #ac906477;border-radius:3px;margin-top:12px}
+.study-copy:focus-visible{outline:none}
+.write-page{inset:auto;left:50%;top:48%;width:120px;height:150px;transform:translate(-50%,-50%);border-radius:24px;filter:drop-shadow(0 2px 8px #bf985f55)}
+.write-page:disabled{visibility:hidden}
+.page-pen{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.write-page .page-pen{animation:pen-hover 3s ease-in-out infinite}
+@keyframes pen-hover{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.writing-pen{position:absolute;width:110px;height:130px;left:35%;top:50%;z-index:7;animation:pen-writing 2.2s ease both}
+@keyframes pen-writing{0%{opacity:1;transform:translate(0,0)}25%{transform:translate(26px,2px) rotate(-3deg)}48%{transform:translate(7px,14px)}72%{opacity:1;transform:translate(38px,20px) rotate(-4deg)}100%{opacity:0;transform:translate(45px,28px)}}
+.turn-back{left:-18px;right:auto;background:linear-gradient(270deg,transparent 20%,#ffeabd4d 80%,#e9d6a4a6);border-radius:12px 0 0 12px}
+.mini-road{border:0}.journey-border{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:4;pointer-events:none}
+.mini-driver{position:absolute;left:48%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%);z-index:6;border-radius:50%}
+.mini-driver:disabled .interaction-point{visibility:hidden}
+.journey-book-backdrop{position:fixed;inset:0;z-index:28;pointer-events:none}.expanding-road{z-index:29;background:none}.expanding-border{z-index:9}
+.road-leftleaf{display:none}
+.reduce-motion .interaction-point,.reduce-motion .page-pen{animation:none}.reduce-motion .writing-pen{display:none}
+@media(max-height:500px){.write-page{width:90px;height:110px}.writing-pen{width:85px;height:105px}.interaction-point{width:12px;height:12px}}
+
+.departing-spine{display:none}
+
+/* Visible against both white shirts and dark wood: steady core + dark keyline. */
+.interaction-point{width:14px;height:14px;opacity:1;background:#fff5cf;border:2px solid #5b3d19;box-shadow:0 0 0 2px #ffe4a7,0 0 14px 6px #f5cc6880;animation:point-steady 2.8s ease-in-out infinite}
+.interaction-point::before{inset:-12px;border:2px solid #ffe7a8b3;background:none;box-shadow:0 0 0 1px #48331966;animation:point-ripple 2.8s ease-out infinite}
+@keyframes point-steady{0%,100%{transform:translate(-50%,-50%) scale(.95)}50%{transform:translate(-50%,-50%) scale(1.1)}}
+@keyframes point-ripple{0%{transform:scale(.65);opacity:.95}80%,100%{transform:scale(1.3);opacity:0}}
+.studied .interaction-point::before{animation:none;opacity:0}
+.journey-car-layer{position:fixed;inset:0;z-index:10;pointer-events:none}
+.study-visual{display:grid;place-items:center;background:radial-gradient(ellipse,#fff9e9,#d7c8aa)}
+.study-object{width:85%;aspect-ratio:1;background-image:url('../assets/study-objects.webp');background-size:200% 200%;background-repeat:no-repeat;filter:drop-shadow(0 8px 9px #65503225)}
+.object-ring{background-position:0 0}.object-medal{background-position:100% 0}.object-deed{background-position:0 100%}.object-books{background-position:100% 100%}
+.reduce-motion .interaction-point::before{animation:none;opacity:.7;transform:none}
+.interaction-point.attention::after{content:'点击光点';position:absolute;left:50%;top:27px;transform:translateX(-50%);white-space:nowrap;color:#fff5d8;background:#302619ed;border:1px solid #d4b276;border-radius:3px;padding:6px 9px;font:13px/1.2 var(--ui);box-shadow:0 2px 9px #0004;animation:hint-in .7s ease both}
+/* Approved engraved author portrait connects the study prop to chapter three. */
+.study-object.object-books{width:100%;aspect-ratio:1374/1145;background-image:url('../assets/topsius-books.webp');background-size:contain;background-position:center;filter:none}
+.mini-road .carriage{z-index:5}
+.mini-road .carriage .mini-driver{left:51%;top:27%}
+.road-ready .road-frame{animation:none}

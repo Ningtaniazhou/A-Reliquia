@@ -1,0 +1,14 @@
+/* Chapter 3 owns the scene, HUD, menus, portrait and backpack styles. */
+#talk{padding-bottom:58px}#talk #previous,#talk #next{position:absolute;bottom:8px;background:transparent;border:0;font:30px Georgia,serif;min-width:44px;padding:3px 16px}#talk #previous{left:14px}#talk #next{right:14px}#markers button{outline:none}#markers button:focus-visible{outline:2px solid #ffe0a0}#scholar i{animation:morning-guide 2.8s infinite}@keyframes morning-guide{50%{opacity:.35}}.reduced #scholar i{animation:none}.utilities svg{shape-rendering:crispEdges}
+/* Shared chapter-three canvas/HUD remain unchanged; only travel and home handoff differ. */
+#journey{z-index:30;padding:70px 8%;overflow:auto;justify-content:safe center;pointer-events:auto}
+#journey p{max-width:760px;font-size:clamp(19px,2vw,27px);line-height:1.9;margin:0}
+.utilities{z-index:35}.paused #scholar i{animation-play-state:paused}
+#arrival-end{position:absolute;bottom:8%;left:50%;transform:translateX(-50%);text-align:center;background:#211624e8;padding:14px 24px;border:1px solid #aa8d648a;z-index:20}
+#arrival-end p{margin:0 0 14px;font:20px 'Songti SC',serif;letter-spacing:.15em}
+.home-mode .voyage-stage canvas{image-rendering:auto}
+.home-mode #talk{top:auto;bottom:20px;width:94%;max-height:40%;left:3%;transform:none;background:linear-gradient(90deg,#211624ed,#221725d4);border:1px solid #aa8d648a;border-left:3px solid #d7b97c;padding:16px 26px 55px}
+.home-mode #talk small{color:#e2c18c;font:18px/1.3 'Songti SC',serif;letter-spacing:3px}
+.home-mode #talk p{color:#f4e7ce;font-size:clamp(18px,1.7vw,26px);line-height:1.6}
+.home-mode .utilities svg{shape-rendering:auto}
+@media(max-height:600px){#journey{padding:65px 8% 24px}#journey p{font-size:19px;line-height:1.65}.home-mode #talk{bottom:8px}}

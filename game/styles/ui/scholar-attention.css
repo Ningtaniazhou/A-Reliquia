@@ -1,0 +1,7 @@
+/* Shared scholar reminder: background only; portrait and keyboard label stay steady. */
+.j-scholar>i,.portrait>.unread{display:none!important}
+.j-scholar:has(>i:not([hidden])),.portrait:not(.read):has(>.unread),.scholar-pending{animation:scholar-gold 2.4s ease-in-out infinite!important;background-image:none!important}
+@keyframes scholar-gold{0%,100%{background-color:#111d2b}50%{background-color:#d6aa43}}
+body.paused .j-scholar,body.paused .portrait,body.paused .scholar-pending{animation-play-state:paused!important}
+body.reduced .j-scholar:has(>i:not([hidden])),body.reduced .scholar-pending{animation:none!important;background-color:#ac8331!important}
+@media(prefers-reduced-motion:reduce){.j-scholar:has(>i:not([hidden])),.portrait:not(.read):has(>.unread),.scholar-pending{animation:none!important;background-color:#ac8331!important}}

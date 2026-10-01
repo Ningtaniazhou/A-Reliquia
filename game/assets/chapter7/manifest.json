@@ -1,0 +1,327 @@
+[
+  {
+    "id": "S01",
+    "source": "art-direction/chapter7/v01/s01-arrival.png",
+    "runtime": "game/assets/chapter7/s01-arrival.webp",
+    "size": 359270,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "294–295"
+  },
+  {
+    "id": "S02",
+    "source": "art-direction/chapter7/v01/s02-first-sale.png",
+    "runtime": "game/assets/chapter7/s02-first-sale.webp",
+    "size": 288084,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "295–296"
+  },
+  {
+    "id": "S03",
+    "source": "art-direction/chapter7/v01/s03-prosperity.png",
+    "runtime": "game/assets/chapter7/s03-prosperity.webp",
+    "size": 351644,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "296–298"
+  },
+  {
+    "id": "S04",
+    "source": "art-direction/chapter7/v01/s04-market-collapse.png",
+    "runtime": "game/assets/chapter7/s04-market-collapse.webp",
+    "size": 373092,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "298–299"
+  },
+  {
+    "id": "S04B",
+    "source": "art-direction/chapter7/v01/s04b-last-order-v02.png",
+    "runtime": "game/assets/chapter7/s04b-last-order.webp",
+    "size": 267420,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "299"
+  },
+  {
+    "id": "S05",
+    "source": "art-direction/chapter7/v01/s05-attic.png",
+    "runtime": "game/assets/chapter7/s05-attic.webp",
+    "size": 279688,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "299–300"
+  },
+  {
+    "id": "S05B",
+    "source": "art-direction/chapter7/v01/s05b-death-letter.png",
+    "runtime": "game/assets/chapter7/s05b-death-letter.webp",
+    "size": 297754,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "300"
+  },
+  {
+    "id": "S06",
+    "source": "art-direction/chapter7/v01/s06-inheritance.png",
+    "runtime": "game/assets/chapter7/s06-inheritance.webp",
+    "size": 274732,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "300–301"
+  },
+  {
+    "id": "S07",
+    "source": "art-direction/chapter7/v01/s07-telescope.png",
+    "runtime": "game/assets/chapter7/s07-telescope.webp",
+    "size": 307822,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "301–302"
+  },
+  {
+    "id": "S08",
+    "source": "art-direction/chapter7/v01/s08-accusation.png",
+    "runtime": "game/assets/chapter7/s08-accusation.webp",
+    "size": 297768,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "302–303"
+  },
+  {
+    "id": "S09",
+    "source": "art-direction/chapter7/v01/s09-conscience-v02.png",
+    "runtime": "game/assets/chapter7/s09-conscience.webp",
+    "size": 285994,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "304–306"
+  },
+  {
+    "id": "S10",
+    "source": "art-direction/chapter7/v01/s10-crispim-reunion.png",
+    "runtime": "game/assets/chapter7/s10-crispim-reunion.webp",
+    "size": 375144,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "306–307"
+  },
+  {
+    "id": "S11",
+    "source": "art-direction/chapter7/v01/s11-work.png",
+    "runtime": "game/assets/chapter7/s11-work.webp",
+    "size": 242540,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "307"
+  },
+  {
+    "id": "E01",
+    "source": "art-direction/chapter7/v01/e01-book-closed.png",
+    "runtime": "game/assets/chapter7/e01-book-closed.webp",
+    "size": 215788,
+    "dimensions": [
+      1918,
+      820
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "框架改编"
+  },
+  {
+    "id": "S12",
+    "source": "art-direction/chapter7/v01/s12-honesty.png",
+    "runtime": "game/assets/chapter7/s12-honesty.webp",
+    "size": 212818,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "307–308"
+  },
+  {
+    "id": "S13",
+    "source": "art-direction/chapter7/v02/s13-garden-rose.png",
+    "runtime": "game/assets/chapter7/s13-garden-rose.webp",
+    "size": 365440,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "308–309"
+  },
+  {
+    "id": "S14",
+    "source": "art-direction/chapter7/v01/s14-marriage-question.png",
+    "runtime": "game/assets/chapter7/s14-marriage-question.webp",
+    "size": 211572,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "309"
+  },
+  {
+    "id": "S14B",
+    "source": "art-direction/chapter7/v05/s14b-married.png",
+    "runtime": "game/assets/chapter7/s14b-married.webp",
+    "size": 206414,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "309",
+    "revision": "2026-10-01 v05: wife holds a red rose; Teodorico rests both hands on her shoulders; ceramic vase is empty"
+  },
+  {
+    "id": "S15",
+    "source": "art-direction/chapter7/v01/s15-manor.png",
+    "runtime": "game/assets/chapter7/s15-manor.webp",
+    "size": 522458,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "309–310"
+  },
+  {
+    "id": "S16",
+    "source": "art-direction/chapter7/v01/s16-deed-signing.png",
+    "runtime": "game/assets/chapter7/s16-deed-signing.webp",
+    "size": 269244,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "310"
+  },
+  {
+    "id": "S17",
+    "source": "art-direction/chapter7/v01/s17-negrao-news.png",
+    "runtime": "game/assets/chapter7/s17-negrao-news.webp",
+    "size": 258438,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "310"
+  },
+  {
+    "id": "E02",
+    "source": "art-direction/chapter7/v01/e02-resentment.png",
+    "runtime": "game/assets/chapter7/e02-resentment.webp",
+    "size": 223080,
+    "dimensions": [
+      1918,
+      820
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "310–311"
+  },
+  {
+    "id": "E03",
+    "source": "art-direction/chapter7/v01/e03-regret.png",
+    "runtime": "game/assets/chapter7/e03-regret.webp",
+    "size": 218942,
+    "dimensions": [
+      1918,
+      820
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "311–312"
+  },
+  {
+    "id": "portrait-lino",
+    "source": "art-direction/chapter7/v02/portrait-lino.png",
+    "runtime": "game/assets/chapter7/portrait-lino.webp",
+    "size": 63066,
+    "dimensions": [
+      420,
+      420
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "status": "已接入本地游戏，待用户试玩"
+  },
+  {
+    "id": "portrait-crispim",
+    "source": "art-direction/chapter7/v02/portrait-crispim.png",
+    "runtime": "game/assets/chapter7/portrait-crispim.webp",
+    "size": 51196,
+    "dimensions": [
+      420,
+      420
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "status": "已接入本地游戏，待用户试玩"
+  },
+  {
+    "id": "portrait-jesuina",
+    "source": "art-direction/chapter7/v02/portrait-jesuina.png",
+    "runtime": "game/assets/chapter7/portrait-jesuina.webp",
+    "size": 56288,
+    "dimensions": [
+      420,
+      420
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "status": "已接入本地游戏，待用户试玩"
+  },
+  {
+    "id": "S14-before",
+    "source": "art-direction/chapter7/v04/s14-conversation.png",
+    "runtime": "game/assets/chapter7/s14-conversation.webp",
+    "size": 216976,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "method": "built-in imagegen; WebP production export",
+    "pages": "309"
+  }
+]

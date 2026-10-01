@@ -1,0 +1,59 @@
+#voyage{position:absolute;inset:0;z-index:12;background:#080d17;--gold:#ffc568;--cream:#ffe7b4;font-family:'PingFang SC','Noto Sans CJK SC',sans-serif}
+#play[data-scene=harbor] #stage,#play[data-scene=harbor] #finish{display:none!important}
+#play[data-scene=harbor] .utilities button{border-radius:0;border:2px solid #897657;background:#10192c;width:40px;height:36px;font:18px monospace}
+#play[data-scene=harbor] .utilities{top:12px;right:15px;z-index:35}
+.voyage-screen{position:relative;width:100%;height:100%;overflow:hidden;color:var(--cream);outline:none;isolation:isolate;background:#080d17}
+.voyage-stage{position:absolute;width:min(100vw,177.7778svh);aspect-ratio:16/9;left:50%;top:50%;transform:translate(-50%,-50%);overflow:hidden;container-type:inline-size}
+.voyage-stage canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
+.voyage-title{position:absolute;left:6%;top:18%;width:43%;text-align:center;text-shadow:4px 4px #111522}
+.voyage-title h1{font-family:'Songti SC','STSong',serif;font-size:clamp(40px,7.2cqw,112px);font-weight:900;letter-spacing:.15em;line-height:1.25;color:#ffca72;margin:0 0 10px;-webkit-text-stroke:1px #d39040;text-shadow:3px 0 #231527,-3px 0 #231527,0 3px #231527,5px 6px #111322}
+.voyage-latin{font-family:Georgia,serif;font-size:clamp(19px,3cqw,48px);letter-spacing:.14em;color:#fff0bb;margin:0 0 24px;font-weight:bold}
+.voyage-chapter{font-size:clamp(14px,1.65cqw,25px);letter-spacing:.16em;margin:0 0 33px;color:#f9dcb8}
+.voyage-title button{background:#101522aa;border:0;border-top:2px solid #b58240;border-bottom:2px solid #b58240;padding:14px 18px;color:#ffe1a0;font-size:clamp(15px,1.9cqw,28px);letter-spacing:.06em;text-shadow:2px 2px #000;animation:voyage-prompt 2.5s ease-in-out infinite}
+@keyframes voyage-prompt{50%{color:#df9a50}}
+.voyage-film{position:absolute;height:4.7%;left:0;right:0;background:#080d17;border-block:2px solid #d9934c66;pointer-events:none}
+.voyage-film:after{content:'';position:absolute;inset:27% 1.2%;background:repeating-linear-gradient(90deg,#e0a755 0 1.1%,transparent 1.1% 4%);opacity:.75}
+.voyage-film.top{top:0}.voyage-film.bottom{bottom:0}.voyage-screen:not([data-scene=title]) .voyage-film{display:none}
+.voyage-hud{position:absolute;left:20px;right:120px;top:13px;display:flex;align-items:center;justify-content:space-between;gap:15px;font-size:15px;letter-spacing:.1em}
+.voyage-place{background:#10192de8;padding:9px 14px;border-left:3px solid #c4924d}
+#voyage button{touch-action:manipulation}#voyage button:focus-visible{outline:3px solid #ffe4a4;outline-offset:3px}
+.voyage-hud button,.voyage-dialogue button{background:#111b2ce8;border:2px solid #b2935c;color:#ffe2a2;padding:9px 16px;font-size:16px;box-shadow:3px 3px #020812}
+#voyage kbd{font-family:monospace;font-size:14px;border:1px solid #9a855d;padding:1px 5px;margin-left:6px;background:#273045;color:#ffe8c0}
+.voyage-iris{position:absolute;inset:0;background:#050810;opacity:0;pointer-events:none;z-index:4}.voyage-loading{position:absolute;inset:0;display:grid;place-content:center;z-index:10;background:#060a12;letter-spacing:.15em}.voyage-save-warning{position:absolute;bottom:2px;right:12px;font-size:13px;color:#ffe1ab}.voyage-paused *,.voyage-reduced *{animation-play-state:paused!important}
+@media(max-height:500px){.voyage-title{top:15%}.voyage-latin{margin-bottom:14px}.voyage-chapter{margin-bottom:16px}.voyage-title button{padding:8px}.voyage-hud{left:12px;top:8px;font-size:13px}.voyage-place{padding:6px 9px}.voyage-hud button{font-size:14px;padding:6px 9px}}
+@media(max-aspect-ratio:1/1){.voyage-title{top:15%}.voyage-title h1{font-size:9cqw}.voyage-latin{font-size:4cqw;margin-bottom:10px}.voyage-chapter{font-size:3.5cqw;margin-bottom:12px;letter-spacing:0}.voyage-title button{font-size:3.4cqw;padding:9px 2px}.voyage-hud{left:10px;right:105px;flex-wrap:wrap;font-size:13px}}
+
+/* The playable deck sits near the lower edge, with no bottom control strip. */
+.voyage-screen:not([data-scene=title]) .voyage-stage{top:auto;bottom:0;transform:translateX(-50%)}
+.voyage-spot{position:absolute;transform:translate(-50%,-100%);display:grid;place-items:center;width:44px;height:44px;border:0;padding:0;background:transparent;color:#ffe7b4}
+#voyage .voyage-spot kbd{display:grid;place-items:center;margin:0;width:29px;height:31px;border:1px solid #d5b170;background:#111a29eb;box-shadow:2px 2px #050b15;font:18px Georgia,serif}
+.voyage-dialogue{position:absolute;z-index:8;left:50%;top:13%;transform:translateX(-50%);width:min(740px,65%);max-height:47%;overflow:auto;padding:17px 30px 12px;background:linear-gradient(90deg,#091222bb,#0b1423ef 15%,#0b1423ef 85%,#091222bb);border:0;border-block:1px solid #d4b276;box-shadow:0 10px 25px #02071133;color:#fff0cf;text-align:center}
+.voyage-dialogue:before{content:'◇';position:absolute;top:-2px;left:50%;transform:translateX(-50%);color:#f5d499;font-size:12px}
+.voyage-speaker{display:block;color:#d1b98c;font-size:13px;letter-spacing:.16em;margin-top:6px}
+.voyage-dialogue p{font-family:'Songti SC','STSong',serif;font-size:clamp(17px,1.4vw,22px);line-height:1.9;letter-spacing:.045em;margin:10px 0;text-align:left}
+#voyage .voyage-dialogue button{display:block;margin:0 auto;border:0;box-shadow:none;background:transparent;padding:4px 12px;min-width:44px;min-height:32px}
+#voyage .voyage-dialogue button kbd{margin:0;font-size:12px;background:transparent;border-color:#9a855d88}
+.voyage-teaching{position:absolute;left:50%;top:12%;transform:translateX(-50%);font-size:13px;white-space:nowrap;color:#eed7ab;background:#0b1525c9;padding:8px 14px;pointer-events:none}
+@media(max-height:500px){.voyage-dialogue{top:18%;width:78%;max-height:48%;padding:8px 18px}.voyage-dialogue p{font-size:15px;line-height:1.65;margin:6px 0}.voyage-speaker{font-size:11px;margin-top:2px}.voyage-teaching{top:20%;font-size:12px}}
+@media(max-aspect-ratio:1/1){.voyage-dialogue{top:18%;width:88%;max-height:40%;padding:15px 20px}.voyage-dialogue p{font-size:17px}.voyage-teaching{top:22%;font-size:12px}}
+
+/* Full-screen fade for impossible-to-walk scene connections. */
+.voyage-screen>.voyage-iris{z-index:40}
+#play:has(.voyage-screen[data-transition=board]) .utilities{visibility:hidden}
+
+/* One compact aligned control row, with quiet borders and consistent hit areas. */
+#play[data-scene=harbor] .utilities{top:16px;right:16px;display:flex;gap:8px}
+#play[data-scene=harbor] .utilities button{width:42px;height:42px;display:grid;place-items:center;border:1px solid #a68c5f;background:#111b2ce8;box-shadow:none;color:#ffe2a2}
+.voyage-hud{top:16px;right:116px;left:16px;height:42px}
+.voyage-hud button{height:42px;padding:0 12px;border:1px solid #a68c5f;box-shadow:none;font-size:15px;letter-spacing:0}
+.voyage-place{font-size:13px}
+.voyage-screen[data-scene=dock] .voyage-spot{display:flex;gap:5px;width:auto;min-width:80px;white-space:nowrap;background:#111a29e8;padding:4px 7px;height:40px;border:1px solid #a68c5f;font-size:13px}
+#voyage .voyage-screen[data-scene=dock] .voyage-spot kbd{border:0;background:none;box-shadow:none;width:20px;height:28px}
+.voyage-spot[hidden]{display:none!important}
+.key-guide{border-block:1px solid #a68c5f66;margin:12px 0;padding:8px 0}.key-guide h3{font-size:15px;margin:0}.key-guide p{font-size:14px;line-height:1.9;margin:8px 0}
+@media(max-width:540px){.voyage-hud{left:10px;right:116px;justify-content:flex-end}.voyage-place{position:fixed;left:10px;top:66px;padding:6px 9px}.voyage-hud button{padding:0 9px}.voyage-hud kbd{font-size:12px}}
+.voyage-destination{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font:clamp(22px,3vw,34px) 'Songti SC',serif;letter-spacing:.4em;color:#f6e5c4}
+/* Harbour exit: readable on sunlit paving, with a single unbroken label. */
+#voyage .voyage-spot[data-spot=maltaExit]{width:82px;height:72px;gap:5px;align-content:center;white-space:nowrap}
+#voyage .voyage-spot[data-spot=maltaExit] span{display:block;padding:5px 10px;background:#142c3e;color:#fff4d0;border:1px solid #f2d79b;box-shadow:0 2px 4px #0008;font-size:15px;line-height:1.3;white-space:nowrap}
+

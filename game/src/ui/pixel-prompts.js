@@ -1,0 +1,3 @@
+// All pixel chapters use the same accessible key + short action prompt.
+if(typeof document!=='undefined'){const style=document.createElement('link');style.rel='stylesheet';style.href=new URL('../../styles/ui/pixel-prompts.css',import.meta.url);document.head.append(style);}
+export function setPixelPrompt(button,action){const key=document.createElement('kbd'),label=document.createElement('span');key.textContent='E';key.setAttribute('aria-hidden','true');label.textContent=action;button.replaceChildren(key,label);button.setAttribute('aria-label',action+'（E）');button.setAttribute('aria-keyshortcuts','E');}

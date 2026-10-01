@@ -1,0 +1,42 @@
+.book-host{position:relative;width:100%;height:100%;overflow:hidden;background:radial-gradient(ellipse at 46% 37%,#746e5f 0,#454942 48%,#242f2b 100%);isolation:isolate;font-family:'Songti SC','STSong','Noto Serif CJK SC',serif;color:#463d2e}
+.book-host>canvas{display:block;position:absolute;inset:0;width:100%;height:100%}.book-overlays{position:absolute;inset:0;pointer-events:none}.book-copy{position:absolute;left:0;top:0;transform-origin:0 0;display:flex;flex-direction:column;gap:12px;pointer-events:auto;color:#473c29;text-shadow:0 1px #fff5;box-sizing:border-box;font-size:var(--book-font,18px);line-height:1.75}.book-copy[hidden],.book-hand[hidden],.book-copy-actions[hidden],.book-scroll-note[hidden]{display:none!important}.book-copy-scroll{overflow:auto;min-height:0;flex:1;scrollbar-width:thin;scrollbar-color:#a7987a transparent;overscroll-behavior:contain;padding:3px 9px 5px 4px;outline-offset:-2px}.book-copy h1{font-size:2em;color:#413923;margin:0;line-height:1.4;letter-spacing:.2em;font-weight:500}.book-copy h2{font-size:.76em;letter-spacing:.2em;color:#7d673d;font-weight:500;margin:0 0 8px}.book-copy p{font-size:1em;margin:0}.book-copy section+section{margin-top:1.15em}.book-copy header{margin-bottom:1.15em}.book-copy .book-latin{font:italic .85em/1.7 Georgia,serif;letter-spacing:.04em}.book-copy .book-fine{font-size:.83em;line-height:1.85;margin-top:9px}.book-copy .book-thanks{font-size:1.6em;letter-spacing:.23em;margin:1.2em 0 .15em;color:#57482d}.book-copy-actions{flex-shrink:0;text-align:center}.book-copy .book-enter{font:inherit;font-size:.9em;letter-spacing:.05em;margin:0;transform:none;min-width:0;min-height:44px;background:#713e33;border:1px solid #825742;border-radius:2px;color:#f7ebd4;box-shadow:0 3px 7px #38251522;padding:9px 17px;cursor:pointer;display:inline-block}.book-enter:disabled{opacity:.55;cursor:wait}.book-scroll-note{position:absolute;bottom:-18px;right:8px;font:12px sans-serif;color:#796947;pointer-events:none}.book-hand{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;width:52px;height:60px;padding:7px;background:#193a31df;border:1px solid #dbc58d9c;border-radius:26px;cursor:pointer;box-shadow:0 3px 13px #0004;color:#f2e4c5;animation:book-beacon 2.7s ease-in-out infinite}.book-hand svg{width:34px;height:38px;display:block}.book-hand span{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);white-space:nowrap;font:14px/1.5 'Songti SC',serif;padding:3px 8px;background:#23382bdd;border-radius:2px;opacity:0;transition:opacity .2s}.book-hand:hover span,.book-hand:focus-visible span{opacity:1}.book-hand:focus-visible,.book-copy button:focus-visible{outline:2px solid #ffe5a2;outline-offset:4px}.book-live{position:absolute;width:1px;height:1px;clip-path:inset(50%);overflow:hidden}.book-loading,.book-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#efe4ce}.book-fallback button{font:inherit;padding:12px 30px;background:#254a3e;border:1px solid #b6a275;color:#efe4ce}.book-host[data-book-phase=to-ending] .book-overlays,.book-host[data-book-phase=opening] .book-overlays,.book-host[data-book-phase=flipping] .book-overlays{visibility:hidden}
+@keyframes book-beacon{50%{box-shadow:0 0 0 7px #dfc78712,0 3px 13px #0004}}
+@media(prefers-reduced-motion:reduce){.book-hand{animation:none}}
+.reduce-motion .book-hand{animation:none}.paused .book-hand{animation-play-state:paused}
+/* Reading surfaces contain their own scrolling; the exterior book stays still. */
+@media(max-height:650px){.book-copy{line-height:1.6;gap:8px}.book-copy section+section{margin-top:.8em}.book-copy h2{margin-bottom:5px}.book-copy .book-fine{font-size:.9em}.book-copy .book-thanks{margin-top:.8em}.book-hand{width:46px;height:54px;padding:5px}.book-hand svg{width:32px}}
+
+.book-host[data-reduced="true"] .book-hand{animation:none}
+
+.book-credits{font-size:max(16px,calc(var(--book-font,18px)*.88))}.book-copy .book-fine{font-size:max(14px,.83em)}.book-fallback{padding:65px 12%;overflow:auto;justify-content:flex-start}.book-fallback article{max-width:560px;line-height:1.8}.book-fallback button{flex-shrink:0}
+/* 2026-10-01: both jackets are complete single-page layouts, never scroll to read. */
+.book-copy,.book-credits{font-size:var(--book-font,17px);line-height:1.48;gap:10px}
+.book-copy-scroll{overflow:hidden;padding:2px 3px;scrollbar-width:none}
+.book-copy h1{font-size:1.55em;letter-spacing:.12em;line-height:1.3}
+.book-copy h2{font-size:.88em;letter-spacing:.12em;margin:0 0 .35em}
+.book-copy section+section{margin-top:.85em}
+.book-copy header{margin-bottom:.9em}
+.book-copy .book-fine{font-size:.9em;line-height:1.5;margin-top:.5em}
+.book-copy .book-latin{font-size:.9em;line-height:1.5;letter-spacing:0}
+.book-copy .book-enter{font-size:.95em;min-height:40px;padding:8px 16px}
+.book-scroll-note{display:none!important}
+
+.book-copy footer{margin-top:1.2em}.book-copy footer h1{font-size:1.55em;line-height:1.3;letter-spacing:.12em}
+.book-hand span[hidden]{display:none!important}
+
+/* Shared green-book interaction: a quiet gold star, with a generous invisible hit area. */
+.book-hand{width:56px;height:56px;padding:4px;background:transparent;border:0;border-radius:50%;box-shadow:none;color:#ffe6a1;animation:book-star-breathe 2.8s ease-in-out infinite}
+.book-hand svg{position:relative;width:48px;height:48px;display:block;filter:drop-shadow(0 0 4px #ffdf88) drop-shadow(0 0 11px #eebd5680)}
+.book-hand{background:radial-gradient(circle,#ffe19a55 0, #efbe5620 26%,transparent 65%)}
+.book-hand:hover{filter:brightness(1.18)}
+.book-hand:focus-visible{outline:1px solid #ffe6a199;outline-offset:2px}
+@keyframes book-star-breathe{0%,100%{opacity:.55}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.book-hand{animation:none}}
+.book-host[data-reduced="true"] .book-hand,.reduce-motion .book-hand{animation:none}
+
+/* Circular breathing light: visual scales, the clickable area remains still. */
+.book-hand{animation:none;background:transparent}
+.book-hand svg{transform-origin:center;animation:book-orb-breathe 2.8s ease-in-out infinite;animation-play-state:inherit;border-radius:50%;background:radial-gradient(circle,#ffe19a66 0,#efbe5630 30%,transparent 69%)}
+@keyframes book-orb-breathe{0%,100%{opacity:.4;transform:scale(.55)}50%{opacity:1;transform:scale(1.25)}}
+@media(prefers-reduced-motion:reduce){.book-hand svg{animation:none}}
+.book-host[data-reduced="true"] .book-hand svg,.reduce-motion .book-hand svg{animation:none}

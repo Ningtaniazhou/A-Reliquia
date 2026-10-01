@@ -9,3 +9,8 @@
 !/.openai/
 /.openai/*
 !/.openai/hosting.json
+
+!/README.md
+!/.github/
+!/.github/workflows/
+!/.github/workflows/pages.yml

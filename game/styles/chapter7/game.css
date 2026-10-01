@@ -1,0 +1,77 @@
+/* Chapter one supplies the book, ink, pen and corner-turn styles. */
+body{overflow:hidden}#view{height:100svh}.brand{font-size:14px;letter-spacing:.17em}.toolbar-left{max-width:calc(100% - 170px)}
+.c7-book .book-wrap{width:min(1120px,calc(100vw - 72px));height:min(75svh,735px);min-height:0}.c7-book .illustration{flex:1;min-height:120px;width:100%}.c7-book .page-prose{font-size:clamp(17px,1.42vw,21px);line-height:1.85;max-height:43%;overflow:auto;flex-shrink:1}.c7-book .page-content{gap:16px}.c7-book .page-number{margin-top:auto}.c7-book .write-page .page-pen{width:100px;height:130px}.c7-book .scene-thumb{width:100%;position:relative;aspect-ratio:1672/941;display:block;cursor:pointer;padding:0;box-shadow:0 0 0 1px #ac8c56}.scene-thumb img{display:block;width:100%}.scene-thumb .interaction-point{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.ornament-art{position:relative;width:100%;aspect-ratio:1.55;max-height:100%}.ornament-art>img{position:absolute;left:8%;top:10%;width:84%;height:80%;object-fit:cover}.ornament-art::before,.ornament-art::after{content:'';position:absolute;inset:0;background:url('../../assets/journey-border.webp') center/100% 100%;pointer-events:none}.ornament-art::after{transform:scaleX(-1);clip-path:inset(0 89% 0 0)}
+.c7-book .scene-thumb:hover .interaction-point{filter:brightness(1.7)}.c7-book .turn-page{z-index:12}.c7-book .turn-page:disabled{opacity:.16;pointer-events:none}.book-closing .book-wrap{animation:close-book 2.3s ease-in-out both}.book-closing{pointer-events:none}@keyframes close-book{0%{opacity:1;transform:none}60%{opacity:.8;transform:perspective(1200px) rotateY(-65deg) scale(.85)}100%{opacity:0;transform:perspective(1200px) rotateY(-90deg) scale(.6)}}
+.stage-scene{position:absolute;inset:0;background:radial-gradient(ellipse,#30251a,#090807 85%)}.art-area{position:absolute;inset:68px 0 210px;display:flex;align-items:center;justify-content:center}.art-frame{position:relative;width:min(100vw,calc((100svh - 278px)*1672/941));aspect-ratio:1672/941;max-height:100%;flex-shrink:0}.scene-image{display:block;width:100%;height:100%;object-fit:contain}.art-overlay{position:absolute;inset:0;animation:face-dissolve 2.8s ease both}@keyframes face-dissolve{from{opacity:0}to{opacity:1}}
+.hotspot{position:absolute;transform:translate(-50%,-50%);width:48px;height:48px;display:grid;place-items:center;padding:0;z-index:3}.hotspot:hover{filter:brightness(1.5)}.hotspot.seen .interaction-point{opacity:.35;animation:none}.hotspot::after{content:attr(aria-label);position:absolute;top:43px;padding:5px 9px;white-space:nowrap;background:#231b12e8;color:#f5e4bf;font:14px var(--ui);opacity:0;pointer-events:none}.hotspot:hover::after,.hotspot:focus-visible::after{opacity:1}.actor-target{position:absolute;background:none;border:0;z-index:2;cursor:pointer}.actor-target:focus-visible{outline:1px solid #ebd498}
+.c7-dialogue{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);width:min(900px,calc(100vw - 80px));height:172px;background:#211b15f2;border:1px solid #8e734b;color:#efe3cc;padding:18px 34px 40px;z-index:8;cursor:pointer;box-shadow:0 12px 40px #0008}.c7-dialogue .speaker{font:15px var(--ui);letter-spacing:.12em;color:#d6b97e}.c7-dialogue p{font-size:clamp(18px,1.55vw,23px);line-height:1.65;margin:8px 0 0;max-height:calc(100% - 25px);overflow:auto}.dialogue-nav{position:absolute;inset:auto 7px 0;height:40px;display:flex;justify-content:space-between;pointer-events:none}.dialogue-nav button{pointer-events:auto;width:44px;min-height:40px;font:28px Georgia;color:#d7bd8b}.dialogue-nav button:disabled{opacity:.2}.c7-portrait{position:absolute;left:8px;bottom:calc(100% + 1px);height:112px;width:112px;overflow:hidden;pointer-events:none}.c7-portrait .shared-portrait{height:100%;width:100%}
+.desk-scene .art-area{inset:60px 0 0}.desk-scene .art-frame{width:min(100vw,calc((100svh - 60px)*1918/820));aspect-ratio:1918/820}.final-text{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:min(870px,83vw);background:linear-gradient(90deg,transparent,#090707d9 12%,#090707d9 88%,transparent);text-align:center;padding:24px 60px 50px;z-index:10;cursor:pointer}.final-text p{font-size:clamp(21px,2vw,29px);line-height:1.85;margin:0;text-shadow:0 2px 5px #000}.final-text .dialogue-nav{left:12%;right:12%}.fade-shade{position:absolute;inset:0;background:#000;pointer-events:none;z-index:22}.portal-flight{position:fixed;z-index:70;pointer-events:none;object-fit:fill;box-shadow:0 0 70px #0007}.credits{position:absolute;inset:0;overflow:auto;background:#000;text-align:center;padding:18vh 24px 12vh;animation:credits-in 3s ease both}.credits h1{font-weight:400;font-size:48px;letter-spacing:.35em}.credits h2{font:15px var(--ui);letter-spacing:.2em;color:#a6967b;margin:55px 0 18px}.credits p{font-size:20px;line-height:1.85;max-width:660px;margin:8px auto}.credits small{font:14px/1.8 var(--ui);color:#a2988a}.credits .finish{margin:75px auto 20px;display:flex;gap:25px;justify-content:center;align-items:center}.credits a,.credits button{color:#d2c3a8;font:16px var(--ui);padding:12px;border-bottom:1px solid #7f6b48;text-decoration:none}.credits .music-list{font-size:16px}.credits .source-note{font-size:14px;color:#ac9f8e}.credits:focus{outline:none}@keyframes credits-in{from{opacity:0}to{opacity:1}}
+#load{position:fixed;inset:0;z-index:60;background:#110e0bef;display:grid;place-content:center;text-align:center;color:#d4be99}#retry{border:1px solid #8e734b;padding:12px}#save-warning{position:fixed;bottom:0;left:10px;color:#fed297;font:13px var(--ui);z-index:100}#detail p{font-size:20px;line-height:1.85;color:#eee0c8}#detail h2{font-size:24px}.reduce-motion .book-closing .book-wrap{animation:none;opacity:.25}.reduce-motion .art-overlay{animation:none}
+@media(max-height:720px){.c7-book{padding:72px 32px 35px}.c7-book .book-wrap{height:calc(100svh - 110px)}.c7-book .page{padding:18px 23px 12px}.c7-book .page-content{display:flex;gap:9px}.c7-book .page-prose{font-size:17px;line-height:1.65;max-height:48%}.c7-book .illustration{flex:1;min-height:85px;max-height:none}.c7-dialogue{bottom:14px;height:158px;width:calc(100vw - 60px);padding-top:12px}.art-area{inset:66px 0 184px}.art-frame{width:min(100vw,calc((100svh - 250px)*1672/941))}.c7-dialogue p{font-size:18px}.c7-portrait{height:84px;width:84px}.final-text{padding:20px 38px 48px}.final-text p{font-size:22px}}
+
+/* Full-screen scene painting; observation mode uncovers the lower props. */
+.stage-scene:not(.desk-scene) .art-area{inset:0;overflow:hidden}.stage-scene:not(.desk-scene) .art-frame{width:max(100vw,calc(100svh*1672/941));height:auto;max-height:none}.c7-dialogue{width:min(900px,calc(100vw - 80px))}.observing .c7-dialogue{display:none}.observing .actor-target{pointer-events:none}.toolbar-left button{letter-spacing:0}
+@media(max-height:720px){.c7-dialogue{width:min(900px,calc(100vw - 80px))}}
+
+.hotspot::after{right:0}.final-text{top:68%;background:linear-gradient(90deg,transparent,#090707c9 12%,#090707c9 88%,transparent);padding-top:18px;padding-bottom:42px}.final-text p{font-size:clamp(20px,1.8vw,26px);line-height:1.7}
+/* Revision: wait for completed turns / ink before revealing the next pen. */
+#game[aria-busy=true] .write-page,#game[aria-busy=true] .page-ready::before{visibility:hidden}
+#game[data-transition] .c7-dialogue,#game[data-transition] .hotspot,#game[data-transition] .actor-target{visibility:hidden}
+.turning-leaf.turn-backward{left:0;transform-origin:right center;animation-name:page-turn-backward}
+@keyframes page-turn-backward{from{transform:rotateY(0)}to{transform:rotateY(180deg)}}
+.c7-portrait{bottom:calc(100% - 1px);height:100%;width:auto;aspect-ratio:1}
+.hotspot.seen{display:none}
+.object-note{position:fixed;z-index:20;left:50%;bottom:24px;transform:translateX(-50%);width:min(800px,calc(100vw - 80px));max-height:45vh;overflow:auto;background:#211b15f2;border:1px solid #8e734b;padding:18px 30px;color:#efe3cc;box-shadow:0 8px 25px #0005}
+.object-note h2{margin:0 0 10px;color:#d6b97e;font-size:20px!important;font-weight:normal}.object-note p{margin:0;font-size:19px!important;line-height:1.75!important}.object-note button{margin-top:12px;font:16px var(--ui);border-bottom:1px solid #8e734b;padding:6px 0}.inspecting .c7-dialogue{visibility:hidden}
+.credits h2.thanks{font:clamp(34px,4vw,56px) var(--serif);color:#efe3cc;margin-top:95px}.credits .finish{margin-top:50px}.credits{padding-bottom:18vh}
+/* The left leaf and its outer cover rotate together around the central spine. */
+.book-closing .book-wrap{animation:closed-book-settle 4.8s ease-in-out both}
+.book-closing .book-spread{overflow:visible;background:transparent;transform-style:preserve-3d}
+.book-closing .page-left{transform-origin:right center;z-index:6;transform-style:preserve-3d;animation:fold-left 3.6s ease-in-out both}
+.book-closing .page-left .page-content{backface-visibility:hidden}
+.book-closing .page-left::before{content:'圣遗物';position:absolute;inset:0;display:grid;place-items:center;background:#422c1f;color:#bb985e;border:6px double #946c3c;border-radius:10px 3px 3px 10px;transform:rotateY(180deg) translateZ(1px);backface-visibility:hidden;font-size:28px;letter-spacing:.3em}
+.book-closing .page-left::after{backface-visibility:hidden}
+.book-closing .book-cover,.book-closing .paper-stack{left:50%}
+.book-closing .spine{z-index:2}.book-closing .turn-page,.book-closing .write-page{display:none}
+@keyframes fold-left{0%,10%{transform:rotateY(0)}100%{transform:rotateY(180deg)}}
+@keyframes closed-book-settle{0%,76%{opacity:1;transform:none}100%{opacity:0;transform:translateX(-12%) translateY(8%) scale(.75)}}
+.reduce-motion .book-closing .book-wrap{animation:none;opacity:1}.reduce-motion .book-closing .page-left{animation:none;transform:rotateY(180deg)}
+.handoff-picture{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#291c22}.handoff-picture img{position:absolute;object-fit:contain}.handoff-street{inset:0;width:100%;height:100%;object-fit:cover!important}.handoff-light{position:absolute;inset:0;background:radial-gradient(ellipse at 55% 50%,transparent 20%,#130a16a0)}.handoff-teo{left:43%;bottom:12%;height:52%;width:20%;object-position:bottom;filter:drop-shadow(5px 8px 5px #190b1590)}.handoff-crate{left:61%;bottom:12%;width:13%;height:16%;filter:drop-shadow(2px 5px 4px #120c1370)}
+.arrival-book .turn-page{opacity:1}
+.c7-dialogue.telescope-intro{top:90px;bottom:auto;left:5%;transform:none;width:min(620px,65vw);height:auto;min-height:145px}.telescope-intro p{max-height:25vh}.inspecting .hotspot{visibility:hidden}
+.arrival-book .handoff-picture{width:84%;overflow:visible}
+.arrival-book .handoff-picture::after{content:'';position:absolute;inset:-12% -10%;background:url('../../assets/journey-border.webp') center/100% 100%;pointer-events:none}
+.c7-dialogue.telescope-intro{top:23%;left:3%;width:min(400px,32vw);padding:18px 24px 42px}.telescope-intro p{max-height:none;font-size:18px}
+.arrival-book .handoff-picture::before{content:'';position:absolute;inset:-12% -10%;z-index:1;background:url('../../assets/journey-border.webp') center/100% 100%;transform:scaleX(-1);clip-path:inset(0 89% 0 0);pointer-events:none}
+/* 2026-10-01: dramatic illustrations never acquire ornamental borders. */
+.handoff-picture{width:100%;overflow:hidden}.handoff-picture::before,.handoff-picture::after{display:none!important}
+#game[data-bridge] .write-page,#game[data-bridge] .turn-page{visibility:hidden}
+#game[data-transition=expand] .stage-scene{background:#000}
+#game[data-transition=expand] .art-area{visibility:hidden}
+#game[data-transition=memory] .stage-scene{visibility:hidden}
+.portal-flight{box-shadow:none}
+.object-note .study-return{width:auto;min-width:110px;min-height:44px;display:flex;justify-content:flex-start;margin-top:14px;padding:8px 0 0;border:0;border-top:1px solid #ac906455;background:none;box-shadow:none;border-radius:0;font:15px var(--ui);letter-spacing:.1em;color:#d2c3a8}
+.object-note .study-return:hover{color:#fff1d4}
+.close-notebook{position:absolute;right:1%;top:45%;width:100px;height:100px;z-index:15;display:grid;place-content:center;gap:13px;justify-items:center;color:#806135}.close-caption{font:14px var(--ui);white-space:nowrap}.book-closing .close-notebook{display:none}
+.book-closing .page-left::before{content:''}
+.memory-flight{position:fixed;inset:0;z-index:70;pointer-events:none;overflow:hidden;background:#000}.memory-flight>.stage-scene{position:absolute;inset:0;transform-origin:center}.memory-flight .c7-dialogue,.memory-flight .hotspot,.memory-flight .actor-target{visibility:hidden}
+.c7-dialogue.marriage-caption{left:auto;right:3%;transform:none;width:min(620px,45vw);height:auto;min-height:160px}.marriage-caption p{max-height:35vh}
+/* The last page and rear jacket are the shared opening book, not scrolling screen credits. */
+#ending-book{position:absolute;inset:0;width:100%;height:100%}
+#game[data-mode="credits"] .toolbar-left{visibility:hidden}
+
+#ending-book{animation:book-arrival 1.4s ease both}@keyframes book-arrival{from{opacity:0}to{opacity:1}}.paused #ending-book{animation-play-state:paused}.reduce-motion #ending-book{animation-duration:.1s}
+
+/* The final thoughts accumulate, then remain on the last printed page. */
+.last-words{position:fixed;left:0;top:0;z-index:25;transform-origin:0 0;font-family:'Songti SC','STSong','Noto Serif CJK SC',serif;font-weight:400;line-height:1.85;text-align:left;color:#fff4db;text-shadow:0 1px 8px #000,0 0 20px #000;cursor:pointer;pointer-events:auto}
+.last-words p{margin:0 0 1.1em}.last-words p:last-child{margin-bottom:0}
+.last-words.on-paper{color:#000;text-shadow:none}
+.last-words[hidden]{display:none!important}
+.final-controls{top:auto;bottom:28px;left:12%;width:76%;height:40px;transform:none;background:none;padding:0;z-index:28}
+.final-controls .dialogue-nav{left:0;right:0}
+#game[data-mode="final"] .art-area::after{content:'';position:absolute;inset:0;background:#0005;pointer-events:none}
+.fade-shade{background:#eee6d2;z-index:22}
+#ending-book{animation:none}
+.book-overlays .last-words{position:absolute;cursor:default;pointer-events:none;z-index:2}
+.book-arrival-paper{position:absolute;inset:0;background:#eee6d2;pointer-events:none;z-index:1}

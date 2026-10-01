@@ -1,0 +1,38 @@
+.house-door{position:absolute;left:76%;top:54%;width:18%;height:42%;transform:translate(-50%,-50%);min-width:44px;min-height:44px;z-index:11;border-radius:3px}.house-door:hover{background:#ffe5a014}.house-door .interaction-point{top:65%}
+.arrival-scene{position:fixed;inset:0;background:#251e25}.arrival-art{position:absolute;inset:0;background:url('../assets/chapter6/v02/doorway-v2.webp') center/cover no-repeat}.arrival-scene.evening .arrival-art{background-image:url('../assets/aunt-evening.webp')}.aunt-aureole{position:absolute;left:50%;top:28%;width:40vw;height:85svh;transform:translate(-50%,-20%);background:radial-gradient(ellipse at 50% 30%,#fff5bcaa, #fdd37366 22%,#f0c66322 40%,transparent 65%);mix-blend-mode:screen;opacity:0;animation:aunt-light 11.4s linear both;pointer-events:none}.arrival-dark{position:absolute;inset:0;background:#100e11;animation:house-open 11.4s linear both;pointer-events:none;z-index:5}.arrival-dialogue{position:absolute;right:3%;bottom:4%;width:min(43%,640px);max-height:48svh;padding:18px 22px 9px;color:#3f3127;background:#f2e7d4f5;border:1px solid #a78b5b;border-radius:3px;box-shadow:0 8px 35px #16101855;display:flex;flex-direction:column}.arrival-reading{overflow-y:auto;min-height:0;scrollbar-width:thin}.arrival-dialogue .speaker{font:14px/1.4 var(--ui);color:#897047;margin:0 0 10px;letter-spacing:.12em}.arrival-zh{font-size:clamp(17px,1.8vw,25px);line-height:1.75;margin:0 0 12px}.arrival-pt{font:clamp(15px,1.3vw,19px)/1.5 Georgia,serif;color:#79654d;margin:0;padding-top:10px;border-top:1px solid #ac96634d}.arrival-actions{display:flex;justify-content:space-between;align-items:center;gap:20px;padding-top:8px;flex-shrink:0}.arrival-actions button{min-height:42px;min-width:46px;padding:6px 10px;color:#614e32}.evening-label{position:absolute;left:3%;top:65px;letter-spacing:.4em;background:#2b202bbf;color:#f4dfb6;padding:10px 18px}.opening-house .arrival-art{animation:entrance-in 11.4s linear both}.evening .arrival-dialogue{max-height:43svh}.reduce-motion .aunt-aureole{display:none}.reduce-motion .arrival-dark{animation-duration:1s}.reduce-motion .opening-house .arrival-art{animation-duration:1s}
+@keyframes house-open{0%,32%{opacity:1}46%,100%{opacity:0}}@keyframes entrance-in{0%,32%{opacity:0;transform:scale(1.025)}49%,100%{opacity:1;transform:scale(1)}}@keyframes aunt-light{0%,44%{opacity:0}56%,73%{opacity:1}87%,100%{opacity:0}}@keyframes evening-in{from{opacity:0}to{opacity:1}}
+@media(max-height:500px){.arrival-dialogue{right:2%;bottom:3%;width:43%;padding:12px 15px 5px;max-height:57svh}.arrival-dialogue .speaker{font-size:12px;margin-bottom:6px}.arrival-zh{font-size:17px;line-height:1.5;margin-bottom:8px}.arrival-pt{font-size:14px;line-height:1.4;padding-top:7px}.evening .arrival-dialogue{max-height:57svh}.arrival-actions{padding-top:3px}}
+
+.first-evening .arrival-art{animation:evening-in 1.2s ease both}
+/* Match chapter two's dark bottom dialogue panel and portrait above the name. */
+.arrival-scene,.memory-return-dialogue{--arrival-dialogue-height:clamp(150px,24svh,205px);--arrival-bottom:20px}
+.arrival-dialogue,.evening .arrival-dialogue{left:3%;right:auto;bottom:var(--arrival-bottom);width:94%;height:var(--arrival-dialogue-height);max-height:none;padding:16px 26px 16px;border:1px solid #aa8d648a;border-left:3px solid #d7b97c;border-radius:0;background:linear-gradient(90deg,#211624ed,#221725d4);color:#f4e7ce;box-shadow:0 6px 24px #0004;z-index:7}
+.arrival-dialogue .speaker{flex-shrink:0;font:18px/1.3 var(--serif);letter-spacing:3px;color:#e2c18c;margin:0 0 10px}
+.arrival-reading{display:grid;grid-template-columns:1fr 1fr;gap:28px;padding-right:60px;overflow:auto;flex:1;align-content:start}
+.arrival-zh{font-size:clamp(18px,1.7vw,26px);line-height:1.6;margin:0}
+.arrival-pt{font:clamp(16px,1.35vw,21px)/1.5 Georgia,serif;color:#d4c2a6;margin:0;padding:0 0 0 22px;border-top:0;border-left:1px solid #b69c6866}
+.arrival-actions{position:absolute;right:10px;bottom:7px;gap:0;padding:0}
+.arrival-actions button{color:#d2b47d;min-height:44px;min-width:44px;padding:5px;font-size:18px}
+.arrival-next{font-size:18px}.arrival-dialogue{cursor:pointer}
+.arrival-portrait{position:absolute;left:4%;bottom:calc(var(--arrival-dialogue-height) + var(--arrival-bottom) - 1px);width:clamp(170px,22vw,300px);height:clamp(190px,37svh,380px);overflow:hidden;z-index:6;pointer-events:none;filter:drop-shadow(0 5px 14px #0007);mask-image:linear-gradient(#000 92%,transparent)}
+.arrival-portrait-art{position:absolute;inset:0;background-repeat:no-repeat;background-position:top center;background-size:100% auto}
+.arrival-portrait-art[data-person=aunt]{background-image:url('../assets/boss/aunt.webp');background-size:130% auto;background-position:center 7%}
+.arrival-portrait-art[data-person=casimiro],.arrival-portrait-art[data-person=pinheiro]{background-image:url('../assets/departure/portraits.webp');background-size:300% auto}
+.arrival-portrait-art[data-person=casimiro]{background-position:left top}.arrival-portrait-art[data-person=pinheiro]{background-position:center top}
+.arrival-portrait-art[data-person=matias],.arrival-portrait-art[data-person=child]{background-image:url('../assets/arrival/portraits.webp');background-size:200% auto}
+.arrival-portrait-art[data-person=matias]{background-position:left top}.arrival-portrait-art[data-person=child]{background-position:right top}
+@media(max-height:500px){.arrival-scene,.memory-return-dialogue{--arrival-dialogue-height:124px;--arrival-bottom:8px}.arrival-dialogue,.evening .arrival-dialogue{padding:10px 16px}.arrival-dialogue .speaker{font-size:13px;margin-bottom:6px}.arrival-reading{gap:16px;padding-right:45px}.arrival-zh{font-size:16px;line-height:1.45}.arrival-pt{font-size:14px;line-height:1.35;padding-left:15px}.arrival-portrait{height:44svh;width:22vw;min-width:140px}.arrival-actions{right:3px;bottom:0}.evening-label{top:48px;font-size:13px;padding:6px 11px}}
+@media(max-height:350px){.arrival-scene,.memory-return-dialogue{--arrival-dialogue-height:112px}.arrival-reading{gap:10px;padding-right:40px}.arrival-zh{font-size:15px}.arrival-pt{font-size:13px;padding-left:10px}.arrival-dialogue .speaker{font-size:12px;margin-bottom:4px}.arrival-portrait{height:43svh;width:24vw;min-width:130px}}
+
+.arrival-scene.narration{background:#100e11}
+.narration .arrival-art,.narration .arrival-portrait,.narration .dialogue-bust{display:none!important}
+.narration .arrival-dialogue{inset:15% 10%;width:80%;height:70%;max-height:none;border:0;background:transparent;box-shadow:none;padding:24px}
+.narration .speaker{display:none}
+.narration .arrival-reading{display:flex;flex-direction:column;justify-content:safe center;gap:22px;padding:0;overflow:auto}
+.narration .arrival-zh,.narration .arrival-pt{font-size:clamp(16px,1.6vw,25px);line-height:1.8}
+.reduce-motion .arrival-dark,.reduce-motion .opening-house .arrival-art{animation-duration:11.4s}
+.reduce-motion .opening-house .arrival-art{transform:none}
+/* Chinese edition: one full-width reading column, without a vacant translation half. */
+.arrival-reading{grid-template-columns:1fr;gap:0}
+.arrival-zh{margin-bottom:0}
+@media(min-height:501px){.arrival-scene,.memory-return-dialogue{--arrival-dialogue-height:clamp(145px,20svh,165px)}}

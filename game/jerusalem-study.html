@@ -1,0 +1,17 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>圣遗物 · 雨中耶路撒冷</title><link rel="stylesheet" href="./styles/voyage/game.css"><link rel="stylesheet" href="./styles/voyage/backpack.css"><link rel="stylesheet" href="./styles/jerusalem.css"><link rel="stylesheet" href="./styles/jerusalem-bridge.css"><link rel="stylesheet" href="./styles/paged-dialogues.css"><link rel="stylesheet" href="./styles/ui/scholar-attention.css"></head><body>
+<main id="voyage"><div class="voyage-screen" tabindex="-1" data-scene="jerusalem" aria-label="耶路撒冷探索"><div class="voyage-stage"><canvas width="960" height="540" aria-label="雨中城区，可用 A D 行走"></canvas><div class="voyage-markers"></div></div>
+<header class="voyage-hud"><span class="voyage-place"></span><button id="bag-button">背包 <kbd>Tab</kbd></button></header>
+<nav class="utilities" aria-label="声音与设置"><button id="mute" aria-label="关闭声音">♪</button><button id="settings-button" aria-label="设置">设置<kbd>P</kbd></button></nav>
+<button class="j-scholar" aria-label="询问托普修斯 R"><img src="./assets/malta/topsius-portrait.png" alt="托普修斯"><kbd>R</kbd><i hidden>●</i></button>
+<div class="j-objective" aria-live="polite"></div>
+<div class="j-hint" role="status" hidden></div>
+<section class="j-talk" role="dialog" aria-label="交谈" hidden><small></small><p></p><button data-next>继续 <kbd aria-label="空格键">␣</kbd></button><button data-close aria-label="暂离对话">返回 <kbd>Esc</kbd></button></section>
+<section class="j-menu" role="dialog" aria-label="选择话题" hidden><h2></h2><div></div><footer>W / S 选择 · 空格确认 · Esc 返回</footer></section>
+<section class="j-letter" role="dialog" aria-label="写给姨姨的信" hidden><header><span>致姨姨</span><button id="letter-close" aria-label="暂时放下信纸">放下 <kbd>Esc</kbd></button></header><p></p><footer><button id="letter-back">上一页 <kbd>←</kbd></button><button id="letter-next">继续写 <kbd aria-label="空格键">␣</kbd></button></footer></section>
+<section class="voyage-bag" role="dialog" aria-labelledby="backpack-title" hidden></section>
+<div class="j-black" hidden><small>第三章 · 耶路撒冷</small><p></p><button id="arrival-next">继续 <kbd aria-label="空格键">␣</kbd></button></div>
+<section class="j-ending" aria-label="从晚宴进入梦境" hidden></section>
+<div class="j-loading" role="status">雨城正在显现……</div><span class="j-save-warning" role="status" hidden>当前浏览器无法保存进度</span>
+</div></main>
+<dialog id="settings"><form method="dialog"><h2>设置 · 已暂停</h2><p>A / D 或方向键　行走<br>E　交互（也可点击场景）<br>A / D　对白上一页 / 下一页<br>空格　继续对白 / 确认选项<br>W / S　选择话题<br>R　询问托普修斯<br>Tab　背包<br>Esc　返回 / 暂停；P　设置<br>M　声音开关<br>信件：← 上一页，空格 / → 下一页或封信<br>W / S 或 ↑ / ↓　滚动信件正文<br>设置内：Tab / Shift+Tab 选择控件，Enter 确认<br>音量：← / → 调整；减少动态：空格切换</p><label>音量 <kbd>← →</kbd><input id="volume" type="range" min="0" max="1" step="0.05"></label><label><input type="checkbox" id="motion">减少动态 <kbd>空格</kbd></label><div><button id="restart" type="button">重新开始本段（耶路撒冷）</button><button>返回游戏 <kbd>Esc</kbd></button></div><details><summary>原作与改编 <kbd>Enter</kbd></summary><p>依据 IN-CM 2021《圣遗物》印刷147—175页改编。对白为中文节选改写，非逐字引文。街区合并、交通菜单、前台寄信及部分问答为新增连接；书信前移。波特的问答汇入旅馆，编冠时短暂出现在营地。圣物购得行动与分阶段探索为游戏改编；物件说明不为圣物来历作证。本章自动保存，兼容此前旅馆样稿进度。</p></details></form></dialog>
+<script type="module" src="./src/jerusalem/app.js"></script><script type="module" src="./src/ui/paged-dialogues.js"></script><script type="module" src="src/ui/nonverbal.js"></script></body></html>

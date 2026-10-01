@@ -1,0 +1,33 @@
+/* This episode uses integrated scene paintings. Dialogue busts remain separate. */
+#cast,#teo-scene,#play #table-front{display:none!important}
+#play[data-scene=dinner] #stage,#play[data-scene=salon] #stage,#play[data-scene=exit] #stage{inset:auto;left:50%;top:50%;width:max(100vw,177.69svh);height:max(56.28vw,100svh);transform:translate(-50%,-50%)}
+#play[data-scene=dinner] #dream{left:38%;right:auto;top:9%;width:22%;height:26%;aspect-ratio:auto;padding:0;border:0;border-radius:0;background:none;box-shadow:none;mask-image:radial-gradient(ellipse at 50% 55%,#000 35%,#000b 58%,transparent 76%);opacity:.9;pointer-events:none}
+#play[data-scene=dinner] #dream-art{border-radius:0}#dream i,#dream b,#dream figcaption{display:none}
+#play[data-scene=exit] #leave{left:21%;right:auto;top:30%}
+#door-leaf{background:#142018;clip-path:none;inset:5.6% auto auto 20.8%;width:12.5%;height:53%;transform-origin:right;transform:perspective(900px) rotateY(88deg);border:5px solid #594b2c;box-shadow:inset 0 0 0 14px #273125;z-index:2}
+#play[data-scene=guide] #stage{display:none}
+#route{inset:0;width:100%;height:100%;max-width:none;perspective:none;z-index:7;color:#483528;background:#241813}
+.plan-sheet{position:absolute;inset:2%;background:#ecdfbf url('../assets/departure/plan-paper.webp') center/100% 100%;box-shadow:0 5px 30px #0009;overflow:hidden}
+.plan-sheet h1{position:absolute;top:6%;left:8%;font-size:clamp(21px,2.8vw,38px);font-weight:500;letter-spacing:.3em;margin:0}
+#route-list{position:absolute;left:6%;top:20%;width:22%;margin:0;padding-left:1.5em;line-height:2.4;font-size:clamp(16px,1.65vw,26px);z-index:2}
+#route-list button{border:0;background:none;color:#473629;padding:3px 0;text-align:left;white-space:nowrap}
+#world-map{position:absolute;left:30%;top:10%;width:59%;height:77%;transition:all 1s ease;opacity:.85}
+#world-map img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}#world-map svg{position:absolute;inset:0;width:100%;height:100%;opacity:0}
+.has-route #world-map{left:8%;top:69%;width:19%;height:24%;opacity:.65}.has-route #world-map svg{opacity:1}
+#med-map{position:absolute;left:30%;top:18%;width:62%;aspect-ratio:885/320;box-shadow:0 0 15px #b68e4c22;border:1px solid #82634455}
+#med-map>img{width:100%;height:100%;opacity:.55;mix-blend-mode:multiply;filter:sepia(.2)}
+#route-ink{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.route-line{fill:none;stroke:#982d31;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0}.route-line.land{stroke:#60412d;stroke-dasharray:.13 .1}.route-marker circle{fill:#982d31;stroke:#fff2cf;stroke-width:2}.route-marker text{fill:#362820;font-size:17px;font-family:'Songti SC',serif;paint-order:stroke;stroke:#f2e5c9;stroke-width:5px;stroke-linejoin:round}
+.writing .new-line{stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--ink-progress,0))}.writing .new-marker{opacity:var(--ink-progress,0)}.writing #route-list li:last-child{opacity:var(--ink-progress,0)}
+.map-caption{position:absolute;top:-29px;left:0;font-size:15px;letter-spacing:3px;color:#785b40}
+#route-fantasy{position:absolute;left:32%;top:57%;width:43%;height:34%;margin:0;animation:dream-in .8s ease both}#route-fantasy>div{height:85%;background:url('../assets/departure/dreams.webp') no-repeat;background-size:300% auto;mask-image:radial-gradient(ellipse,#000 38%,#000b 55%,transparent 75%)}
+#route-fantasy[data-place=alexandria]>div{background-position:right 54%}#route-fantasy[data-place=jerusalem]>div{background-position:center 40%}#route-fantasy[data-place=lisbon]>div{background-image:url('../assets/departure/harbor.webp');background-size:cover;background-position:center}
+#route-fantasy figcaption{font-size:clamp(13px,1.3vw,19px);text-align:center;line-height:1.5;padding:0 4%}
+#route #unfold{left:auto;right:7%;top:auto;bottom:12%;width:12%;height:25%;z-index:5;transform:rotate(-25deg)}#route #unfold .interaction-point{transform:rotate(25deg)}
+#route-status{position:absolute;right:8%;bottom:5%;font-size:14px;color:#786044}#play[data-scene=guide] .utilities{opacity:.85}
+.reduced #world-map{transition:none}.reduced #route-fantasy{animation:none}
+@media(max-height:450px) and (min-aspect-ratio:1/1){.plan-sheet h1{top:6%;font-size:22px}#route-list{top:19%;font-size:15px;line-height:1.8}#med-map{top:21%;left:30%;width:60%}.map-caption{font-size:11px;top:-20px}#route-fantasy{top:59%;height:28%;width:41%}#route-fantasy figcaption{font-size:11px}#route-status{font-size:11px}}
+@media(max-aspect-ratio:1/1){#play[data-scene=dinner] #stage,#play[data-scene=salon] #stage,#play[data-scene=exit] #stage{width:100vw;height:56.28vw;top:27%;left:50%}#play[data-scene=exit] #leave{top:19%;left:15%;width:70px;height:70px}.plan-sheet{inset:2%;background-size:auto 100%}.plan-sheet h1{top:6%;left:8%;font-size:25px}#route-list{top:15%;left:6%;width:40%;font-size:17px;line-height:2}#world-map{left:8%;top:40%;width:84%;height:38%}.has-route #world-map{left:57%;top:16%;width:35%;height:20%}#med-map{left:6%;top:46%;width:88%}.map-caption{font-size:12px;top:-23px}#route-fantasy{left:7%;top:67%;width:63%;height:23%}#route-fantasy figcaption{font-size:12px}#route #unfold{right:3%;bottom:8%;width:22%;height:18%}#route-status{right:6%;bottom:3%;font-size:12px}#route-ink text{font-size:21px}}
+.plan-sheet h1{left:10%}#route-list{left:9%}#world-map{left:32%;width:56%}.has-route #world-map{left:10%;width:18%}#route #unfold{transform:none}#route #unfold .interaction-point{transform:none}
+@media(max-aspect-ratio:1/1){.plan-sheet h1{left:10%}#route-list{left:9%}#world-map{left:8%;width:84%}.has-route #world-map{left:57%;width:35%}#route #unfold{right:7%;width:18%}}
+#play[data-scene=dinner] #dream{mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 45%,#000b 64%,transparent 100%)}
+.writing #route-list li:last-child button{clip-path:inset(0 calc(100% * (1 - min(1,var(--ink-progress,0) * 2.5))) 0 0)}

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#21131e"><title>圣遗物 · 姨姨的疑心</title><link rel="icon" href="data:,"><link rel="stylesheet" href="./styles/boss.css"><link rel="stylesheet" href="./styles/interaction-marks.css"><link rel="stylesheet" href="./styles/dialogue-navigation.css"><link rel="stylesheet" href="styles/ui/relic-cards.css"></head>
+<body><svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs><clipPath id="dining-table-mask" clipPathUnits="objectBoundingBox">
+<!-- Trace only the furniture and objects, never the wall above the tabletop. -->
+<path d="M.278 .636 Q.317 .615 .370 .594 Q.382 .591 .408 .591 L.634 .593 Q.659 .596 .713 .637 L.746 .838 .732 .883 .703 .847 .694 .797 .296 .797 .288 .850 .262 .883 .246 .839 Z"/>
+<path d="M.414 .571 Q.425 .565 .437 .571 L.434 .613 .418 .614 Z M.524 .569 Q.534 .565 .545 .570 L.542 .613 .527 .613 Z"/>
+<path d="M.597 .508 Q.589 .525 .594 .540 L.592 .581 .587 .583 .591 .595 .590 .617 .584 .626 Q.597 .635 .612 .627 L.605 .617 .602 .594 .606 .583 .603 .578 .603 .536 Q.602 .520 .597 .508 Z"/>
+<path d="M.279 .786 L.300 .786 .295 .934 .281 .934 Z M.315 .786 L.337 .786 .333 .860 .318 .861 Z M.627 .789 L.643 .789 .644 .856 .631 .855 Z M.699 .789 L.716 .789 .716 .934 .703 .934 Z"/>
+</clipPath><clipPath id="side-curtain-mask" clipPathUnits="objectBoundingBox"><path d="M0.00000 0.00000 L0.10287 0.00000 L0.08971 0.12221 L0.08194 0.19447 L0.06878 0.27630 L0.05323 0.34644 L0.04127 0.39320 L0.04187 0.53135 L0.04665 0.78640 L0.05443 1.00000 L0.00000 1.00000Z M1.00000 0.00000 L0.90012 0.00000 L0.91507 0.14878 L0.92105 0.21785 L0.93301 0.29224 L0.95096 0.36663 L0.94976 0.44633 L0.94737 0.58448 L0.94378 0.79702 L0.93660 1.00000 L1.00000 1.00000Z"/></clipPath></defs></svg><main id="game" aria-label="姨姨家的晚饭">
+ <div id="world" class="world"><div id="set" class="set">
+  <img id="room" class="backdrop" src="./assets/boss/room-gray-arch.webp" alt="两侧幕布垂到底的饭厅，餐桌上只有硬面包和清水">
+  <img id="closed-door" class="backdrop closed-door" src="./assets/boss/door-closed.webp" alt="">
+  <div id="aunt-holder" class="aunt-holder"><img id="aunt" src="./assets/boss/aunt.webp" alt="姨姨坐在桌旁，手持念珠"></div>
+  <div id="teo-holder" class="teo-holder"><img id="teo" src="./assets/dinner/teo-pious.webp" alt="特奥多里科拘谨地捧着硬面包"></div>
+  <img id="table" class="backdrop table" src="./assets/boss/room-gray-arch.webp" alt="">
+  <img class="backdrop side-curtains" src="./assets/boss/room-gray-arch.webp" alt="" aria-hidden="true">
+  <img class="backdrop side-curtains side-curtains-closed" src="./assets/boss/door-closed.webp" alt="" aria-hidden="true">
+  <div class="aunt-shadow" aria-hidden="true"></div>
+  <button id="door" class="door" aria-label="从微开的侧门溜出去" hidden></button>
+ </div><img id="outside" class="outside" alt=""></div>
+ <div id="boss-hud" class="boss-hud" hidden><div class="boss-name">帕特罗西尼奥·达斯内维斯 · 姨姨</div><div class="meter-line"><span>疑心</span><div id="suspicion" role="progressbar" aria-label="姨姨的疑心" aria-valuemin="0" aria-valuemax="4"><i></i><i></i><i></i><i></i></div></div></div>
+ <nav class="utilities" aria-label="设置"><button id="mute" class="icon-button" aria-label="关闭声音" title="声音">♪</button><button id="menu" class="icon-button" aria-label="设置" title="设置">设置</button></nav>
+ <div id="scene-time" class="scene-time" hidden></div><section id="romance-choices" class="romance-choices" aria-label="回应阿德里亚" hidden></section>
+ <section id="cards" class="cards" aria-label="回应姨姨的三张牌" hidden></section>
+ <button id="dialogue" class="dialogue" aria-label="继续对话"><span id="speaker" class="speaker"></span><span id="line" class="line"></span><span id="advance" class="advance" aria-hidden="true">◆</span></button>
+ <div id="curtains" class="curtains" aria-hidden="true"><div class="cloth left"></div><div class="cloth right"></div></div>
+ <button id="reopen" class="reopen" hidden aria-label="拉开幕布"></button>
+ <div id="failure" class="failure" hidden><h1>伪装败露</h1><p id="failure-line"></p><button id="retry-battle">重新应对</button></div>
+ <div id="loading" class="loading" role="status"><span>烛光亮起……</span></div>
+ <div id="error" class="loading" hidden><p>画面未能载入。</p><button id="retry-load">重新载入</button></div>
+</main>
+<dialog id="settings"><form method="dialog"><h2>设置</h2><label>音量 <input id="volume" type="range" min="0" max="1" step="0.05"></label><label><input id="reduced" type="checkbox"> 减少动态</label><div class="actions"><button id="restart" type="button">重新开始本章</button><button>继续</button></div><details><summary>操作与原作依据</summary><p>点击对白继续；点击一张牌直接打出。键盘左右键选牌，空格或回车确认；手柄方向键选牌，A 确认，菜单键暂停。</p><p id="source-note"></p><p>进度保存在本机。重新开始只影响这顿晚饭。</p></details></form></dialog>
+<script type="module" src="./src/boss/app.js"></script><script type="module" src="./src/dialogue-portraits.js"></script><script type="module" src="./src/ui/dialogue-navigation.js"></script><script type="module" src="src/ui/nonverbal.js"></script></body></html>

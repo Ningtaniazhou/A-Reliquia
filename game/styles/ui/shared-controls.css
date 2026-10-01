@@ -1,0 +1,24 @@
+/* Fixed desktop anchors shared across styles; chapter art and dialogue stay chapter-owned. */
+:root{--game-controls-top:16px;--game-controls-right:16px;--game-controls-height:44px;--game-controls-gap:8px}
+body [data-game-control]{position:fixed!important;top:var(--game-controls-top)!important;bottom:auto!important;height:var(--game-controls-height)!important;min-height:44px!important;box-sizing:border-box!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:5px!important;padding:4px 8px!important;border-radius:0!important;line-height:1.2!important;font-size:15px!important;letter-spacing:0!important;white-space:nowrap!important;z-index:45;transform:none!important}
+body [data-game-control=settings]{right:var(--game-controls-right)!important;left:auto!important;width:68px!important}
+body [data-game-control=sound]{right:calc(var(--game-controls-right) + 76px)!important;left:auto!important;width:48px!important}
+body [data-game-control=bag]{right:calc(var(--game-controls-right) + 132px)!important;left:auto!important;width:104px!important}
+body [data-game-control][hidden]{display:none!important}
+body [data-game-control] kbd{position:static!important;float:none!important;font-size:11px!important;line-height:1!important;margin:0!important}
+body [data-game-control=sound]:not(.pixel-control) kbd{display:none}
+.shared-settings-help{font:14px/1.7 'PingFang SC',sans-serif!important;letter-spacing:0;color:inherit;opacity:.8}
+.shared-portrait{position:absolute;bottom:0;left:0;height:100%;aspect-ratio:1;display:block;overflow:hidden;background-repeat:no-repeat;pointer-events:none}
+.shared-portrait[data-sheet]{background-size:200% 200%}
+.shared-portrait img{position:absolute!important;left:50%!important;transform:translateX(-50%)!important;width:auto!important;max-width:none!important;height:var(--portrait-scale)!important;top:var(--portrait-top)!important;bottom:auto!important;object-fit:contain!important}
+/* Identical crop and panel-relative scale for recurring paper-stage speakers. */
+#dialogue #portrait[data-shared]{left:min(24px,1.5%);bottom:calc(100% - 1px);height:100%;width:auto;aspect-ratio:1;overflow:hidden}
+
+.playing #cover-music,.playing #cover-settings-open{display:none!important}
+#cover-settings{background:#241c24;color:#f6e7c9;border:1px solid #c7ad78;padding:24px;max-width:min(420px,90vw)}
+#cover-settings::backdrop{background:#08070bbb}#cover-settings label{display:flex;gap:16px;align-items:center;margin:20px 0}#cover-settings button{background:#302732;color:#f6e7c9;border:1px solid #c7ad78;padding:9px 18px}
+
+body [data-game-control=settings].pixel-control{width:90px!important}
+body [data-game-control=sound].pixel-control{right:calc(var(--game-controls-right) + 98px)!important;width:66px!important}
+body [data-game-control=bag].pixel-control{right:calc(var(--game-controls-right) + 172px)!important}
+body [data-game-control].pixel-control kbd{border:1px solid #ad8d55!important;padding:2px 4px!important;background:#263344!important;color:#ffe5b5!important}
