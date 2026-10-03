@@ -3,3 +3,12 @@
 #journey{position:fixed;inset:58px 0 0;z-index:8;background:#060708;display:flex;flex-direction:column;justify-content:center;padding:8vh max(7vw,32px);font-size:clamp(20px,2vw,30px);line-height:1.9}#journey p{max-width:1050px;margin:0 auto;width:100%;white-space:pre-wrap}#journey nav{display:flex;justify-content:flex-end;gap:24px;max-width:1050px;width:100%;margin:35px auto}#journey button{font-size:32px}button:disabled{opacity:.35;cursor:default}.travelling main{visibility:hidden}.travelling{background:#060708}#sound svg{width:24px;height:24px;vertical-align:middle}
 
 #dialogue #previous,#dialogue #next{font-size:30px;padding:2px 16px;background:none;border:0}#dialogue #previous{margin-right:auto}#journey{font-size:clamp(18px,1.8vw,27px);overflow:auto;cursor:default}#journey p{line-height:1.8}#journey:focus{outline:none}
+
+/* Approved C marker: gold center, dark ring, restrained breathing halo. */
+button.hotspot::after{width:14px;height:14px;background:#efd080;border:3px solid #39342a;box-shadow:0 0 0 1px #f4d48c,0 0 8px 2px #efc36b88;transform:translate(-50%,-50%);top:var(--hint-y,38%)}
+button.hotspot::before{content:'';position:absolute;left:50%;top:var(--hint-y,38%);width:26px;height:26px;border:1px solid #f3d18c88;border-radius:50%;opacity:0;pointer-events:none;transform:translate(-50%,-50%)}
+button.hotspot.pending:not(:disabled)::after{animation:chapter4-marker 2.8s ease-in-out infinite;animation-delay:var(--pulse-delay,0s)}
+button.hotspot.pending:not(:disabled)::before{animation:chapter4-halo 2.8s ease-in-out infinite;animation-delay:var(--pulse-delay,0s)}
+@keyframes chapter4-marker{0%,100%{opacity:1;transform:translate(-50%,-50%) scale(.82);filter:brightness(.85)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.22);filter:brightness(1.15)}}
+@keyframes chapter4-halo{0%,100%{opacity:.25;transform:translate(-50%,-50%) scale(.8)}50%{opacity:.7;transform:translate(-50%,-50%) scale(1.4)}}
+@media(prefers-reduced-motion:reduce){button.hotspot.pending:not(:disabled)::after{animation:none;opacity:1}button.hotspot.pending:not(:disabled)::before{animation:none;opacity:.3}}

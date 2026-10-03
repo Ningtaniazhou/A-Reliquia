@@ -1,7 +1,7 @@
 // Explicit story crossings start the destination once; plain visits/reloads resume it.
 const pendingKey='reliquia.chapter-entry.handoff';
 const keys={'departure.html':'reliquia.departure-preview.v1','jerusalem-study.html':'reliquia.jerusalem-study.v1','chapter4.html':'reliquia.chapter4.v1','chapter5.html':'reliquia.chapter5.v1','chapter6.html':'reliquia.chapter6.v1','chapter7.html':'reliquia.chapter7.v1'};
-export function entrySaveKey(url){const name=url.pathname.split('/').pop(),base=keys[name];if(!base)return null;const p=url.searchParams;return base+(p.has('preview')?(name==='jerusalem-study.html'?'.camp-preview':name==='chapter5.html'&&p.get('preview')==='hotel'?'.hotel-preview':'.preview'):'');}
+export function entrySaveKey(url){const name=url.pathname.split('/').pop(),base=keys[name];if(!base)return null;const p=url.searchParams;if(name==='departure.html'&&p.has('preview'))return 'reliquia.chapter3.'+p.get('preview')+'.'+base;return base+(p.has('preview')?(name==='jerusalem-study.html'?'.camp-preview':name==='chapter5.html'&&p.get('preview')==='hotel'?'.hotel-preview':'.preview'):'');}
 export function chapterEntryURL(destination,session=sessionStorage,base=location.href){
  const url=new URL(destination,base);if(url.origin!==new URL(base).origin||!entrySaveKey(url))throw Error('Unknown chapter entry');
  const token=crypto.randomUUID();session.setItem(pendingKey,JSON.stringify({token,path:url.pathname,key:entrySaveKey(url)}));url.searchParams.set('entry',token);return url.href;

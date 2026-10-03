@@ -1,3 +1,4 @@
+import {cardFlight} from '../ui/card-flight.js';
 import {chapterEntryURL} from '../ui/chapter-entry.js';
 import {installCardControls} from '../ui/card-controls.js';
 import {readPreferences} from '../ui/preferences.js';
@@ -18,10 +19,10 @@ const bridge=integrated?window.parent.__reliquiaChapter:null;
 let entryActive=!bridge;
 if(bridge)document.body.classList.add('book-staged');
 let storage;try{storage=window.localStorage;}catch{storage={getItem:()=>null,setItem:()=>{}};}
-const romancePreview=new URLSearchParams(location.search).get('scene')==='adelia',saveKey=romancePreview?KEY+'.adelia-preview':KEY;
+const romancePreview=new URLSearchParams(location.search).get('scene')==='adelia',saveKey=romancePreview?KEY+'.adelia-preview':new URLSearchParams(location.search).has('preview')?KEY+'.chapter2-preview':KEY;
 if(bridge)storage={getItem:()=>bridge.saved?JSON.stringify(bridge.saved):null,setItem:(_k,v)=>bridge.save(JSON.parse(v))};
 let s=load(storage,saveKey);if(romancePreview&&s.phase==='intro')s=romanceBegin(s);
-if(s.phase==='departure')location.replace('./departure.html'+(bridge?'?integrated=1':''));
+if(s.phase==='departure')location.replace('./departure.html'+(bridge?'?integrated=1':(romancePreview||new URLSearchParams(location.search).has('preview'))?'?preview=chapter3&from=chapter2':''));
 let checkpoint;
 let selected=null,tr=null,ready=false,paused=false,last=0,pausedAnimations=[];
 let pref={volume:.42,muted:false,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches};
@@ -31,7 +32,7 @@ Object.assign(pref,readPreferences(pref));
 const sound=new BossAudio(pref),clamp=x=>Math.max(0,Math.min(1,x)),smooth=x=>{x=clamp(x);return x*x*(3-2*x);};
 const asset=(n,old=false)=>n==='aunt-walk'?'./assets/boss/aunt-walk-v2.webp':`./assets/${old?'dinner':'boss'}/${n}.webp`;
 function setImage(el,src){if(el.getAttribute('src')!==src)el.src=src;}
-function settings(){document.body.classList.toggle('reduced',pref.reduced);updateSoundButton($('mute'),pref.muted||pref.volume===0);$('volume').value=pref.volume;$('reduced').checked=pref.reduced;sound.update();try{if(bridge)bridge.preferences(pref);else storage.setItem(PREFS,JSON.stringify(pref));}catch{}}
+function settings(){document.body.classList.toggle('reduced',pref.reduced);updateSoundButton($('mute'),pref.muted||pref.volume===0);$('volume').value=pref.volume;sound.update();try{if(bridge)bridge.preferences(pref);else storage.setItem(PREFS,JSON.stringify(pref));}catch{}}
 function text(speaker,line){$('speaker').textContent=speaker;$('line').textContent=line;}
 function music(){if(!entryActive)return;if(['intro','restored','closed','dressed'].includes(s.phase))sound.request('auntHome');else if(['battle','response'].includes(s.phase)){sound.request('auntBattle');}else if(['feast','end'].includes(s.phase)&&['supper','memory'].includes(romanceCurrent(s).scene))sound.request('adelia');else sound.request(null,1.6);}
 function syncBusy(){const busy=!!tr||!ready||paused||!entryActive,romanceChoice=s.phase==='feast'&&!!romanceCurrent(s).choices;game.dataset.busy=String(busy);$('dialogue').disabled=busy||romanceChoice||['battle','closed','dressed','fail'].includes(s.phase);$('advance').hidden=busy||romanceChoice||['battle','closed','dressed','fail'].includes(s.phase);$('reopen').disabled=busy;$('door').disabled=busy;for(const b of [...$('cards').children,...$('romance-choices').children])b.disabled=busy;}
@@ -83,10 +84,10 @@ window.reliquiaEnterChapter=()=>{if(!bridge||entryActive||!ready)return;entryAct
 window.reliquiaLeaveChapter=()=>sound.stop();
 window.reliquiaChapterPause=on=>{if(entryActive)pause(on);};
 function pick(id,fire=false){if(paused||tr||!ready||s.phase!=='battle')return;void activateSound();selected=id;sound.pick();for(const b of $('cards').children){const on=b.dataset.card===id;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on));}if(fire)cast();}
-function cast(){if(!selected||tr||paused||s.phase!=='battle')return;const result=answer(s,selected),el=$('cards').querySelector(`[data-card="${selected}"]`),card=rounds[s.round].cards.find(c=>c.id===selected);text('特奥多里科',card.text.replaceAll('\n',''));sound.cast();
- const a=el.getBoundingClientRect(),target=$('aunt').getBoundingClientRect();const dx=target.x+target.width*.48-(a.x+a.width/2),dy=target.y+target.height*.25-(a.y+a.height/2);
- el.style.animation='none';el.classList.add('flying');for(const b of $('cards').children)if(b!==el)b.classList.add('others');
- transition('throw',1760,()=>{if(result.success){sound.good();commit(result);}else{sound.bad();commit({...result,phase:'fail'});$('retry-battle').focus();}});tr.el=el;tr.dx=dx;tr.dy=dy;
+function cast(){if(!selected||tr||paused||s.phase!=='battle')return;const result=answer(s,selected),el=$('cards').querySelector(`[data-card="${selected}"]`),card=rounds[s.round].cards.find(c=>c.id===selected);text('特奥多里科',card.text.replaceAll('\n',''));
+ const flight=cardFlight(el,$('aunt'),sound,result.success);for(const b of $('cards').children)b.classList.add('others');
+ transition('throw',3050,()=>{flight.destroy();if(result.success){commit(result);}else{commit({...result,phase:'fail'});$('retry-battle').focus();}});tr.flight=flight;
+
 }
 function act(){if(!ready||paused||tr||!entryActive)return;void activateSound();
  if(s.phase==='intro'){if(s.step<3){if(s.step===0)sound.clink();return commit({...s,step:s.step+1});}return transition('awaken',3200,()=>{commit({...s,phase:'battle',round:0,chosen:null,success:false});deal();});}
@@ -97,7 +98,7 @@ function act(){if(!ready||paused||tr||!entryActive)return;void activateSound();
  if(s.phase==='dressed')return transition('escape',2400,()=>commit({...s,phase:'street'}));
  if(s.phase==='street'){sound.door();return commit(romanceBegin(s));}
  if(s.phase==='feast'){if(romanceCurrent(s).choices){const active=document.activeElement;if(active?.parentElement===$('romance-choices'))active.click();else $('romance-choices').firstElementChild?.focus();return;}const next=romanceAdvance(s);if(next!==s){commit(next);if(s.phase==='end')window.dispatchEvent(new CustomEvent('reliquia:scene-ended',{detail:{scene:'aunt-boss',exit:'adelia-breakup'}}));}return;}
- if(s.phase==='end'){s={...s,phase:'departure',departureState:{node:'paris-bridge'}};save(storage,s,saveKey);sound.stop();location.href=bridge?'./departure.html?integrated=1':chapterEntryURL('./departure.html?from=chapter2');}
+ if(s.phase==='end'){s={...s,phase:'departure',departureState:{node:'paris-bridge'}};save(storage,s,saveKey);sound.stop();location.href=bridge?'./departure.html?integrated=1':chapterEntryURL('./departure.html?from=chapter2'+((romancePreview||new URLSearchParams(location.search).has('preview'))?'&preview=chapter3':''));}
 }
 function frame(now){const dt=last?Math.min(now-last,90):0;last=now;if(tr&&!paused){const t=tr;t.elapsed+=dt;const duration=pref.reduced&&t.name!=='throw'?Math.min(t.duration,450):t.duration,p=clamp(t.elapsed/duration),q=smooth(p);
  if(t.name==='awaken'){game.style.setProperty('--growth',1+.65*smooth(p/.66));$('boss-hud').style.opacity=String(smooth((p-.3)/.5));}
@@ -106,18 +107,18 @@ function frame(now){const dt=last?Math.min(now-last,90):0;last=now;if(tr&&!pause
  if(t.name==='close')game.style.setProperty('--curtain',q);
  if(t.name==='open')game.style.setProperty('--curtain',1-q);
  if(t.name==='escape'){game.style.setProperty('--escape',q);if(Math.floor(p*7)!==t.step&&p<.8){t.step=Math.floor(p*7);sound.step();}}
- if(t.name==='throw'){const q=smooth(clamp(t.elapsed/(pref.reduced?200:760)));t.el.style.setProperty('--fly-x',t.dx*q+'px');t.el.style.setProperty('--fly-y',t.dy*q+'px');t.el.style.setProperty('--fly-scale',1-.78*q);t.el.style.setProperty('--fly-opacity',1-q*.8);}
+ if(t.name==='throw')t.flight?.update(t.elapsed);
  if(p>=1){const done=t.done;tr=null;done();syncBusy();}}
  pollPad(now);requestAnimationFrame(frame);
 }
 function pause(on){if(on===paused)return;paused=on;document.body.classList.toggle('paused',on);if(on){pausedAnimations=game.getAnimations({subtree:true}).filter(a=>a.playState==='running');for(const a of pausedAnimations)a.pause();}else{for(const a of pausedAnimations)try{a.play();}catch{}pausedAnimations=[];}sound.pause(on);syncBusy();}
 function openMenu(){pause(true);$('settings').showModal();}
-function restart(){checkpoint?.clear();tr=null;commit(romancePreview?romanceBegin(initial()):initial());$('boss-hud').style.opacity='1';}
+function restart(){checkpoint?.clear();tr?.flight?.destroy();tr=null;commit(romancePreview?romanceBegin(initial()):initial());$('boss-hud').style.opacity='1';}
 function chooseOffset(delta){if(tr||paused)return;if(s.phase==='feast'&&romanceCurrent(s).choices){const list=[...$('romance-choices').children],at=list.indexOf(document.activeElement);list[(at+delta+list.length)%list.length]?.focus();return;}if(s.phase!=='battle')return;const cards=rounds[s.round].cards;const at=cards.findIndex(c=>c.id===selected);const n=(at<0?(delta>0?0:2):(at+delta+3)%3);pick(cards[n].id);$('cards').children[n].focus();}
 $('dialogue').addEventListener('click',act);$('door').addEventListener('click',act);$('reopen').addEventListener('click',act);
 $('retry-battle').addEventListener('click',()=>{void activateSound();commit(retry());$('boss-hud').style.opacity='1';sound.request('auntBattle');deal();});
 $('menu').addEventListener('click',openMenu);$('settings').addEventListener('close',()=>pause(document.hidden));
-$('restart').addEventListener('click',()=>{restart();$('settings').close();});$('mute').addEventListener('click',()=>{const silent=pref.muted||pref.volume===0;pref.muted=!silent;if(silent&&pref.volume===0)pref.volume=.42;settings();void activateSound();});$('volume').addEventListener('input',e=>{pref.volume=Number(e.target.value);if(pref.volume>0)pref.muted=false;settings();void activateSound();});$('reduced').addEventListener('change',e=>{pref.reduced=e.target.checked;settings();});$('retry-load').addEventListener('click',()=>location.reload());$('source-note').textContent=sourceNote+' '+romanceSource;
+$('restart').addEventListener('click',()=>{restart();$('settings').close();});$('mute').addEventListener('click',()=>{const silent=pref.muted||pref.volume===0;pref.muted=!silent;if(silent&&pref.volume===0)pref.volume=.42;settings();void activateSound();});$('volume').addEventListener('input',e=>{pref.volume=Number(e.target.value);if(pref.volume>0)pref.muted=false;settings();void activateSound();});$('retry-load').addEventListener('click',()=>location.reload());$('source-note').textContent=sourceNote+' '+romanceSource;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('settings').open){e.preventDefault();openMenu();}return;}if($('settings').open||e.target.matches('input,summary'))return;if(['1','2'].includes(e.key)&&s.phase==='feast'&&romanceCurrent(s).choices){e.preventDefault();$('romance-choices').children[Number(e.key)-1]?.click();return;}if(['ArrowLeft','ArrowRight'].includes(e.key)&&['battle','feast'].includes(s.phase)){e.preventDefault();chooseOffset(e.key==='ArrowLeft'?-1:1);return;}if((e.code==='Space'||e.key==='Enter')&&!e.target.closest('button')){e.preventDefault();act();}});
 document.addEventListener('visibilitychange',()=>pause(document.hidden||$('settings').open));window.addEventListener('pagehide',()=>sound.stop());
 let padHeld=new Set(),lastAxis=0;function pollPad(now){const p=Array.from(navigator.getGamepads?.()||[]).find(Boolean);if(!p)return;const down=new Set(p.buttons.flatMap((b,i)=>b.pressed?[i]:[]));for(const i of down)if(!padHeld.has(i)){if(i===9){if($('settings').open)$('settings').close();else openMenu();}else if(i===0){if($('settings').open)$('settings').close();else if(s.phase==='fail')$('retry-battle').click();else act();}else if(i===14)chooseOffset(-1);else if(i===15)chooseOffset(1);}if(Math.abs(p.axes[0])>.6&&now-lastAxis>250){chooseOffset(p.axes[0]>0?1:-1);lastAxis=now;}padHeld=down;}
@@ -131,9 +132,9 @@ settings();render();requestAnimationFrame(frame);
 const needed=['./assets/adelia/door.webp',asset('room'),asset('aunt'),asset('aunt-kind'),asset('aunt-angry'),asset('teo-night'),asset('door-closed'),...['teo-pious','teo-relaxed','aunt-walk','street','feast'].map(n=>asset(n,true))];
 Promise.all(needed.map(src=>new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>i.decode().then(resolve,reject);i.onerror=reject;i.src=src;}))).then(()=>{ready=true;$('loading').hidden=true;render();if(s.phase==='battle'&&entryActive)deal();bridge?.ready();}).catch(()=>{$('loading').hidden=true;$('error').hidden=false;bridge?.failed();});
 
-checkpoint=sceneCheckpoint(localStorage,'reliquia.boss.scene.'+location.search,s=>s.phase==='feast'?(romanceCurrent(s).scene||s.phase):s.phase);checkpoint.capture(s);restartButton($('settings'),()=>{const entry=checkpoint.restore();if(!entry)return;tr=null;selected=null;commit(entry);$('settings').close();});
+checkpoint=sceneCheckpoint(localStorage,'reliquia.boss.scene.'+location.search,s=>s.phase==='feast'?(romanceCurrent(s).scene||s.phase):s.phase);checkpoint.capture(s);restartButton($('settings'),()=>{const entry=checkpoint.restore();if(!entry)return;tr?.flight?.destroy();tr=null;selected=null;commit(entry);$('settings').close();});
 
 // Shared cross-chapter controls and latest preferences.
-installSharedControls({soundButton:'#mute',settingsButton:'#menu',getPreferences:()=>pref,applyPreferences:p=>{Object.assign(pref,p);settings();},toggleSettings:()=>{$('settings').open?$('settings').close():openMenu();},closeTop:()=>{if($('settings').open){$('settings').close();return true;}return false;},unlock:activateSound});
+installSharedControls({readyForCover:()=>ready,audioReady:()=>sound.paused||sound.ctx?.state==='running',soundButton:'#mute',settingsButton:'#menu',getPreferences:()=>pref,applyPreferences:p=>{Object.assign(pref,p);settings();},toggleSettings:()=>{$('settings').open?$('settings').close():openMenu();},closeTop:()=>{if($('settings').open){$('settings').close();return true;}return false;},unlock:activateSound});
 
 installCardControls({active:()=>s.phase==='battle'&&!paused&&!tr&&ready,buttons:()=>[...$('cards').children],onSelect:b=>pick(b.dataset.card)});

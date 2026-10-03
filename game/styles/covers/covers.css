@@ -26,3 +26,10 @@
 #cover.book-host{background:radial-gradient(ellipse at 46% 37%,#746e5f 0,#454942 48%,#242f2b 100%)}
 #cover.opening{opacity:0;transition:opacity 1s .55s}
 #rotate{display:none!important}
+
+#reading-choice{box-sizing:border-box;width:min(420px,84vw);max-height:80dvh;overflow:auto;padding:24px;background:#eee3c7;color:#403425;border:1px solid #a58c5d;border-radius:5px;font:16px/1.6 'Songti SC',serif}#reading-choice::backdrop{background:#090d0ac9}#reading-choice h2{font-size:22px;font-weight:normal;margin:0 0 12px}#reading-choice p{margin:8px 0 16px}#reading-choice>div{display:flex;gap:8px;flex-wrap:wrap}#reading-choice button{font:inherit;color:inherit;border:1px solid #a58c5d;background:transparent;padding:8px 12px;min-height:40px;cursor:pointer}#reading-choice #reading-continue{background:#315248;color:#f8edcf}#reading-choice #reading-error:empty{display:none}@media(hover:none) and (pointer:coarse) and (max-width:1000px){#reading-choice{font-size:14px;padding:16px}#reading-choice h2{font-size:18px}#reading-choice button{font-size:14px;padding:6px 10px}}
+
+#play-window{position:fixed;inset:0;width:100vw;height:100dvh;overflow:hidden;z-index:11;pointer-events:none;transform-origin:0 0;background:#16130f}
+#play-window #play{position:absolute;left:0;top:0;right:auto;bottom:auto;transform-origin:0 0}
+.playing #play-window{pointer-events:auto;z-index:1}
+.playing #cover-settings-open{display:none}

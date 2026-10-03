@@ -41,3 +41,7 @@
 .mini-road .carriage{z-index:5}
 .mini-road .carriage .mini-driver{left:51%;top:27%}
 .road-ready .road-frame{animation:none}
+
+/* Page arrows stay on the paper, without an extra translucent strip. */
+.book-wrap .turn-page{right:0;background:transparent;border-radius:0;justify-content:flex-end;padding-right:2px;padding-left:0}
+.book-wrap .turn-back{left:0;right:auto;justify-content:flex-start;padding-left:2px;padding-right:0}

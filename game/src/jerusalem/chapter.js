@@ -1,4 +1,4 @@
-import {holyDone,travelReady} from './state.js';
+import {holyDone,travelReady,purchasedRelics} from './state.js';
 import {contextualTopics} from './chapter-content.js';
 import {scholarFor} from './regions.js';
 // The host owns DOM, movement and save writes. This controller only maps intent.
@@ -36,7 +36,7 @@ export function chapterController({state,talk,depart,showMenu,hint}){
   if(id==='fatme'){if(!s.arranged)talk('fatme');else depart('fatmeRoom',860);return true;}
   if(id==='streetExit'){depart('street',1938);return true;}
   if(id==='fatmeTalk'){if((s.fatmeStage===1&&s.fatmePaid<1)||(s.fatmeStage===2&&s.fatmePaid<2)){showMenu('fatmeNext');return true;}talk(['fatmeWelcome','fatmeOffer','fatmeRefusal','fatmeAfter'][s.fatmeStage]);return true;}
-  if(id==='holyDoor'){depart('holy',95);return true;}
+  if(id==='holyDoor'){if(purchasedRelics(s))depart('holy',95);else hint('先到三位商人那里买齐带给姨姨的圣物，再进教堂。',8);return true;}
   if(id==='forecourtExit'){depart('forecourt',708);return true;}
   if(['wood','straw','beads','tree'].includes(id)){showMenu(id);return true;}
   if(id==='campExit'){depart('camp',780);return true;}

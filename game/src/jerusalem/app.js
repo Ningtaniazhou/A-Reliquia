@@ -1,3 +1,4 @@
+import {isPhone} from '../ui/mobile.js';
 import {chapterEntryURL,consumeChapterEntry} from '../ui/chapter-entry.js';
 consumeChapterEntry();
 import {setPixelPrompt} from '../ui/pixel-prompts.js';
@@ -21,13 +22,13 @@ import {Backpack,itemById} from '../voyage/inventory.js';
 const $=s=>document.querySelector(s), screen=$('.voyage-screen'), canvas=$('canvas'),ctx=canvas.getContext('2d');
 const params=new URLSearchParams(location.search);
 let storage;try{storage=localStorage;}catch{storage={getItem:()=>null,setItem:()=>{throw Error('storage unavailable');}};}
-const preview=params.get('preview')==='camp-ending';
+const preview=params.has('preview'),campPreview=params.get('preview')==='camp-ending';
 if(preview){const backing=storage;const map=k=>k.startsWith(SAVE_KEY)?k.replace(SAVE_KEY,SAVE_KEY+'.camp-preview'):k;storage={getItem:k=>backing.getItem(map(k)),setItem:(k,v)=>backing.setItem(map(k),v),removeItem:k=>backing.removeItem(map(k))};}
 let s=read(storage),prefs={volume:.48,muted:false,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches};
 try{Object.assign(prefs,JSON.parse(storage.getItem('reliquia.jerusalem-study.settings')));}catch{}
 Object.assign(prefs,readPreferences(prefs));
 if(params.has('fresh')){storage.removeItem?.(SAVE_KEY+'.scene');s=initial();params.delete('fresh');history.replaceState(null,'',location.pathname+(params.size?'?'+params:''));}
-if(preview&&!s.campVisited){s=normalize({...initial(),arrival:arrival.length,room:'camp',x:400,checked:true,windowSeen:true,seen:['tomb','calvary'],campVisited:true,thorn:3});}
+if(campPreview&&!s.campVisited){s=normalize({...initial(),items:['mary-parcel','relic-wood','relic-straw','relic-beads'],arrival:arrival.length,room:'camp',x:400,checked:true,windowSeen:true,seen:['tomb','calvary'],campVisited:true,thorn:3});}
 const checkpoint=sceneCheckpoint(storage,SAVE_KEY+'.scene',s=>s.room);checkpoint.capture(s);
 let ready=false,paused=false,menu=null,selected=0,bagOpen=false,ending=false,fade=null,target=null,distance=0,time=0,camera=0,moving=false,last=0,lastSave=0,quietUntil=0,hintUntil=0;
 let dusk=s.toasted?1:0;
@@ -52,13 +53,13 @@ const scholarHelp=document.createElement('span');scholarHelp.className='j-schola
 function askScholar(){scholarHelpRead=true;try{storage.setItem('reliquia.scholar-yellow-help.v1','1');}catch{}chapter.scholar();ui();}
 function settings(){stop();pause(true);$('#settings').showModal();}
 function pause(on){paused=on;stop();sound.pause(on);document.body.classList.toggle('paused',on);if(!on&&sound.ctx)void sound.unlock().then(music);}
-function preference(){document.body.classList.toggle('reduced',prefs.reduced);prefs.volume=Math.max(0,Math.min(1,Number(prefs.volume)||0));sound.update();$('#volume').value=prefs.volume;$('#motion').checked=prefs.reduced;updateSoundButton($('#mute'),prefs.muted||prefs.volume===0,{shortcut:'M'});try{storage.setItem('reliquia.jerusalem-study.settings',JSON.stringify(prefs));}catch{}}
+function preference(){document.body.classList.toggle('reduced',prefs.reduced);prefs.volume=Math.max(0,Math.min(1,Number(prefs.volume)||0));sound.update();$('#volume').value=prefs.volume;updateSoundButton($('#mute'),prefs.muted||prefs.volume===0,{shortcut:'M'});try{storage.setItem('reliquia.jerusalem-study.settings',JSON.stringify(prefs));}catch{}}
 const backpack=new Backpack($('.voyage-bag'),{signal:abort.signal,onClose:()=>bag()});
 function letterItem(){itemById.set('aunt-letter',{id:'aunt-letter',name:'写给姨姨的信',shortName:s.letter==='sent'?'信 · 已交寄':'信 · 待交寄',icon:'./assets/jerusalem/letter.png',text:(s.letter==='sent'?'前台已收下信件，答应代为交寄。信的记录留在我的背包中。':'信已经封好，可以交给大堂前台代寄。')+'\n\n'+letters.join('\n\n')});}
 function bag(){if(paused||fade||s.arrival<arrival.length||s.dialogue||menu||s.letterOpen||ending||!ready)return;stop();bagOpen=!bagOpen;if(bagOpen){letterItem();backpack.open(s.items,{checked:true});backpack.q('.backpack-heading p').textContent='旅途所得';}else{backpack.close();screen.focus();}ui();}
 function talk(id){if(paused||fade||bagOpen||!ready)return;stop();menu=null;s=begin(s,id);persist();ui();}
 function next(){if(paused||!ready||fade)return;
- if(s.arrival<arrival.length){s.arrival++;persist();music();if(s.arrival===arrival.length){fade={t:0,room:'street',x:s.x,swapped:true,reveal:true};hint('A / D 行走 · E 交互 · 点击地面也可行走',8);}ui();return;}
+ if(s.arrival<arrival.length){s.arrival++;persist();music();if(s.arrival===arrival.length){fade={t:0,room:'street',x:s.x,swapped:true,reveal:true};hint(isPhone()?'点击地面行走，靠近后点击动作互动':'A / D 行走 · E 交互 · 点击地面也可行走',8);}ui();return;}
  if(menu){menu.rows[selected]?.run();return;}
  if(!s.dialogue)return;
  const id=s.dialogue;s=advance(s);if(id==='window'&&(s.cursors.window===2||!s.dialogue))quietUntil=time+8;
@@ -116,7 +117,7 @@ function ui(){const busy=!!s.dialogue||!!menu||s.letterOpen||ending||!!fade||s.a
  const markers=$('.voyage-markers');markers.replaceChildren();for(const p of spots()){const b=document.createElement('button');b.className='voyage-spot';b.dataset.spot=p.id;b.setAttribute('aria-label',p.label);setPixelPrompt(b,p.label);b.onclick=()=>interact(p.id);markers.append(b);}position();black();
 }
 function position(){camera=s.room==='street'?Math.round(Math.max(0,Math.min(WIDTH-960,s.x-420))):0;const n=nearest();for(const b of $('.voyage-markers').children){const p=spots().find(p=>p.id===b.dataset.spot);b.style.left=((p.x-camera)/960*100)+'%';let y=Math.min(p.y,302);const faces=s.room==='lobby'?[{x:736,y:262},{x:425,y:322}]:s.room==='street'?[{x:570,y:287},{x:875,y:307},{x:1135,y:312},{x:1785,y:307},{x:2350,y:321},{x:2610,y:307}]:[];faces.push(...({fatmeRoom:[{x:775,y:316},{x:250,y:326}],forecourt:[{x:345,y:291},{x:510,y:306},{x:847,y:294}],holy:[{x:200,y:352},{x:615,y:320}],camp:[{x:272,y:320},{x:795,y:318}]}[s.room]||[]));for(const face of faces)if(Math.abs(p.x-face.x)<95)y=Math.min(y,face.y-18);const heroTop=heroFeet(s.room)-156;if(Math.abs(p.x-s.x)<72)y=Math.min(y,heroTop-14);b.style.top=(y/540*100)+'%';b.hidden=blocked()||p.id!==n?.id;}}
-function black(){const el=$('.j-black');el.hidden=!fade&&s.arrival>=arrival.length;if(fade){el.style.opacity=fade.reveal?Math.max(0,1-fade.t/1.4):fade.t<.45?fade.t/.45:fade.t<.9?1:Math.max(0,1-(fade.t-.9)/.5);$('.j-black small').hidden=true;$('.j-black p').textContent=fade.t>=.5&&!fade.loaded&&!fade.reveal?'正在前往…':'';$('#arrival-next').hidden=true;}else if(s.arrival<arrival.length){el.style.opacity=1;$('.j-black small').hidden=false;$('.j-black p').textContent=arrival[s.arrival];$('#arrival-next').hidden=false;}}
+function black(){const el=$('.j-black');el.hidden=!fade&&s.arrival>=arrival.length;if(fade){el.style.opacity=fade.reveal?Math.max(0,1-fade.t/1.4):fade.t<.45?fade.t/.45:fade.t<.9?1:Math.max(0,1-(fade.t-.9)/.5);$('.j-black small').hidden=true;$('.j-black p').textContent='';$('#arrival-next').hidden=true;}else if(s.arrival<arrival.length){el.style.opacity=1;$('.j-black small').hidden=false;$('.j-black p').textContent=arrival[s.arrival];$('#arrival-next').hidden=false;}}
 function npc(id,x,feet=475,height=156,facing=1){const im=images[id];if(!im)return;const w=im.width/im.height*height;ctx.save();ctx.translate(Math.round(x),feet);ctx.scale(facing,1);ctx.drawImage(im,-w/2,-height,w,height);ctx.restore();}
 function rain(rect={x:0,y:0,w:960,h:500},count=110){ctx.save();ctx.beginPath();ctx.rect(rect.x,rect.y,rect.w,rect.h);ctx.clip();const t=prefs.reduced?0:time;ctx.fillStyle='#b7cee0';ctx.globalAlpha=.27;for(let i=0;i<count;i++){const x=((i*137.31+t*17-camera*.17)%960+960)%960;const y=(i*67.4+t*(195+i%7*13))%540;ctx.fillRect(Math.floor(x),Math.floor(y),1,i%3+5);}ctx.restore();}
 function blendSection(im,x,w,h,overlap){
@@ -166,7 +167,7 @@ function key(e){if(e.ctrlKey||e.metaKey||e.altKey||e.target.matches('input,summa
 }
 canvas.addEventListener('pointerdown',e=>{if(blocked())return;void sound.unlock();const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*960+camera,y=(e.clientY-r.top)/r.height*540;const p=spots().filter(p=>Math.abs(p.x-x)<52&&y>190).sort((a,b)=>Math.abs(a.x-x)-Math.abs(b.x-x))[0];if(p)interact(p.id);else target={x:Math.max(55,Math.min(s.room==='street'?WIDTH-55:905,x))};});
 $('.j-talk [data-next]').onclick=next;$('.j-talk p').onclick=next;$('.j-talk [data-close]').onclick=close;$('#arrival-next').onclick=next;$('#bag-button').onclick=bag;$('.j-scholar').onclick=()=>{if(!blocked())askScholar();};$('#letter-next').onclick=nextLetter;$('#letter-back').onclick=previousLetter;$('#letter-close').onclick=close;
-$('#settings-button').onclick=settings;$('#settings').addEventListener('close',()=>{pause(document.hidden);screen.focus();});$('#volume').oninput=e=>{prefs.volume=+e.target.value;if(prefs.volume>0)prefs.muted=false;preference();};$('#motion').onchange=e=>{prefs.reduced=e.target.checked;preference();};$('#mute').onclick=()=>{prefs.muted=!prefs.muted;if(!prefs.muted&&!prefs.volume)prefs.volume=.48;preference();void sound.unlock();};
+$('#settings-button').onclick=settings;$('#settings').addEventListener('close',()=>{pause(document.hidden);screen.focus();});$('#volume').oninput=e=>{prefs.volume=+e.target.value;if(prefs.volume>0)prefs.muted=false;preference();};$('#mute').onclick=()=>{prefs.muted=!prefs.muted;if(!prefs.muted&&!prefs.volume)prefs.volume=.48;preference();void sound.unlock();};
 $('#restart').onclick=async()=>{bridge.hide();await loadScene('street');checkpoint.clear();s=initial();menu=null;fade=null;ending=false;bagOpen=false;quietUntil=0;distance=0;backpack.close();stop();persist();music();ui();$('#settings').close();};
 restartButton($('#settings'),async()=>{bridge.hide();const entry=checkpoint.restore();if(!entry)return;await loadScene(entry.room);s=normalize(entry);s.dialogue=null;s.letterOpen=false;menu=null;fade=null;ending=false;bagOpen=false;quietUntil=0;distance=0;dusk=s.toasted?1:0;backpack.close();stop();persist();music();ui();$('#settings').close();});
 window.addEventListener('keydown',key);window.addEventListener('keyup',e=>keys.delete(e.code));window.addEventListener('blur',stop);document.addEventListener('pointerdown',()=>{if(!paused)void sound.unlock();},{capture:true});document.addEventListener('visibilitychange',()=>pause(document.hidden||$('#settings').open));window.addEventListener('pagehide',()=>{persist();sound.stop();});window.addEventListener('pageshow',()=>{if(ready){music();}});
@@ -175,4 +176,4 @@ preference();ui();music();requestAnimationFrame(frame);
 loading.then(()=>{ready=true;$('.j-loading').hidden=true;ending=s.complete&&!s.endSeen;if(ending)bridge.start(false);music();ui();paint();}).catch(e=>{$('.j-loading').textContent='雨城暂时未能载入。请刷新重试。';console.error(e);});
 
 // Shared cross-chapter controls and latest preferences.
-installSharedControls({soundButton:'#mute',settingsButton:'#settings-button',bagButton:'#bag-button',getPreferences:()=>prefs,applyPreferences:p=>{Object.assign(prefs,p);preference();},toggleSettings:()=>{$('#settings').open?$('#settings').close():settings();},closeTop:()=>{if($('#settings').open){$('#settings').close();return true;}return false;},unlock:()=>sound.unlock(),pixel:true});
+installSharedControls({readyForCover:()=>ready,audioReady:()=>sound.paused||sound.ctx?.state==='running',soundButton:'#mute',settingsButton:'#settings-button',bagButton:'#bag-button',getPreferences:()=>prefs,applyPreferences:p=>{Object.assign(prefs,p);preference();},toggleSettings:()=>{$('#settings').open?$('#settings').close():settings();},closeTop:()=>{if($('#settings').open){$('#settings').close();return true;}return false;},unlock:()=>sound.unlock(),pixel:true});

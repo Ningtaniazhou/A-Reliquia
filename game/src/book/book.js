@@ -1,3 +1,4 @@
+import {isPhone} from '../ui/mobile.js';
 import {bookCamera,pageTextMatrix} from './page-layout.js';
 import * as T from '../../vendor/three/three.module.js';
 import {createBook,SIZE} from './model.js';
@@ -6,7 +7,7 @@ import {poses,motions,ease,turnLift} from './motion.js';
 const css=new URL('../../styles/book/book.css',import.meta.url);if(!document.querySelector('link[data-book-style]')){const l=document.createElement('link');l.rel='stylesheet';l.href=css;l.dataset.bookStyle='';document.head.append(l);}
 // One scene and one physical book own all opening/ending states. No game saves are changed here.
 export async function mountBook(host,{mode='front',lastPage=null,arrival=false,getPreferences=()=>({}),paused=()=>false,onEnter=()=>{},onFront=()=>{},enterLabel='进入书中世界',onState=()=>{}}={}){
- host.classList.add('book-host');host.innerHTML='<div class="book-loading" role="status">正在取出书本……</div>';
+ host.classList.add('book-host');host.innerHTML='<div class="book-loading" role="status"></div>';
  let renderer;
  try{renderer=new T.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});}catch{host.innerHTML=`<div class="book-fallback"><p>此浏览器未能显示三维书本。</p><article>${mode==='ending'?credits:introduction}</article><button class="start">${enterLabel}</button></div>`;host.querySelector('button').onclick=onEnter;return {dispose(){},pause(){},paintingRect:{x:innerWidth*.25,y:innerHeight*.25,width:innerWidth*.5,height:innerHeight*.5},snapshot:()=>({phase:'fallback'})};}
  renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.outputColorSpace=T.SRGBColorSpace;renderer.setClearColor(0x000000,0);
@@ -40,7 +41,7 @@ export async function mountBook(host,{mode='front',lastPage=null,arrival=false,g
  function putPanel(parent,x0,x1,z){const tl=project(parent,x0,1.74,z),tr=project(parent,x1,1.74,z),bl=project(parent,x0,-1.73,z);const projectedWidth=Math.hypot(tr.x-tl.x,tr.y-tl.y),projectedHeight=Math.hypot(bl.x-tl.x,bl.y-tl.y);
  if(phase!=='closing'){paperWidth=projectedWidth;paperHeight=projectedHeight;}
  const w=paperWidth,h=paperHeight;panel.style.width=w+'px';panel.style.height=h+'px';panel.style.transform=`matrix(${(tr.x-tl.x)/w},${(tr.y-tl.y)/w},${(bl.x-tl.x)/h},${(bl.y-tl.y)/h},${tl.x},${tl.y})`;
- const nextFit=[phase,Math.round(w),Math.round(h)].join(':');if(phase!=='closing'&&nextFit!==fitKey){fitKey=nextFit;let font=Math.min(19,Math.max(14,w*.046));panel.style.setProperty('--book-font',font+'px');while(scroll.scrollHeight>scroll.clientHeight+1&&font>11){font-=.25;panel.style.setProperty('--book-font',font+'px');}}
+ const nextFit=[phase,Math.round(w),Math.round(h)].join(':');if(!isPhone()&&phase!=='closing'&&nextFit!==fitKey){fitKey=nextFit;let font=Math.min(19,Math.max(14,w*.046));panel.style.setProperty('--book-font',font+'px');while(scroll.scrollHeight>scroll.clientHeight+1&&font>11){font-=.25;panel.style.setProperty('--book-font',font+'px');}}
  }
  function putHand(parent,x,y,z,label){const p=project(parent,x,y,z);handle.style.left=p.x+'px';handle.style.top=p.y+'px';handle.setAttribute('aria-label',label);handle.removeAttribute('title');const caption=handle.querySelector('span');caption.textContent='';caption.hidden=true;handle.hidden=false;}
  function applyPose(){model.front.rotation.y=pose.front;model.fold.rotation.y=pose.fold;model.back.rotation.y=pose.back;model.root.rotation.y=pose.turn;model.root.position.z=pose.lift+(animation&&'turn' in animation.target?turnLift(Math.min(1,animation.elapsed/animation.duration)):0);model.root.updateMatrixWorld(true);

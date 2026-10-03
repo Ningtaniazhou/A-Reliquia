@@ -11,6 +11,6 @@ export function boardingFrame(seconds){
 // Destination title is readable only during the fully black hold.
 export function maltaArrivalFrame(seconds,slow=true){
  const t=Math.max(0,seconds);
- if(!slow)return {opacity:t<.55?t/.55:t<2.25?1:Math.max(0,1-(t-2.25)/.65),swap:t>=1.4,done:t>=2.9,label:t>=.55&&t<2.25};
+ if(!slow)return {opacity:t<1.5?t/1.5:1,swap:t>=3.5,done:t>=7.5,label:t>=1.5&&t<7.5};
  return {opacity:t<1.5?t/1.5:t<6?1:Math.max(0,1-(t-6)/1.5),swap:t>=3.5,done:t>=7.5,label:t>=1.5&&t<6};
 }

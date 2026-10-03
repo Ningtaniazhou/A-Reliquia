@@ -3,3 +3,5 @@
 .dialogue-bust{position:fixed;overflow:hidden;pointer-events:none;isolation:isolate;box-sizing:border-box}
 .dialogue-bust[hidden]{display:none!important}
 .dialogue-bust img{position:absolute;left:50%;transform:translateX(-50%);width:auto;max-width:none;object-fit:contain;display:block}
+
+[data-portrait-ready="false"]{visibility:hidden!important}

@@ -11,7 +11,7 @@ import {letters} from '../jerusalem/content.js';
 import {ChapterSound} from '../chapter4/sound.js';
 import {JerusalemAudio} from '../jerusalem/audio.js';
 import {updateSoundButton} from '../ui/sound-button.js';
-import {groups,initial,normalize,begin,advance,enter} from './state.js';
+import {groups,initial,normalize,begin,advance,enter,scholarAvailable} from './state.js';
 import {bridges,bridgeDuration,newItems} from './journey-content.js';
 import {places,spots,objective,files,assetsFor,paintScene} from './scenes.js';
 const $=s=>document.querySelector(s),params=new URLSearchParams(location.search),suffix=params.get('preview')==='hotel'?'.hotel-preview':params.has('preview')?'.preview':'',saveKey='reliquia.chapter5.v1'+suffix;
@@ -23,6 +23,7 @@ if(params.has('fresh')){s=previewStart();storage.removeItem(saveKey+'.scene');pa
 try{const handoff=JSON.parse(sessionStorage.getItem('reliquia.chapter5.handoff'+suffix));if(handoff){Object.assign(s,handoff);sessionStorage.removeItem('reliquia.chapter5.handoff'+suffix);}}catch{}
 // Read-only inheritance; never write back into an earlier chapter's save.
 if(!s.inventoryImported){const prev=read('reliquia.jerusalem-study.v1'+(suffix?'.camp-preview':''))||(!suffix?read('reliquia.jerusalem-study.v1'):null);if(Array.isArray(prev?.items))s.items=[...prev.items];else if(!s.items.length)s.items=[...initial().items];s.inventoryImported=true;}
+const inheritedLetter=read('reliquia.jerusalem-study.v1'+(suffix?'.camp-preview':''));if(inheritedLetter?.letter==='sent')s.letterSent=true;
 s=normalize(s);
 for(const item of [...relicItems,...newItems])itemById.set(item.id,item);
 itemById.set('aunt-letter',{id:'aunt-letter',name:'写给姨姨的信',shortName:'信件',icon:'./assets/jerusalem/letter.png',text:letters.join('\n\n')});
@@ -36,7 +37,7 @@ function stop(){keys.clear();target=null;moving=false;}
 function blocked(){return !ready||paused||document.hidden||!!s.dialogue||s.choice||bagOpen||!!s.bridge||s.scene==='lisbon';}
 async function asset(id){if(images[id])return;if(pending.has(id))return pending.get(id);const job=(async()=>{const im=new Image();im.src='./assets/'+files[id];await im.decode();images[id]=im;})();pending.set(id,job);try{await job;}finally{pending.delete(id);}}
 async function loadScene(scene){await Promise.all(assetsFor(scene).map(asset));}
-function preferences(){sound.setVolume(s.volume);sound.setMuted(s.muted);music.settings=s;music.update();$('#volume').value=s.volume;$('#reduced').checked=s.reduced;document.body.classList.toggle('reduced',s.reduced);updateSoundButton($('#sound'),s.muted||s.volume===0,{shortcut:'M'});}
+function preferences(){sound.setVolume(s.volume);sound.setMuted(s.muted);music.settings=s;music.update();$('#volume').value=s.volume;document.body.classList.toggle('reduced',s.reduced);updateSoundButton($('#sound'),s.muted||s.volume===0,{shortcut:'M'});}
 function audioScene(){preferences();music.sea(!!s.bridge&&bridges[s.bridge.id].sound==='sea');music.rain(!s.bridge&&s.scene==='hotel'?.025:0);if(s.bridge){music.request(null,1);sound.fadeForTravel();}else{bridgeSound=null;sound.setScene(s.scene==='hotel'||s.scene==='lisbon'?'tent':'dawn');music.request({camp:'malta',nazareth:'malta',hotel:'jerusalemRain',spring:'caravan',lisbon:'auntHome'}[s.scene],2);}}
 async function unlock(){if(paused||document.hidden)return;await Promise.allSettled([sound.unlock(),music.unlock()]);if(s.bridge&&bridgeSound!==s.bridge.id){bridgeSound=s.bridge.id;if(bridges[s.bridge.id].sound==='horse')sound.travel('horse');}}
 function expose(){const d=s.dialogue,row=d&&groups[d.id]?.[d.line];if(!row||s.seenLines.includes(row.id))return;s.seenLines.push(row.id);const effect={'C5-J-pack-small-2':'cloth','C5-J-pack-small-4':'hammer','C5-J-pack-2':'cloth','C5-J-pack-4':'cloth','C5-J-pack-8':'hammer','C5-J-returned-5':'coin','C5-J-woman-6':'coin','C5-J-give-3':'cloth'}[row.id];if(effect)sound.effect(effect);persist();}
@@ -48,14 +49,14 @@ function next(){if(paused||!s.dialogue||!ready)return;const before=s.bridge?.id;
 function previous(){if(!paused&&s.dialogue?.line>0){s.dialogue.line--;persist();render();}}
 function closeTalk(){if(paused)return;if(s.dialogue){if(['hotelIntro','hotelNews','hotelAntiquity','nazarethIntro','springIntro','lisbon','opening'].includes(s.dialogue.id))return;s.dialogue=null;}else s.choice=false;persist();render();}
 function nearest(){return spots(s).filter(p=>Math.abs(p.x-s.x)<86).sort((a,b)=>Math.abs(a.x-s.x)-Math.abs(b.x-s.x))[0];}
-function interact(id){if(blocked())return;const p=id==='scholar'?null:id?spots(s).find(p=>p.id===id):nearest();if(id!=='scholar'&&(!p||Math.abs(p.x-s.x)>=86))return;void unlock();if(id==='scholar')return say({camp:'scholar',nazareth:'nazarethScholar',hotel:'hotelScholar',spring:'springScholar'}[s.scene]);
+function interact(id){if(blocked())return;const p=id==='scholar'?null:id?spots(s).find(p=>p.id===id):nearest();if(id!=='scholar'&&(!p||Math.abs(p.x-s.x)>=86))return;void unlock();if(id==='scholar'&&!scholarAvailable(s))return;if(id==='scholar')return say({camp:'scholar',nazareth:'nazarethScholar',hotel:'hotelScholar',spring:'springScholar'}[s.scene]);
  const actions={leaveCamp:()=>travel('pilgrimage'),leaveNazareth:()=>travel('hotel'),leaveHotel:()=>{s.x=770;s.facing=1;say('returned');},leaveSpring:()=>travel('return'),potte:()=>say(s.meal||'breakfast'),packSmall:()=>say(!s.read.includes('hotelNews')?'hotelNews':!s.read.includes('hotelAntiquity')?'hotelAntiquity':s.smallPacked?'smallPacked':'packSmall'),pack:()=>say(s.packed?'packed':!s.read.includes('hotelNews')?'hotelNews':!s.read.includes('hotelAntiquity')?'hotelAntiquity':!s.smallPacked?'packSmall':'pack'),nazarethPotte:()=>{s.facing=s.x<335?1:-1;say('nazarethPotte');},waterWoman:()=>{s.facing=s.x<500?1:-1;say('waterWoman');},woman:()=>{s.x=s.x>710?800:620;s.facing=s.x>710?-1:1;say(s.given?'womanAfter':s.read.includes('woman')?'give':'woman');}};(actions[p.id]||(()=>say(p.id)))();}
 function bag(){if(paused||s.dialogue||s.choice||s.bridge||!ready)return;stop();bagOpen=!bagOpen;if(bagOpen)backpack.open(s.items,{checked:true});else backpack.close();render();}
 function render(){
  const d=s.dialogue,row=d&&groups[d.id]?.[d.line],black=!!s.bridge,lisbon=s.scene==='lisbon';
  $('#talk').hidden=!row;$('#talk').classList.toggle('thought',!!row?.thought);$('#talk').classList.toggle('interjection',row?.who==='托普修斯');
  if(row){$('#talk small').textContent=row.who+(row.thought?' · 心声':'');$('#talk small').hidden=!row.who;$('#talk p').textContent=row.text;$('#previous').disabled=d.line===0;$('#close-talk').hidden=['hotelIntro','hotelNews','hotelAntiquity','nazarethIntro','springIntro','lisbon','opening'].includes(d.id);$('#talk').scrollTop=0;}
- $('#choices').hidden=!s.choice;$('#scholar').hidden=black||lisbon;$('#scholar').disabled=blocked();$('#scholar i').hidden=s.scene==='camp'?s.scholarRead:s.read.includes({nazareth:'nazarethScholar',hotel:'hotelScholar',spring:'springScholar'}[s.scene]);
+ $('#choices').hidden=!s.choice;$('#scholar').hidden=black||lisbon;$('#scholar').disabled=blocked()||!scholarAvailable(s);$('#scholar i').hidden=!scholarAvailable(s)|| (s.scene==='camp'?s.scholarRead:s.read.includes({nazareth:'nazarethScholar',hotel:'hotelScholar',spring:'springScholar'}[s.scene]));
  $('#hint').hidden=!!row||s.choice||bagOpen||black||lisbon;$('#hint').textContent=objective(s);$('.voyage-place').textContent=places[s.scene];$('.voyage-hud').hidden=black;$('#bag-button').disabled=!!row||s.choice;$('.voyage-screen').dataset.scene=lisbon?'lisbon':'jerusalem';canvas.setAttribute('aria-label',places[s.scene]+(lisbon?'':'，A D 行走，靠近后按 E 交互'));document.body.classList.toggle('home-mode',lisbon);
  $('#journey').hidden=!black;if(black){$('#journey p').textContent=bridges[s.bridge.id].text;const t=s.bridge.elapsed||0;$('#journey').style.opacity=s.reduced?'1':String(Math.min(1,t/.55));}else $('#travel-error').hidden=true;
  $('#arrival-end').hidden=!lisbon||!s.complete||bagOpen;preferences();document.querySelectorAll('[data-meal]').forEach((b,i)=>b.classList.toggle('selected',i===selected));markers();
@@ -64,7 +65,7 @@ function markers(){const host=$('#markers'),near=nearest(),marker=blocked()?'':n
 function pause(v){paused=v;stop();document.body.classList.toggle('paused',v);sound.pause(v||document.hidden);music.pause(v||document.hidden);if(v){if(!$('#settings').open)$('#settings').showModal();}else {$('#settings').close();$('.voyage-screen').focus({preventScroll:true});}render();}
 $('#settings-open').onclick=()=>pause(true);$('#resume').onclick=e=>{e.preventDefault();pause(false);};$('#settings').addEventListener('cancel',e=>{e.preventDefault();pause(false);});
 restartButton($('#settings'),async()=>{const old=checkpoint.restore();if(!old)return;const prefs={volume:s.volume,muted:s.muted,reduced:s.reduced};s=normalize({...old,...prefs});stop();bagOpen=false;backpack.close();pause(false);await start();});
-$('#sound').onclick=()=>{s.muted=!s.muted;preferences();void unlock();persist();};$('#volume').oninput=e=>{s.volume=+e.target.value;preferences();persist();};$('#reduced').onchange=e=>{s.reduced=e.target.checked;preferences();persist();};
+$('#sound').onclick=()=>{s.muted=!s.muted;preferences();void unlock();persist();};$('#volume').oninput=e=>{s.volume=+e.target.value;preferences();persist();};
 $('#bag-button').onclick=bag;$('#scholar').onclick=()=>interact('scholar');$('#close-talk').onclick=closeTalk;$('#next').onclick=next;$('#previous').onclick=previous;$('#talk p').onclick=next;
 for(const b of document.querySelectorAll('[data-meal]'))b.onclick=()=>{if(paused)return;s.meal=b.dataset.meal;say(s.meal);};
 $('#chapter6-continue').onclick=()=>{persist();sound.stop();music.stop();location.href=chapterEntryURL('./chapter6.html'+(suffix?'?preview=chapter6':'?from=chapter5'));};
@@ -88,6 +89,6 @@ async function start(){ready=false;$('#load').hidden=false;$('#retry').hidden=tr
 void start();requestAnimationFrame(tick);window.chapter5={snapshot:()=>JSON.parse(JSON.stringify(s)),sound:()=>({...sound.status(),music:music.desired,musicVoices:music.voices.size}),ready:()=>ready};
 
 // Shared cross-chapter controls and latest preferences.
-installSharedControls({soundButton:'#sound',settingsButton:'#settings-open',bagButton:'#bag-button',getPreferences:()=>s,applyPreferences:p=>{Object.assign(s,p);preferences();persist();},toggleSettings:()=>pause(!paused),closeTop:()=>{if($('#settings').open){pause(false);return true;}return false;},unlock,pixel:true});
+installSharedControls({readyForCover:()=>ready,audioReady:()=>sound.paused||sound.ctx?.state==='running',soundButton:'#sound',settingsButton:'#settings-open',bagButton:'#bag-button',getPreferences:()=>s,applyPreferences:p=>{Object.assign(s,p);preferences();persist();},toggleSettings:()=>pause(!paused),closeTop:()=>{if($('#settings').open){pause(false);return true;}return false;},unlock,pixel:true});
 
 const restartChapter=document.createElement('button');restartChapter.type='button';restartChapter.textContent='重新开始本章';restartChapter.onclick=()=>{storage.removeItem(saveKey);storage.removeItem(saveKey+'.scene');location.reload();};document.querySelector('#settings').append(restartChapter);

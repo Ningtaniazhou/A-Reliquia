@@ -11,16 +11,18 @@ export function normalize(raw={}){
  if(!groups[s.dialogue?.id])s.dialogue=null;else s.dialogue.line=Math.max(0,Math.min(groups[s.dialogue.id].length-1,Number(s.dialogue.line)||0));
  if(s.bridge&&!bridges[s.bridge.id])s.bridge=null;
  // Mary's parcel is in the room, not in carried luggage. It only returns with the servant.
- s.items=s.items.filter(id=>id!=='mary-parcel');
+ s.items=s.items.filter(id=>id!=='mary-parcel'&&!(id==='aunt-letter'&&s.letterSent));
  if(s.dialogue?.id==='returned'&&s.dialogue.line>=4)s.parcelReceived=true;
  if(s.packed)s.smallPacked=true;
  if(s.smallPacked){s.items=s.items.filter(id=>!['relic-wood','relic-straw','relic-beads','c5-small-relics'].includes(id));if(!s.items.includes('c5-small-crate'))s.items.push('c5-small-crate');}
  if(s.packed){s.items=s.items.filter(id=>id!=='thorn-parcel');if(!s.items.includes('c5-relic-box'))s.items.push('c5-relic-box');}
  if((s.returned||s.parcelReceived)&&!s.given&&!s.items.includes('c5-returned-parcel'))s.items.push('c5-returned-parcel');
  if(s.given||!(s.returned||s.parcelReceived))s.items=s.items.filter(id=>id!=='c5-returned-parcel');
+ if(!s.read.includes('woman')){s.read=s.read.filter(id=>id!=='springScholar');s.seenLines=s.seenLines.filter(id=>!id.startsWith('C5-J-spring-scholar-'));delete s.cursors.springScholar;if(s.dialogue?.id==='springScholar')s.dialogue=null;}
  return s;
 }
-export function begin(s,id){if(!groups[id])return s;return {...s,dialogue:{id,line:s.read.includes(id)?0:s.cursors[id]||0},choice:false};}
+export const scholarAvailable=s=>s.scene!=='spring'||s.read.includes('woman');
+export function begin(s,id){if(id==='springScholar'&&!scholarAvailable(s))return s;if(!groups[id])return s;return {...s,dialogue:{id,line:s.read.includes(id)?0:s.cursors[id]||0},choice:false};}
 export function advance(s){
  if(!s.dialogue)return s;const {id,line}=s.dialogue,rows=groups[id];
  if(line<rows.length-1)return normalize({...s,dialogue:{id,line:line+1},cursors:{...s.cursors,[id]:Math.max(s.cursors[id]||0,line+1)}});

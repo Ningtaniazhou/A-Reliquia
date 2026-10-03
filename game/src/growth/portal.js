@@ -34,6 +34,8 @@ export class ChapterPortal{
   Object.assign(this.el.style,{left:x+'px',top:y+'px',width:root.width*scale+'px',height:root.height*scale+'px'});
   this.frame.style.transform=`scale(${scale})`;
   this.button.hidden=!this.ready||active||p!==null;
+  // A newly loaded chapter must not expose an enabled entry during page writing.
+  this.button.disabled=this.root.getAttribute('aria-busy')==='true';
   this.el.classList.toggle('active',active&&p===null);this.el.classList.toggle('expanding',p!==null);
  }
  begin(){if(!this.ready||this.progress!==null)return false;this.from=this.root.querySelector('.dining-slot').getBoundingClientRect();this.progress=0;this.time=0;this.root.classList.add('chapter-entry-busy');this.button.hidden=true;this.layout();return true;}

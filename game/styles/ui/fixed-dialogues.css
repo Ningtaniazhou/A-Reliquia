@@ -1,0 +1,51 @@
+html body .chapter-dialogue-fixed:not(.shared-black){height:var(--chapter-dialogue-height,130px)!important;min-height:0!important;max-height:calc(100dvh - 100px)!important;box-sizing:border-box;overflow:auto}
+html body .arrival-dialogue.chapter-dialogue-fixed,html body #dialogue.chapter-dialogue-fixed:not(.shared-pixel-dialogue),html body .c7-dialogue.chapter-dialogue-fixed{width:min(820px,84vw)!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;padding:12px 20px 32px!important;bottom:12px}
+html body:has(#painting) #dialogue.chapter-dialogue-fixed{position:relative;left:50%;bottom:auto;margin:0;padding-bottom:0!important}
+html body .arrival-dialogue .arrival-reading{padding-right:0}
+.malta-speech [data-close]{position:absolute;right:8px;top:4px;z-index:5;font-size:13px!important;min-height:32px}
+.malta-options{top:var(--malta-options-top,52%)!important;max-height:calc(100dvh - var(--malta-options-top,52%) - 12px)!important;overflow:auto}
+html body .study-dialog{width:min(740px,82vw);height:min(360px,76dvh);max-height:76dvh}
+.study-layout{grid-template-columns:32% 68%}
+.study-reading{padding:20px 22px 12px}
+@media (hover:none) and (pointer:coarse) and (max-width:1000px){
+ html body .arrival-dialogue.chapter-dialogue-fixed,html body #dialogue.chapter-dialogue-fixed:not(.shared-pixel-dialogue),html body .c7-dialogue.chapter-dialogue-fixed{width:min(500px,84vw)!important;padding:8px 14px 28px!important;bottom:8px}
+ html body .chapter-dialogue-fixed:not(.shared-black){max-height:calc(100dvh - 76px)!important}
+ html body .study-dialog{width:min(560px,82vw);height:min(260px,74dvh);max-height:74dvh}
+ html body .study-dialog .study-reading{padding:12px 14px 8px}
+ html body .study-dialog h2{margin-bottom:8px}
+ html body .cards{width:min(470px,72vw)!important;gap:10px!important;bottom:calc(var(--cards-dialogue-height,100px) + 22px)!important}
+ html body .cards .card.relic-card,html body .relic-cards .relic-card{height:min(176px,46dvh)!important;max-height:46dvh!important;min-height:0!important;padding:5px!important}
+ html body .cards .card.relic-card img{max-height:48%!important}
+ html body .cards .card.relic-card h3{font-size:14px!important;margin:4px 0!important}
+ html body .cards .card.relic-card p{font-size:12px!important;line-height:1.35!important}
+ html body [data-game-control]{height:32px!important;min-height:32px!important;padding:3px 6px!important}
+ html body [data-game-control=settings],html body [data-game-control=settings].pixel-control{width:48px!important;right:8px!important}
+ html body [data-game-control=sound],html body [data-game-control=sound].pixel-control{width:34px!important;right:64px!important}
+ html body [data-game-control=bag],html body [data-game-control=bag].pixel-control{width:48px!important;right:106px!important}
+ html body [data-game-control] svg{width:20px!important;height:20px!important}
+ .malta-options{width:min(400px,76vw)!important;right:12%!important;padding:6px!important}
+ html body .malta-options button{font-size:13px!important;padding:6px 10px!important}
+}
+html body:has(#painting) #frame{width:min(100%,calc((100dvh - 58px - var(--scene-dialogue-height,174px))*16/9))}
+@media (hover:none) and (pointer:coarse) and (max-width:1000px){html body:has(#painting) #frame{width:min(100%,calc((100dvh - 48px - var(--scene-dialogue-height,110px))*16/9))}}
+
+/* Reserve a constant speaker row and navigation row, including on silent pages. */
+html body .chapter-dialogue-fixed:not(.shared-black){padding:12px 20px 32px!important}
+html body .chapter-dialogue-fixed:not(.shared-black)>:is(.speaker,#speaker,small,.voyage-speaker),html body .malta-speech.chapter-dialogue-fixed>span{display:block;min-height:24px;line-height:24px!important;margin:0!important}
+html body .chapter-dialogue-fixed:not(.shared-black)>p,html body .chapter-dialogue-fixed .arrival-zh,html body .chapter-dialogue-fixed>#line,html body .chapter-dialogue-fixed>#words,html body .chapter-dialogue-fixed>#speech{margin:4px 0!important}
+html body .chapter-dialogue-fixed:not(.shared-black)>p.speaker{margin:0!important}
+@media (hover:none) and (pointer:coarse) and (max-width:1000px){
+ html body .chapter-dialogue-fixed:not(.shared-black){padding:8px 14px 28px!important}
+ html body .chapter-dialogue-fixed:not(.shared-black)>:is(.speaker,#speaker,small,.voyage-speaker),html body .malta-speech.chapter-dialogue-fixed>span{min-height:18px;line-height:18px!important}
+}
+html body .c7-dialogue.chapter-dialogue-fixed p{font-size:clamp(18px,1.55vw,23px)!important;line-height:1.65!important}
+@media (hover:none) and (pointer:coarse) and (max-width:1000px){html body .c7-dialogue.chapter-dialogue-fixed p{font-size:14px!important;line-height:1.55!important}}
+
+/* Hide the initial measuring pass; later pages reuse the chapter measurement before paint. */
+.chapter-dialogue-fixed[data-dialogue-ready="false"]{visibility:hidden!important}
+html body .chapter-dialogue-fixed:not(.shared-black){animation:none!important;transition:none!important}
+/* Paper-stage portraits extend above their panel; scroll only the text itself. */
+html body .arrival-dialogue.chapter-dialogue-fixed,html body #dialogue.chapter-dialogue-fixed:not(.shared-pixel-dialogue),html body .c7-dialogue.chapter-dialogue-fixed{overflow:visible}
+html body #dialogue.chapter-dialogue-fixed:not(.shared-pixel-dialogue)>:is(#words,#line,#speech,.line),html body .c7-dialogue.chapter-dialogue-fixed>p{max-height:calc(var(--chapter-dialogue-height) - 80px);overflow-y:auto;scrollbar-width:thin}
+
+[data-native-portrait-ready="false"]{visibility:hidden!important}

@@ -17,7 +17,7 @@ function render(){
  }
  if(mode==='choices'){
   $('speech').querySelector('.pt').hidden=true;
-  $('speech').querySelector('.speaker').textContent='托普修斯';$('speech').querySelector('.zh').textContent=unlocked?'拉波索先生，您还想问些什么？':'请问吧，先生。您想知道什么？';$('speech').querySelector('.pt').textContent='';
+  $('speech').querySelector('.speaker').textContent='托普修斯';$('speech').querySelector('.zh').textContent=unlocked?'特奥多里科先生，您还想问些什么？':'请问吧，先生。您想知道什么？';$('speech').querySelector('.pt').textContent='';
   $('options').replaceChildren();availableTopics().forEach((t,i)=>{const b=document.createElement('button');b.className='option'+(i===selected?' selected':'');b.textContent=t.label;b.setAttribute('aria-pressed',String(i===selected));b.onclick=()=>{selected=i;choose();};$('options').append(b);});
  }
 }

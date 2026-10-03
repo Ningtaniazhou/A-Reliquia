@@ -19,13 +19,13 @@ export function normalize(raw){
  if(!(s.dialogue in dialogue)||s.dialogue==='pottePacking')s.dialogue=null;
  s.fatmeStage=Math.floor(clamp(s.fatmeStage,0,3));s.fatmePaid=Math.floor(clamp(raw?.fatmePaid??Math.min(2,s.fatmeStage),0,2));s.arranged=!!s.arranged;s.campVisited=!!s.campVisited;
  s.thorn=Math.floor(clamp(s.thorn,0,3));s.toasted=!!s.toasted&&s.thorn===3;s.danced=!!s.danced&&s.toasted;
- const valid=new Set(relicItems.map(i=>i.id));s.items=[...new Set(['mary-parcel',...(s.letter!=='none'?['aunt-letter']:[]),...(Array.isArray(s.items)?s.items.filter(id=>valid.has(id)&&!id.startsWith('thorn-')):[])])];
+ const valid=new Set(relicItems.map(i=>i.id));s.items=[...new Set(['mary-parcel',...(s.letter==='sealed'?['aunt-letter']:[]),...(Array.isArray(s.items)?s.items.filter(id=>valid.has(id)&&!id.startsWith('thorn-')):[])])];
  if(s.thorn)s.items.push(['','thorn-branch','thorn-crown','thorn-parcel'][s.thorn]);
  s.celebration=!!s.celebration&&s.thorn===3;
  s.bridgeElapsed=clamp(s.bridgeElapsed,0,20);s.bridgeLine=Math.floor(clamp(s.bridgeLine,0,3));
  s.complete=!!s.complete&&s.danced;s.endSeen=!!s.endSeen&&s.complete;
  if(['forecourt','holy','camp','wild'].includes(s.room)&&(!s.checked||!s.windowSeen)){s.room='street';s.x=1595;}
- if(['camp','wild'].includes(s.room)&&!holyDone(s)){s.room='forecourt';s.x=140;}
+ if(['camp','wild'].includes(s.room)&&!holyDone(s)){s.room='forecourt';s.x=140;s.dialogue=null;s.celebration=false;s.complete=false;s.endSeen=false;s.bridgeElapsed=0;s.bridgeLine=0;}
  return s;
 }
 export function begin(s,id){if(!(id in dialogue))return s;return {...s,dialogue:id,letterOpen:false};}
@@ -37,7 +37,7 @@ export function finish(s,id){
  if(event==='window')next.windowSeen=true;
  if(event==='letter'){next.letterOpen=true;next.letterPage=0;}
  if(event==='seal'&&s.checked){next.letter='sealed';next.items=[...new Set([...s.items,'aunt-letter'])];}
- if(event==='send'&&s.letter==='sealed')next.letter='sent';
+ if(event==='send'&&s.letter==='sealed'){next.letter='sent';next.items=s.items.filter(id=>id!=='aunt-letter');}
  if(event==='arrange')next.arranged=true;
  if(event==='fatmeWelcome')next.fatmeStage=Math.max(1,s.fatmeStage);
  if(event==='fatmeOffer')next.fatmeStage=Math.max(2,s.fatmeStage);
@@ -58,5 +58,6 @@ export function advance(s){const id=s.dialogue;if(!id)return s;const n=(s.cursor
 export function read(store){try{return normalize(JSON.parse(store.getItem(SAVE_KEY)));}catch{return initial();}}
 export function save(store,s){try{store.setItem(SAVE_KEY,JSON.stringify(s));return true;}catch{return false;}}
 
-export function holyDone(s){return s.seen.includes('tomb')&&s.seen.includes('calvary');}
+export const purchasedRelics=s=>['relic-wood','relic-straw','relic-beads'].every(id=>s.items.includes(id));
+export function holyDone(s){return purchasedRelics(s)&&s.seen.includes('tomb')&&s.seen.includes('calvary');}
 export function travelReady(s){return s.checked&&s.windowSeen&&s.potteMet;}

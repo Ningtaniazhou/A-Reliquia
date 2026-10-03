@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#21131e"><title>圣遗物 · 姨姨的疑心</title><link rel="icon" href="data:,"><link rel="stylesheet" href="./styles/boss.css"><link rel="stylesheet" href="./styles/interaction-marks.css"><link rel="stylesheet" href="./styles/dialogue-navigation.css"><link rel="stylesheet" href="styles/ui/relic-cards.css"></head>
+<html lang="zh-CN"><head><script src="./src/ui/cover-entry.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#21131e"><title>圣遗物 · 姨姨的疑心</title><link rel="icon" href="data:,"><link rel="stylesheet" href="./styles/boss.css"><link rel="stylesheet" href="./styles/interaction-marks.css"><link rel="stylesheet" href="./styles/dialogue-navigation.css"><link rel="stylesheet" href="styles/ui/relic-cards.css"></head>
 <body><svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs><clipPath id="dining-table-mask" clipPathUnits="objectBoundingBox">
 <!-- Trace only the furniture and objects, never the wall above the tabletop. -->
 <path d="M.278 .636 Q.317 .615 .370 .594 Q.382 .591 .408 .591 L.634 .593 Q.659 .596 .713 .637 L.746 .838 .732 .883 .703 .847 .694 .797 .296 .797 .288 .850 .262 .883 .246 .839 Z"/>
@@ -26,8 +26,8 @@
  <div id="curtains" class="curtains" aria-hidden="true"><div class="cloth left"></div><div class="cloth right"></div></div>
  <button id="reopen" class="reopen" hidden aria-label="拉开幕布"></button>
  <div id="failure" class="failure" hidden><h1>伪装败露</h1><p id="failure-line"></p><button id="retry-battle">重新应对</button></div>
- <div id="loading" class="loading" role="status"><span>烛光亮起……</span></div>
+ <div id="loading" class="loading" role="status"><span></span></div>
  <div id="error" class="loading" hidden><p>画面未能载入。</p><button id="retry-load">重新载入</button></div>
 </main>
-<dialog id="settings"><form method="dialog"><h2>设置</h2><label>音量 <input id="volume" type="range" min="0" max="1" step="0.05"></label><label><input id="reduced" type="checkbox"> 减少动态</label><div class="actions"><button id="restart" type="button">重新开始本章</button><button>继续</button></div><details><summary>操作与原作依据</summary><p>点击对白继续；点击一张牌直接打出。键盘左右键选牌，空格或回车确认；手柄方向键选牌，A 确认，菜单键暂停。</p><p id="source-note"></p><p>进度保存在本机。重新开始只影响这顿晚饭。</p></details></form></dialog>
+<dialog id="settings"><form method="dialog"><h2>设置</h2><label>音量 <input id="volume" type="range" min="0" max="1" step="0.05"></label><div class="actions"><button id="restart" type="button">重新开始本章</button><button>继续</button></div><details><summary>操作与原作依据</summary><p>点击对白继续；点击一张牌直接打出。键盘左右键选牌，空格或回车确认；手柄方向键选牌，A 确认，菜单键暂停。</p><p id="source-note"></p><p>进度保存在本机。重新开始只影响这顿晚饭。</p></details></form></dialog>
 <script type="module" src="./src/boss/app.js"></script><script type="module" src="./src/dialogue-portraits.js"></script><script type="module" src="./src/ui/dialogue-navigation.js"></script><script type="module" src="src/ui/nonverbal.js"></script></body></html>

@@ -1,0 +1,19 @@
+/* Approved thin parchment, fixed over the full, uncropped painting. */
+html body:has(#painting) #frame{width:min(100%,calc((100dvh - 58px)*16/9))!important}
+html body #dialogue.paper-scroll{position:fixed!important;left:3%!important;bottom:20px!important;width:94%!important;height:var(--scroll-height,200px)!important;min-height:0!important;max-height:none!important;padding:0!important;border:0;background:none;transform:none!important;z-index:7;overflow:visible!important;color:#42382a;filter:drop-shadow(0 3px 3px #0003)}
+.paper-scroll .scroll-paper{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.paper-scroll .scroll-paper::before{content:'';position:absolute;width:103.535%;height:169.231%;left:-1.768%;top:-32.634%;background:url('../../assets/ui/chapter4-scroll.png') center/100% 100% no-repeat}
+.paper-scroll .scroll-copy{position:absolute;inset:24px 105px 36px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+html body #dialogue.paper-scroll #speaker{font:18px/24px Song,serif;color:#82704c;min-height:24px;margin:0}
+html body #dialogue.paper-scroll #speaker em{color:#82704c}
+html body #dialogue.paper-scroll #words{font:22px/1.65 Song,'Songti SC',serif;letter-spacing:.02em;margin:0;min-height:0;max-height:none;overflow:visible}
+html body #dialogue.paper-scroll footer{position:absolute;inset:0;margin:0;pointer-events:none}
+html body #dialogue.paper-scroll footer button{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:56px;padding:8px;font:36px/1 Georgia;color:#806c43;pointer-events:auto}
+html body #dialogue.paper-scroll #previous{left:65px}html body #dialogue.paper-scroll #next{right:65px}
+#rest{position:fixed;bottom:16px;left:0;right:0;min-height:0;pointer-events:none}#tutorial{background:#101921db;padding:8px 18px;border-radius:3px}
+@media(max-height:700px){html body:has(#painting) #frame{width:min(100%,calc((100dvh - 46px)*16/9))!important}}
+@media(max-width:1100px){.paper-scroll .scroll-copy{inset:20px 65px 26px}html body #dialogue.paper-scroll #words{font-size:18px}html body #dialogue.paper-scroll #previous{left:22px}html body #dialogue.paper-scroll #next{right:22px}}
+@media(hover:none) and (pointer:coarse) and (max-width:1000px){html body #dialogue.paper-scroll .scroll-copy{inset:12px 48px 18px}html body #dialogue.paper-scroll #words{font-size:14px;line-height:1.55}html body #dialogue.paper-scroll #speaker{font-size:14px;line-height:18px;min-height:18px}html body #dialogue.paper-scroll{bottom:8px!important}html body #dialogue.paper-scroll #previous{left:8px}html body #dialogue.paper-scroll #next{right:8px}}
+
+/* Dialogue clicks advance the story; dragging and repeated clicks must not select prose. */
+html body #dialogue.paper-scroll,html body #dialogue.paper-scroll *{-webkit-user-select:none;user-select:none}

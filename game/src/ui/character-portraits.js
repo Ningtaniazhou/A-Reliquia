@@ -8,6 +8,7 @@ export function paperPortrait(id,emotion='stern'){
  if(id==='茹斯蒂诺')return {id,src:new URL('../../assets/chapter6/guest-portrait-3.webp',import.meta.url).href,scale:1,offset:0};
  id=PAPER_CHARACTERS[displayName(id)]||id;
  if(id==='aunt'){const positions={stern:'0% 0%',soft:'100% 0%',shock:'0% 100%',angry:'100% 100%'};return {id:'aunt-'+emotion,src:new URL('shared-v1/aunt-expressions.png',base).href,position:positions[emotion]||positions.stern};}
+ if(id==='teo'&&emotion==='sad')return {id:'teo-sad',src:new URL('teo-sad.webp',base).href,scale:portraits.teo.scale,offset:portraits.teo.offset};
  const p=portraits[id];return p?{id,src:new URL(id+'.webp',base).href,scale:p.scale,offset:p.offset}:null;
 }
 export function portraitMarkup(p){if(!p)return '';return p.position?`<span class="shared-portrait" data-sheet="true" style="background-image:url('${p.src}');background-position:${p.position}"></span>`:`<span class="shared-portrait" style="--portrait-scale:${p.scale*100}%;--portrait-top:${p.offset*100}%"><img src="${p.src}" alt=""></span>`;}

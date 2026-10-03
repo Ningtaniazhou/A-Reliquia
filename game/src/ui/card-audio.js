@@ -1,0 +1,24 @@
+export function cardAudio(owner,name){
+const {ctx,master}=owner;const muted=owner.settings.muted||owner.paused;if(!ctx||!master||muted)return;
+function noise(duration,level,from,to){if(!ctx||muted||document.hidden)return;const t=ctx.currentTime,buffer=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*duration),ctx.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;const source=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();source.buffer=buffer;filter.type='bandpass';filter.Q.value=.65;filter.frequency.setValueAtTime(from,t);filter.frequency.exponentialRampToValueAtTime(to,t+duration);gain.gain.setValueAtTime(.0001,t);gain.gain.exponentialRampToValueAtTime(level,t+duration*.24);gain.gain.exponentialRampToValueAtTime(.0001,t+duration);source.connect(filter);filter.connect(gain);gain.connect(master);source.onended=()=>{source.disconnect();filter.disconnect();gain.disconnect();};source.start(t);source.stop(t+duration);}
+function impactSound(){noise(.16,.15,1050,420);if(!ctx||muted||document.hidden)return;const t=ctx.currentTime,osc=ctx.createOscillator(),gain=ctx.createGain();osc.type='sine';osc.frequency.setValueAtTime(290,t);osc.frequency.exponentialRampToValueAtTime(190,t+.15);gain.gain.setValueAtTime(.0001,t);gain.gain.exponentialRampToValueAtTime(.09,t+.012);gain.gain.exponentialRampToValueAtTime(.0001,t+.19);osc.connect(gain);gain.connect(master);osc.onended=()=>{osc.disconnect();gain.disconnect();};osc.start(t);osc.stop(t+.2);}
+// New result cues: gentle plucked consonance vs a muted, descending tension chord.
+function resultNote(freq,delay,duration,level,tension=false){const t=ctx.currentTime+delay;const filter=ctx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=tension?1100:2400;filter.Q.value=.5;filter.connect(master);let remaining=3;for(const [ratio,weight] of [[1,1],[2,.22],[3,.07]]){const osc=ctx.createOscillator(),gain=ctx.createGain();osc.type='sine';osc.frequency.setValueAtTime(freq*ratio,t);if(tension)osc.frequency.exponentialRampToValueAtTime(freq*ratio*.94,t+duration);gain.gain.setValueAtTime(.0001,t);gain.gain.exponentialRampToValueAtTime(level*weight,t+.018);gain.gain.exponentialRampToValueAtTime(.0001,t+duration);osc.connect(gain);gain.connect(filter);osc.onended=()=>{osc.disconnect();gain.disconnect();if(!--remaining)filter.disconnect();};osc.start(t);osc.stop(t+duration+.02);}}
+// Result sound design: a luminous, rising halo versus a restrained orchestral anger sting.
+function haloSound(){
+ const t=ctx.currentTime,bus=ctx.createGain(),delay=ctx.createDelay(.5),echo=ctx.createGain();bus.gain.value=.65;bus.connect(master);delay.delayTime.value=.145;echo.gain.value=.20;bus.connect(delay);delay.connect(echo);echo.connect(master);
+ let count=8;const done=()=>{if(!--count)setTimeout(()=>{bus.disconnect();delay.disconnect();echo.disconnect();},500);};
+ for(const [i,f] of [523.25,659.25,783.99,1046.5].entries())for(const detune of [-4,4]){
+ const osc=ctx.createOscillator(),g=ctx.createGain();osc.type='sine';osc.frequency.setValueAtTime(f*.985,t);osc.frequency.exponentialRampToValueAtTime(f,t+.28);osc.detune.value=detune;const start=t+i*.045;g.gain.setValueAtTime(.0001,start);g.gain.exponentialRampToValueAtTime(.050-i*.006,start+.22);g.gain.exponentialRampToValueAtTime(.0001,start+1.55);osc.connect(g);g.connect(bus);osc.onended=()=>{osc.disconnect();g.disconnect();done();};osc.start(start);osc.stop(start+1.6);}
+ resultNote(1567.98,.20,.85,.035);resultNote(2093,.33,.95,.023);
+}
+function angerSound(){
+ const t=ctx.currentTime;
+ // Low, filtered brass-like tension: a sharp onset, slight swell, then a firm cutoff.
+ for(const [f,level] of [[110,.09],[116.54,.035],[164.81,.045]]){const osc=ctx.createOscillator(),filter=ctx.createBiquadFilter(),g=ctx.createGain();osc.type='sawtooth';osc.frequency.setValueAtTime(f,t);osc.frequency.exponentialRampToValueAtTime(f*.89,t+.55);filter.type='lowpass';filter.Q.value=.75;filter.frequency.setValueAtTime(380,t);filter.frequency.exponentialRampToValueAtTime(950,t+.07);filter.frequency.exponentialRampToValueAtTime(260,t+.65);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(level,t+.035);g.gain.exponentialRampToValueAtTime(level*.4,t+.20);g.gain.exponentialRampToValueAtTime(level*.68,t+.34);g.gain.exponentialRampToValueAtTime(.0001,t+.73);osc.connect(filter);filter.connect(g);g.connect(master);osc.onended=()=>{osc.disconnect();filter.disconnect();g.disconnect();};osc.start(t);osc.stop(t+.78);}
+ noise(.13,.11,680,180);
+}
+function resultSound(correct){if(!ctx||muted||document.hidden)return;correct?haloSound():angerSound();}
+
+if(name==='pick')noise(.09,.09,1700,950);if(name==='cast')noise(.38,.18,1900,650);if(name==='impact')impactSound();if(name==='good')haloSound();if(name==='bad')angerSound();
+}

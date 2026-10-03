@@ -17,7 +17,7 @@ const setImage=(el,name)=>{if(el.dataset.asset!==name){el.src=asset(name);el.dat
 const clamp=v=>Math.max(0,Math.min(1,v));
 const smooth=v=>{v=clamp(v);return v*v*(3-2*v);};
 function storeSettings(){try{storage.setItem(SETTINGS,JSON.stringify(settings));}catch{}}
-function appearance(){document.body.classList.toggle('reduced',settings.reduced);updateSoundButton($('mute'),settings.muted||settings.volume===0);$('reduced').checked=settings.reduced;$('volume').value=settings.volume;sound.update();}
+function appearance(){document.body.classList.toggle('reduced',settings.reduced);updateSoundButton($('mute'),settings.muted||settings.volume===0);$('volume').value=settings.volume;sound.update();}
 function scene(name){stage.dataset.scene=name;}
 function resetMotion(){for(const key of ['walking','curtain','black','bob'])stage.style.setProperty('--'+key,0);stage.style.setProperty('--aunt-opacity',1);stage.style.setProperty('--teo-opacity',1);$('motion-caption').textContent='';}
 function render(){
@@ -68,7 +68,7 @@ $('source').addEventListener('click',()=>openDialog($('sources')));
 for(const el of [$('settings'),$('sources')])el.addEventListener('close',()=>pause(document.hidden));
 $('mute').addEventListener('click',()=>{const silent=settings.muted||settings.volume===0;settings.muted=!silent;if(silent&&!settings.volume)settings.volume=.35;void sound.unlock();appearance();storeSettings();});
 $('volume').addEventListener('input',e=>{settings.volume=Number(e.target.value);appearance();storeSettings();});
-$('reduced').addEventListener('change',e=>{settings.reduced=e.target.checked;appearance();storeSettings();});
+
 $('restart').addEventListener('click',()=>{commit('meal');$('settings').close();});
 $('retry').addEventListener('click',()=>location.reload());
 for(const [title,body] of sourceNotes){const section=document.createElement('section');section.className='source-entry';const h=document.createElement('h3'),p=document.createElement('p');h.textContent=title;p.textContent=body;section.append(h,p);$('source-list').append(section);}
@@ -82,4 +82,4 @@ Promise.all(needed.map(name=>new Promise((resolve,reject)=>{const img=new Image(
 restartButton($('settings'),()=>{transition=null;commit(id);$('settings').close();});
 
 // Shared cross-chapter controls and latest preferences.
-installSharedControls({soundButton:'#mute',settingsButton:'#pause',getPreferences:()=>settings,applyPreferences:p=>{Object.assign(settings,p);appearance();storeSettings();},toggleSettings:()=>{$('settings').open?$('settings').close():openDialog($('settings'));},closeTop:()=>{const d=document.querySelector('dialog[open]');if(d){d.close();return true;}return false;},unlock:()=>sound.unlock()});
+installSharedControls({audioReady:()=>sound.paused||sound.ctx?.state==='running',soundButton:'#mute',settingsButton:'#pause',getPreferences:()=>settings,applyPreferences:p=>{Object.assign(settings,p);appearance();storeSettings();},toggleSettings:()=>{$('settings').open?$('settings').close():openDialog($('settings'));},closeTop:()=>{const d=document.querySelector('dialog[open]');if(d){d.close();return true;}return false;},unlock:()=>sound.unlock()});

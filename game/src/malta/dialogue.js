@@ -10,13 +10,13 @@ export const topics=[
  ['托普修斯','《希律家族史》。我到犹太，再去加利利，为这部著作搜集材料。','A História dos Herodes. Vou à Judeia e depois à Galileia, recolher materiais para essa obra.','A','130'],
  ['托普修斯','不过，我会先在亚历山大里亚停留。《拉吉德王朝史》也需要大量材料。这两家人的历史，都是我的领域。','Mas demorar-me-ei primeiro em Alexandria. A História dos Lágidas também exige muitos materiais. A história destas duas famílias é o meu domínio.','A','130']]},
  {id:'journey',label:'我去朝圣——您也去耶路撒冷？',pages:[
- ['特奥多里科','我叫特奥多里科·拉波索，来自葡萄牙。这一趟是去耶路撒冷朝圣。看来，我们走的是同一条路。','Chamo-me Teodorico Raposo, sou português e vou em peregrinação a Jerusalém. Parece que seguimos o mesmo caminho.','A','130'],
+ ['特奥多里科','我叫特奥多里科，来自葡萄牙。这一趟是去耶路撒冷朝圣。看来，我们走的是同一条路。','Chamo-me Teodorico, sou português e vou em peregrinação a Jerusalém. Parece que seguimos o mesmo caminho.','A','130'],
  ['托普修斯','是同路。不过，我的朝圣是为科学搜集材料：先去犹太，再去加利利。','Seguimos, sim. A minha peregrinação é científica: a Judeia, a Galileia e a História que nos espera pelo caminho.','A+O','130']]}
 ];
 export const opening=[['特奥多里科','先生，打扰一下。您拿伞抵着墙，是在测量什么吗？','Desculpe, senhor. Está a medir a parede com o guarda-sol?','O','130']];
 export const ending=[
  ['特奥多里科','既然行程相同，托普修斯博士，我们何不结伴？','Já que seguimos o mesmo roteiro, doutor Topsius, por que não viajamos juntos?','A','130'],
- ['托普修斯','那就结伴吧，拉波索先生！旅途添个伴，花费还能省一些。','Pois acamarademos, D. Raposo! Será uma deleitosa economia!','A','130',true],
+ ['托普修斯','那就结伴吧，特奥多里科先生！旅途添个伴，花费还能省一些。','Pois acamarademos, Teodorico! Será uma deleitosa economia!','A','130',true],
  ['托普修斯','以后在旅途中遇到什么想了解的，尽管来问我。','Se, pelo caminho, encontrar alguma coisa que queira compreender, pergunte-me.','O','—']
 ];
 

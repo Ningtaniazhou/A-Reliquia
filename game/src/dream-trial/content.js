@@ -3,7 +3,7 @@ const line = (id, who, text, actor='', pose=0, page='', type='A', detail='') => 
 export const scripts = {
  intro:[
   line('DT-I01','我 · 心声','我站在人群往来的回廊里。彼拉多暂时退进了宫中，庭院里的喧声却没有停。','',0,'210–216'),
-  line('DT-I02','托普修斯','就在这里，拉波索。回廊里的人，你可以看得清楚些。','topsius',1,'205','O'),
+  line('DT-I02','托普修斯','就在这里，特奥多里科。回廊里的人，你可以看得清楚些。','topsius',1,'205','O'),
   line('DT-I03','我 · 心声','经历了这许多惊动，我竟又饿了。人群里有人摇着小铃，兜售伯法其的无花果。','merchant',0,'216'),
  ],
  court:[
@@ -11,7 +11,7 @@ export const scripts = {
   line('DT-C02','我 · 心声','他头上是一条白亚麻布缠成的头巾，并没有我在《福音书》中读到的荆棘冠。','',0,'206–207'),
   line('DT-C03','我 · 心声','眼前这个人，站在同我一样的尘土与日光中。','',0,'206','A'),
  ],
- departure:[line('DT-D01','托普修斯','拉波索，彼拉多就要回来了。走吧，我们往前面去。','topsius',1,'220','O')],
+ departure:[line('DT-D01','托普修斯','特奥多里科，彼拉多就要回来了。走吧，我们往前面去。','topsius',1,'220','O')],
  stonework:[
   line('DT-B01','我 · 心声','柱边的工人没有停下手里的活。一人扶稳待嵌的石料，另一人俯身修整柱脚。他们只顾着眼前的工作，没有看我。','',0,'205','O'),
   line('DT-B02','我 · 心声','这场审判的四周，寻常的生活并没有停下来。','',0,'205','A'),
@@ -19,7 +19,7 @@ export const scripts = {
  topsius:[
   line('DT-T01','我','那些拿着秤和鸟笼的人，是谁？','topsius',0,'215–216'),
   line('DT-T02','托普修斯','想必是商贩。耶稣曾举着棍子，要求严格执行圣殿的规矩：所罗门柱廊之外，不许作买卖。','topsius',1,'216'),
-  line('DT-T03','托普修斯','拉波索先生，拉比又做了一件不审慎的事！','topsius',1,'216'),
+  line('DT-T03','托普修斯','特奥多里科先生，拉比又做了一件不审慎的事！','topsius',1,'216'),
  ],
  figs:[
   line('DT-F01','我','这无花果，卖什么价钱？','merchant',0,'216'),
@@ -53,7 +53,7 @@ export const scripts = {
   line('DT-G04','我 · 心声','他哽咽着，退回人群边。庭院里的众人又向那片红色帷幕聚拢。彼拉多就要回来了。','',0,'220'),
  ],
 };
-scripts.intro=[line('DT-I04','托普修斯','拉波索，我们到了审判庭院旁的回廊。彼拉多暂时退进宫中；耶稣仍在士兵看守之下，人群正在等候。','topsius',0,'205–216','O'),...scripts.topsius,scripts.intro[2]];
+scripts.intro=[line('DT-I04','托普修斯','特奥多里科，我们到了审判庭院旁的回廊。彼拉多暂时退进宫中；耶稣仍在士兵看守之下，人群正在等候。','topsius',0,'205–216','O'),...scripts.topsius,scripts.intro[2]];
 const narrationIds=new Set(['DT-I01','DT-C01','DT-B01','DT-F07','DT-F09','DT-F10','DT-W01','DT-N02','DT-G02','DT-G04']);
 for(const sequence of Object.values(scripts))for(const entry of sequence)if(narrationIds.has(entry.id)){entry.mode='narration';entry.who='';}
 export const backgroundTopics=[

@@ -22,3 +22,11 @@ body [data-game-control=settings].pixel-control{width:90px!important}
 body [data-game-control=sound].pixel-control{right:calc(var(--game-controls-right) + 98px)!important;width:66px!important}
 body [data-game-control=bag].pixel-control{right:calc(var(--game-controls-right) + 172px)!important}
 body [data-game-control].pixel-control kbd{border:1px solid #ad8d55!important;padding:2px 4px!important;background:#263344!important;color:#ffe5b5!important}
+/* Keep sound/settings reachable during pixel intertitles, above their parent stacking context. */
+body .utilities:has([data-game-control]){z-index:46!important}
+
+/* During cover zoom the chapter is paused behind its own settings layer. */
+.cover-preview dialog,.cover-preview dialog::backdrop,.cover-preview #settings,.cover-preview [data-game-control],.cover-preview .dialogue-bust,.cover-preview #portrait,.cover-preview .arrival-portrait,.cover-preview .chapter-dialogue-fixed,.cover-preview #opening,.cover-preview #rest,.cover-preview #hotspots{visibility:hidden!important}
+.cover-preview *{animation-play-state:paused!important}
+
+.cover-preview #gate{visibility:hidden!important}

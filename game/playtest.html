@@ -7,6 +7,6 @@ const jerusalem=new URLSearchParams(location.search).get('start')==='jerusalem';
 document.getElementById('new').textContent=jerusalem?'从耶路撒冷开始新试玩':'从游戏开头开始新试玩';
 if(jerusalem)document.querySelector('main>p').textContent='耶路撒冷雨街 → 圣墓与营地 → 第四至第七章';
 document.querySelector('small').textContent='开始新试玩会先备份当前剧情存档，再建立干净的新进度，保留声音和设置。中途退出后可选择“继续试玩”。';
-document.getElementById('continue').onclick=()=>location.assign(resumeChapter()||'./index.html?play=1');
-document.getElementById('new').onclick=()=>{try{restartReading();if(jerusalem){localStorage.setItem(SAVE_KEY,JSON.stringify({...initial(),arrival:arrival.length}));rememberChapter('jerusalem');}location.assign(jerusalem?'./jerusalem-study.html':'./covers.html');}catch{document.getElementById('error').textContent='无法备份存档，尚未开始新一轮。请检查浏览器存储空间。'}};
+document.getElementById('continue').onclick=()=>{const url=new URL(resumeChapter()||'./index.html',location.href);url.searchParams.set('play','1');location.assign(url.href);};
+document.getElementById('new').onclick=()=>{try{restartReading();if(jerusalem){localStorage.setItem(SAVE_KEY,JSON.stringify({...initial(),arrival:arrival.length}));rememberChapter('jerusalem');}location.assign(jerusalem?'./jerusalem-study.html?play=1':'./covers.html');}catch{document.getElementById('error').textContent='无法备份存档，尚未开始新一轮。请检查浏览器存储空间。'}};
 </script></html>

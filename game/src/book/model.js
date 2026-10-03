@@ -33,8 +33,11 @@ export async function createBook(){
  const spine=new T.Mesh(new T.CylinderGeometry((t+.1)/2,(t+.1)/2,h+.045,24,1,false,0,Math.PI),green);spine.name='RoundedSpine';spine.rotation.z=0;spine.rotation.y=Math.PI;spine.position.set(.01,0,t/2);rig.add(spine);spine.castShadow=true;
  for(const y of [-1.55,-1.38,1.38,1.55]){const ring=new T.Mesh(new T.CylinderGeometry((t+.113)/2,(t+.113)/2,.025,24,1,false,0,Math.PI),gold);ring.rotation.y=Math.PI;ring.position.set(.008,y,t/2);rig.add(ring);}
  const image=await new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=reject;im.src=new URL('../../assets/cover-parcel.webp',import.meta.url).href;});
+ // Wait for decoded pixels before baking the canvas texture, including a cold mobile load.
+ await image.decode();
+ if(!image.naturalWidth||!image.naturalHeight)throw new Error('Cover image has no decoded pixels');
  const coverArt=texture((c,cw,ch)=>{c.clearRect(0,0,cw,ch);c.fillStyle='#e6ce92';c.textAlign='center';c.font='34px "Songti SC",serif';c.fillText('埃萨·德·凯罗斯',cw/2,145);c.font='100px "Songti SC",serif';c.fillText('圣遗物',cw/2,300);c.font='25px Georgia,serif';c.fillText('A RELÍQUIA',cw/2,363);c.save();c.beginPath();c.moveTo(180,1115);c.lineTo(180,650);c.bezierCurveTo(180,365,844,365,844,650);c.lineTo(844,1115);c.closePath();c.clip();const ratio=Math.max(664/image.width,680/image.height);c.drawImage(image,512-image.width*ratio/2,785-image.height*ratio/2,image.width*ratio,image.height*ratio);c.restore();c.strokeStyle='#bca36d';c.lineWidth=3;c.beginPath();c.moveTo(180,1115);c.lineTo(180,650);c.bezierCurveTo(180,365,844,365,844,650);c.lineTo(844,1115);c.closePath();c.stroke();},1024,1463);
- const art=sheet('FrontCoverArtwork',front,w-.1,h-.1,w/2,.032,new T.MeshStandardMaterial({map:coverArt,transparent:true,roughness:.8,depthWrite:false}));
+ const art=sheet('FrontCoverArtwork',front,w-.1,h-.1,w/2,.038,new T.MeshStandardMaterial({map:coverArt,transparent:true,roughness:.8,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1}));
  root.userData={title:'圣遗物 · 前后护封书本',units:'relative',version:1,hinges:'FrontCoverHinge, FrontFlapHinge, BackCoverHinge, RearFlapHinge, LastLeafHinge',text:'Runtime copy is separate from geometry; cover lettering is generated from editable source.'};
  return {root,rig,front,back,fold,backFold,block,lastLeaf,art,textures};
 }

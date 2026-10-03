@@ -1,3 +1,4 @@
+import {cardAudio} from '../ui/card-audio.js';
 import {cues} from '../music/cues.js';
 import {DinnerAudio} from '../dinner/audio.js';
 export class BossAudio extends DinnerAudio{
@@ -18,9 +19,10 @@ export class BossAudio extends DinnerAudio{
  async play(name){const fadeIn=this.nextFadeIn;const ticket=++this.token;try{const b=await this.buffer(name);if(ticket!==this.token||name!==this.desired||!this.ctx)return;this.fadeOut(false);const source=this.ctx.createBufferSource(),gain=this.ctx.createGain(),t=this.ctx.currentTime,cue=cues[name];source.buffer=b;source.loop=cue.loop;if(cue.loopEnd)source.loopEnd=Math.min(cue.loopEnd,b.duration);gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(cue.gain,t+(fadeIn??cue.fadeIn??.32));source.connect(gain);gain.connect(this.master);const v={source,gain,name};this.voices.add(v);this.current=v;source.onended=()=>{this.voices.delete(v);source.disconnect();gain.disconnect();if(this.current===v){this.current=null;}};source.start();}catch{if(ticket===this.token)this.current=null;}}
  fadeOut(invalidate=true,seconds=.28){if(invalidate)++this.token;const v=this.current;this.current=null;if(!v||!this.ctx)return;const t=this.ctx.currentTime;v.gain.gain.cancelScheduledValues(t);v.gain.gain.setValueAtTime(v.gain.gain.value,t);v.gain.gain.linearRampToValueAtTime(0,t+seconds);try{v.source.stop(t+seconds+.03);}catch{}}
  async warm(){if(this.ctx)await Promise.allSettled((this.desired==='adelia'?['adelia']:['auntHome','auntBattle']).map(n=>this.buffer(n)));}
- pick(){this.noise(.08,.04,1700);}
- cast(){this.noise(.3,.09,1800);}
- good(){this.tone(293.66,.7,.11);this.tone(369.99,.85,.07);this.tone(440,1,.06);}
- bad(){this.noise(.25,.16,240);this.tone(73.42,1,.17,'sawtooth');this.tone(77.78,.85,.10,'triangle');}
+ pick(){cardAudio(this,'pick');}
+ cast(){cardAudio(this,'cast');}
+ impact(){cardAudio(this,'impact');}
+ good(){cardAudio(this,'good');}
+ bad(){cardAudio(this,'bad');}
  stop(){this.unlocked=false;++this.token;for(const v of this.voices)try{v.source.stop();}catch{}this.voices.clear();this.current=null;if(this.sharedContext){this.master?.disconnect();this.master=null;this.ctx=null;}else super.stop();}
 }
