@@ -1,4 +1,4 @@
-import {cardFlight} from '../ui/card-flight.js';
+import {cardFlight} from '../ui/card-flight.js?v=20261003-fix1';
 import {chapterEntryURL} from '../ui/chapter-entry.js';
 import {installCardControls} from '../ui/card-controls.js';
 import {readPreferences} from '../ui/preferences.js';
@@ -11,7 +11,7 @@ import {rounds,intro,sourceNote,sceneLines} from './content.js';
 import {initial,answer,afterResponse,retry,load,save,PREFS,KEY} from './state.js';
 import {icons} from './icons.js';
 import {point} from '../interaction-marks.js';
-import {BossAudio} from './audio.js';
+import {BossAudio} from './audio.js?v=20261003-fix1';
 const $=id=>document.getElementById(id),game=$('game');
 $('reopen').innerHTML=point();$('door').innerHTML=point();
 const integrated=new URLSearchParams(location.search).get('integrated')==='1'&&window.parent!==window;

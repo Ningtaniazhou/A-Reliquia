@@ -1,4 +1,4 @@
-import {cardFlight} from '../ui/card-flight.js';
+import {cardFlight} from '../ui/card-flight.js?v=20261003-fix1';
 import {chapterEntryURL,consumeChapterEntry} from '../ui/chapter-entry.js';
 consumeChapterEntry();
 import {returnToNotebook} from './notebook-return.js';
@@ -11,7 +11,7 @@ import {installSharedControls} from '../ui/shared-controls.js';
 import {point} from '../interaction-marks.js';
 import {initial,normalize,goto,selectCard,nextLine,action,tick,durations,area,mood,chapterScene} from './state.js';
 import {cards,groups,actionLabels,itemDescriptions} from './content.js';
-import {HomecomingAudio} from './audio.js';
+import {HomecomingAudio} from './audio.js?v=20261003-fix1';
 import {sceneCheckpoint} from '../ui/scene-checkpoint.js';
 import {rememberChapter} from '../ui/mainline.js';
 import {updateSoundButton} from '../ui/sound-button.js';

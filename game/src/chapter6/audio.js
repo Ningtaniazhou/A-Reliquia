@@ -1,4 +1,4 @@
-import {BossAudio} from '../boss/audio.js';
+import {BossAudio} from '../boss/audio.js?v=20261003-fix1';
 export class HomecomingAudio extends BossAudio{
  constructor(settings){super(settings);this.mode=null;}
  modeFor(phase){
