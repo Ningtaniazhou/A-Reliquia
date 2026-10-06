@@ -1,4 +1,5 @@
 import {paperPortrait} from './character-portraits.js';
+import {dialoguePortraitName} from './dialogue-speaker.js';
 // Native chapter 6/7 portraits use the same integrated layout as opening/boss/departure.
 const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('../../styles/ui/portrait-layout.css',import.meta.url);document.head.append(css);
 export function preparePortraitPanel(panel){
@@ -6,8 +7,8 @@ export function preparePortraitPanel(panel){
  const face=panel.querySelector(':scope > #portrait,:scope > .c7-portrait');
  if(face){panel.classList.toggle('portrait-dialogue',!face.hidden&&!!face.firstElementChild&&!panel.classList.contains('narration'));return;}
  if(!panel.matches('.arrival-dialogue,#dialogue,#subtitle'))return;
- const label=panel.querySelector('.speaker,#speaker'),name=label?.textContent.trim().split(' · ')[0]||'';
- const has=!!name&&!/心声|心里|回忆|旁白|叙述/.test(name)&&!!paperPortrait(name)&&!panel.matches('.shared-black,.shared-pixel-dialogue');
+ const name=dialoguePortraitName(panel);
+ const has=!!name&&!!paperPortrait(name);
  panel.classList.toggle('portrait-dialogue',has);
 }
 function sync(){for(const panel of document.querySelectorAll('.arrival-dialogue,#dialogue,#subtitle,.c7-dialogue'))preparePortraitPanel(panel);}

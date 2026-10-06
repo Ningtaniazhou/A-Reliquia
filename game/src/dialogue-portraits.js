@@ -1,4 +1,5 @@
 import {paperPortrait,portraitMarkup} from './ui/character-portraits.js';
+import {dialoguePortraitName} from './ui/dialogue-speaker.js';
 import {portraits} from './portrait-data.js';
 const style=document.createElement('link');style.rel='stylesheet';style.href=new URL('../styles/dialogue-portraits.css',import.meta.url);document.head.append(style);
 const aliases={'姨姨':'aunt','小特奥多里科':'child','特奥多里科':'teo','特奥多里克':'teo','阿德里亚':'adelia','阿德莉娅':'adelia','马蒂亚斯':'matias','卡西米罗神父':'casimiro','皮涅罗神父':'pinheiro','马加里德博士':'margaride'};
@@ -13,9 +14,8 @@ function sync(){queued=false;
  for(const old of document.querySelectorAll('.dialogue-bust'))if(!old._panel?.isConnected)old.remove();
  for(const panel of document.querySelectorAll('.arrival-dialogue,#dialogue,#subtitle')){
  if(panel.matches('.paper-scroll')){if(panel.classList.contains('portrait-dialogue'))panel.classList.remove('portrait-dialogue');if(panel._bust)panel._bust.hidden=true;continue;}
- const speaker=panel.querySelector('.speaker,#speaker');const name=speaker?.textContent.trim()||'';
- let id=aliases[name.split(' · ')[0]];
- if(name.includes('回忆')||name.includes('/')||!speaker||getComputedStyle(speaker).display==='none')id=null;
+ const name=dialoguePortraitName(panel);
+ let id=aliases[name];
  const game=document.querySelector('#game');
  if(id==='adelia'&&(game?.dataset.romanceScene==='door'||document.querySelector('#play')?.dataset.scene==='door'))id='adelia-cold';
  if(id==='aunt'&&document.querySelector('#play')?.dataset.scene==='exit')id='aunt-farewell';
