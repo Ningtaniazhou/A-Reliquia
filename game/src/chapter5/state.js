@@ -1,5 +1,5 @@
 import {opening,breakfast,meals,scholar,bottles,scenery} from './content.js';
-import {journey,bridges} from './journey-content.js';
+import {journey,bridges,bridgePages} from './journey-content.js';
 export const groups={opening,breakfast,scholar,bottles,...meals,...scenery,...journey};
 export const initial=()=>({version:2,scene:'camp',x:335,facing:1,meal:null,mealRead:false,scholarRead:false,bottlesRead:false,opened:false,volume:.65,muted:false,reduced:false,dialogue:null,choice:false,items:['thorn-parcel'],read:[],cursors:{},seenLines:[],smallPacked:false,packingVersion:2,packed:false,returned:false,given:false,bridge:null,complete:false});
 export function normalize(raw={}){
@@ -10,6 +10,7 @@ export function normalize(raw={}){
  s.items=[...new Set(Array.isArray(s.items)?s.items:[])];s.read=Array.isArray(s.read)?s.read:[];s.cursors=s.cursors&&typeof s.cursors==='object'?s.cursors:{};s.seenLines=Array.isArray(s.seenLines)?s.seenLines:[];
  if(!groups[s.dialogue?.id])s.dialogue=null;else s.dialogue.line=Math.max(0,Math.min(groups[s.dialogue.id].length-1,Number(s.dialogue.line)||0));
  if(s.bridge&&!bridges[s.bridge.id])s.bridge=null;
+ if(s.bridge)s.bridge={...s.bridge,page:Math.max(0,Math.min(bridgePages(s.bridge.id).length-1,Math.floor(Number(s.bridge.page)||0)))};
  // Mary's parcel is in the room, not in carried luggage. It only returns with the servant.
  s.items=s.items.filter(id=>id!=='mary-parcel'&&!(id==='aunt-letter'&&s.letterSent));
  if(s.dialogue?.id==='returned'&&s.dialogue.line>=4)s.parcelReceived=true;

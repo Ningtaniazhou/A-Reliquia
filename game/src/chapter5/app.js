@@ -12,7 +12,7 @@ import {ChapterSound} from '../chapter4/sound.js';
 import {JerusalemAudio} from '../jerusalem/audio.js';
 import {updateSoundButton} from '../ui/sound-button.js';
 import {groups,initial,normalize,begin,advance,enter,scholarAvailable} from './state.js';
-import {bridges,bridgeDuration,newItems} from './journey-content.js';
+import {bridges,bridgePages,bridgeText,bridgeDuration,newItems} from './journey-content.js';
 import {places,spots,objective,files,assetsFor,paintScene} from './scenes.js';
 const $=s=>document.querySelector(s),params=new URLSearchParams(location.search),suffix=params.get('preview')==='hotel'?'.hotel-preview':params.has('preview')?'.preview':'',saveKey='reliquia.chapter5.v1'+suffix;
 let storage;try{storage=localStorage;}catch{storage={getItem:()=>null,setItem:()=>{throw Error('storage');},removeItem:()=>{}};}
@@ -44,7 +44,7 @@ function expose(){const d=s.dialogue,row=d&&groups[d.id]?.[d.line];if(!row||s.se
 function say(id){s=begin(s,id);stop();expose();persist();render();}
 function travel(id){stop();s.dialogue=null;s.choice=false;s.bridge={id,elapsed:0};audioScene();void unlock();persist();render();void prepareBridge();}
 async function prepareBridge(){if(!s.bridge||loadingScene)return;const id=s.bridge.id;loadingScene=id;try{await loadScene(bridges[id].to);$('#travel-error').hidden=true;}catch{$('#travel-error').hidden=false;}finally{loadingScene=null;}}
-async function finishBridge(){if(!s.bridge)return;const id=s.bridge.id,to=bridges[id].to;if(!assetsFor(to).every(key=>images[key]))return;stop();s=enter(s,to);checkpoint.capture(s);audioScene();expose();persist();render();}
+async function finishBridge(){if(!s.bridge)return;const id=s.bridge.id,to=bridges[id].to,page=s.bridge.page||0;if(page+1<bridgePages(id).length){s.bridge={...s.bridge,page:page+1,elapsed:0};persist();render();return;}if(!assetsFor(to).every(key=>images[key]))return;stop();s=enter(s,to);checkpoint.capture(s);audioScene();expose();persist();render();}
 function next(){if(paused||!s.dialogue||!ready)return;const before=s.bridge?.id;s=advance(s);expose();if(s.bridge?.id!==before){audioScene();void unlock();void prepareBridge();}persist();render();}
 function previous(){if(!paused&&s.dialogue?.line>0){s.dialogue.line--;persist();render();}}
 function closeTalk(){if(paused)return;if(s.dialogue){if(['hotelIntro','hotelNews','hotelAntiquity','nazarethIntro','springIntro','lisbon','opening'].includes(s.dialogue.id))return;s.dialogue=null;}else s.choice=false;persist();render();}
@@ -58,7 +58,7 @@ function render(){
  if(row){$('#talk small').textContent=row.who+(row.thought?' · 心声':'');$('#talk small').hidden=!row.who;$('#talk p').textContent=row.text;$('#previous').disabled=d.line===0;$('#close-talk').hidden=['hotelIntro','hotelNews','hotelAntiquity','nazarethIntro','springIntro','lisbon','opening'].includes(d.id);$('#talk').scrollTop=0;}
  $('#choices').hidden=!s.choice;$('#scholar').hidden=black||lisbon;$('#scholar').disabled=blocked()||!scholarAvailable(s);$('#scholar i').hidden=!scholarAvailable(s)|| (s.scene==='camp'?s.scholarRead:s.read.includes({nazareth:'nazarethScholar',hotel:'hotelScholar',spring:'springScholar'}[s.scene]));
  $('#hint').hidden=!!row||s.choice||bagOpen||black||lisbon;$('#hint').textContent=objective(s);$('.voyage-place').textContent=places[s.scene];$('.voyage-hud').hidden=black;$('#bag-button').disabled=!!row||s.choice;$('.voyage-screen').dataset.scene=lisbon?'lisbon':'jerusalem';canvas.setAttribute('aria-label',places[s.scene]+(lisbon?'':'，A D 行走，靠近后按 E 交互'));document.body.classList.toggle('home-mode',lisbon);
- $('#journey').hidden=!black;if(black){$('#journey p').textContent=bridges[s.bridge.id].text;const t=s.bridge.elapsed||0;$('#journey').style.opacity=s.reduced?'1':String(Math.min(1,t/.55));}else $('#travel-error').hidden=true;
+ $('#journey').hidden=!black;if(black){$('#journey p').textContent=bridgeText(s.bridge.id,s.bridge.page||0);const t=s.bridge.elapsed||0;$('#journey').style.opacity=s.reduced?'1':String(Math.min(1,t/.55));}else $('#travel-error').hidden=true;
  $('#arrival-end').hidden=!lisbon||!s.complete||bagOpen;preferences();document.querySelectorAll('[data-meal]').forEach((b,i)=>b.classList.toggle('selected',i===selected));markers();
 }
 function markers(){const host=$('#markers'),near=nearest(),marker=blocked()?'':near?.id||'';if(host.dataset.active===marker&&host.dataset.scene===s.scene)return;host.dataset.active=marker;host.dataset.scene=s.scene;host.replaceChildren();if(!blocked()&&near){const b=document.createElement('button');b.className='voyage-spot near';b.dataset.spot=near.id;b.style.left=near.x/960*100+'%';b.style.top=Math.min(near.y,(s.scene==='hotel'?460:475)-156-14)/540*100+'%';setPixelPrompt(b,near.label);b.onclick=()=>interact(near.id);host.append(b);}}
@@ -69,6 +69,7 @@ $('#sound').onclick=()=>{s.muted=!s.muted;preferences();void unlock();persist();
 $('#bag-button').onclick=bag;$('#scholar').onclick=()=>interact('scholar');$('#close-talk').onclick=closeTalk;$('#next').onclick=next;$('#previous').onclick=previous;$('#talk p').onclick=next;
 for(const b of document.querySelectorAll('[data-meal]'))b.onclick=()=>{if(paused)return;s.meal=b.dataset.meal;say(s.meal);};
 $('#chapter6-continue').onclick=()=>{persist();sound.stop();music.stop();location.href=chapterEntryURL('./chapter6.html'+(suffix?'?preview=chapter6':'?from=chapter5'));};
+$('#journey-next').onclick=()=>{if(ready&&!paused)void finishBridge();};
 $('#travel-error').onclick=()=>void prepareBridge();$('#retry').onclick=()=>void start();
 canvas.onclick=e=>{if(blocked())return;const r=canvas.getBoundingClientRect();target=Math.max(55,Math.min(905,(e.clientX-r.left)/r.width*960));};
 window.addEventListener('keydown',e=>{
@@ -76,13 +77,13 @@ window.addEventListener('keydown',e=>{
  if(paused||e.target.matches('input'))return;
  if(bagOpen){e.preventDefault();if(e.code==='Tab')bag();else backpack.key(e);return;}
  if(e.code==='Escape'){e.preventDefault();if(s.dialogue||s.choice){const before=s.dialogue;closeTalk();if(before&&s.dialogue===before)pause(true);}else pause(true);return;}
- if(s.bridge){if(['KeyD','ArrowRight','Space','Enter'].includes(e.code)){e.preventDefault();if(!e.repeat&&ready){s.bridge.elapsed=bridgeDuration(s.bridge.id);persist();void finishBridge();}}return;}
+ if(s.bridge){if(['KeyD','ArrowRight','Space','Enter'].includes(e.code)){e.preventDefault();if(!e.repeat&&ready){s.bridge.elapsed=bridgeDuration(s.bridge.id,s.bridge.page||0);persist();void finishBridge();}}return;}
  if(s.dialogue){if(['KeyA','ArrowLeft'].includes(e.code)){e.preventDefault();previous();}if(['KeyD','ArrowRight','Space','Enter'].includes(e.code)){e.preventDefault();if(!e.repeat)next();}return;}
  if(s.choice){if(['KeyW','KeyS','ArrowUp','ArrowDown'].includes(e.code)){e.preventDefault();selected=1-selected;render();}if(['Space','Enter'].includes(e.code)){e.preventDefault();if(!e.repeat)document.querySelectorAll('[data-meal]')[selected].click();}return;}
  if(e.code==='Tab'){e.preventDefault();bag();}else if(e.code==='KeyR')interact('scholar');else if(e.code==='KeyE')interact();else if(['KeyA','KeyD','ArrowLeft','ArrowRight'].includes(e.code)){e.preventDefault();keys.add(e.code);target=null;}
 });
 window.addEventListener('keyup',e=>keys.delete(e.code));window.addEventListener('blur',stop);document.addEventListener('pointerdown',()=>void unlock());document.addEventListener('visibilitychange',()=>{stop();sound.pause(paused||document.hidden);music.pause(paused||document.hidden);last=performance.now();persist();});window.addEventListener('pagehide',()=>{persist();sound.stop();music.stop();});
-function tick(now){const dt=Math.min(.06,(now-last)/1000);last=now;if(ready&&!paused&&!document.hidden){moving=false;if(s.bridge){s.bridge.elapsed=(s.bridge.elapsed||0)+dt;$('#journey').style.opacity=s.reduced?'1':String(Math.min(1,s.bridge.elapsed/.55));if(s.bridge.elapsed>=bridgeDuration(s.bridge.id))void finishBridge();}else if(!blocked()){let dir=(keys.has('KeyD')||keys.has('ArrowRight')?1:0)-(keys.has('KeyA')||keys.has('ArrowLeft')?1:0);if(target!==null){dir=Math.sign(target-s.x);if(Math.abs(target-s.x)<4){target=null;dir=0;}}const before=s.x,step=target!==null?Math.min(210*dt,Math.abs(target-s.x)):210*dt;s.x=Math.max(55,Math.min(905,s.x+dir*step));moving=before!==s.x;if(moving){s.facing=dir;distance+=Math.abs(before-s.x);}}
+function tick(now){const dt=Math.min(.06,(now-last)/1000);last=now;if(ready&&!paused&&!document.hidden){moving=false;if(s.bridge){s.bridge.elapsed=(s.bridge.elapsed||0)+dt;$('#journey').style.opacity=s.reduced?'1':String(Math.min(1,s.bridge.elapsed/.55));if(s.bridge.elapsed>=bridgeDuration(s.bridge.id,s.bridge.page||0))void finishBridge();}else if(!blocked()){let dir=(keys.has('KeyD')||keys.has('ArrowRight')?1:0)-(keys.has('KeyA')||keys.has('ArrowLeft')?1:0);if(target!==null){dir=Math.sign(target-s.x);if(Math.abs(target-s.x)<4){target=null;dir=0;}}const before=s.x,step=target!==null?Math.min(210*dt,Math.abs(target-s.x)):210*dt;s.x=Math.max(55,Math.min(905,s.x+dir*step));moving=before!==s.x;if(moving){s.facing=dir;distance+=Math.abs(before-s.x);}}
  sound.tick(dt);paintScene(ctx,images,s,{moving,distance});markers();if(now-lastSave>1000){persist();lastSave=now;}}
  requestAnimationFrame(tick);}
 async function start(){ready=false;$('#load').hidden=false;$('#retry').hidden=true;try{await loadScene(s.scene);ready=true;$('#load').hidden=true;audioScene();if(!s.opened&&s.scene==='camp'){s.opened=true;say('opening');}expose();persist();render();void unlock();if(s.bridge)void prepareBridge();}catch{$('#load span').textContent='这一处未能载入。';$('#retry').hidden=false;}}

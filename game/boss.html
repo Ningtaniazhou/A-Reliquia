@@ -29,5 +29,5 @@
  <div id="loading" class="loading" role="status"><span></span></div>
  <div id="error" class="loading" hidden><p>画面未能载入。</p><button id="retry-load">重新载入</button></div>
 </main>
-<dialog id="settings"><form method="dialog"><h2>设置</h2><label>音量 <input id="volume" type="range" min="0" max="1" step="0.05"></label><div class="actions"><button id="restart" type="button">重新开始本章</button><button>继续</button></div><details><summary>操作与原作依据</summary><p>点击对白继续；点击一张牌直接打出。键盘左右键选牌，空格或回车确认；手柄方向键选牌，A 确认，菜单键暂停。</p><p id="source-note"></p><p>进度保存在本机。重新开始只影响这顿晚饭。</p></details></form></dialog>
+<dialog id="settings"><form method="dialog"><h2>设置</h2><label>音量 <input id="volume" type="range" min="0" max="1" step="0.05"></label><div class="actions"><button id="restart" type="button">重新开始本章</button><button>继续</button></div><details><summary>操作与原作依据</summary><p>点击对白继续；点击一张牌直接打出。键盘左右键选牌，空格或回车确认；手柄方向键选牌，A 确认，菜单键暂停。</p><p id="source-note"></p><p>进度保存在当前浏览器。重新开始本章会重置第二章进度。</p></details></form></dialog>
 <script type="module" src="./src/boss/app.js"></script><script type="module" src="./src/dialogue-portraits.js"></script><script type="module" src="./src/ui/dialogue-navigation.js"></script><script type="module" src="src/ui/nonverbal.js"></script></body></html>

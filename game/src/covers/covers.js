@@ -69,7 +69,7 @@ document.querySelector('#reading-new').onclick=()=>{try{restartReading();reading
 document.querySelector('#reading-cancel').onclick=()=>readingChoice.close();
 
 const settingsButton=document.createElement('button');settingsButton.id='cover-settings-open';settingsButton.textContent='设置';document.body.append(settingsButton);
-const settingsPanel=document.createElement('dialog');settingsPanel.id='cover-settings';settingsPanel.innerHTML='<h2>设置 · 已暂停</h2><label>音量 <input id="cover-volume" type="range" min="0" max="1" step=".05"></label><button id="cover-resume">返回游戏</button>';document.body.append(settingsPanel);
+const settingsPanel=document.createElement('dialog');settingsPanel.id='cover-settings';settingsPanel.innerHTML='<h2>设置 · 已暂停</h2><label>音量 <input id="cover-volume" type="range" min="0" max="1" step=".05"></label><button id="cover-resume">返回封面</button>';document.body.append(settingsPanel);
 function coverPreferences(p){Object.assign(settings,p);ambience.setVolume(p.volume);ambience.mute(p.muted);document.querySelector('#cover-volume').value=p.volume;soundLabel();}
 function toggleCoverSettings(){if(settingsPanel.open)settingsPanel.close();else{ambience.pause(true);settingsPanel.showModal();}}
 settingsButton.onclick=toggleCoverSettings;settingsPanel.addEventListener('close',()=>ambience.pause(document.hidden));document.querySelector('#cover-resume').onclick=()=>settingsPanel.close();document.querySelector('#cover-volume').oninput=e=>coverPreferences({...settings,volume:+e.target.value});coverPreferences(settings);

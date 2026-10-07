@@ -3,16 +3,16 @@ import {parcelAppearance} from '../voyage/parcel.js';
 const T='特奥多里科',P='波特',S='托普修斯';
 const group=(id,page,lines)=>lines.map(([who,text,type='A',thought=false],i)=>({id:`C5-J-${id}-${i+1}`,who,text,type,thought,source:`IN-CM 2021, pp.${page}`}));
 export const journey={
- nazarethIntro:group('nazareth-in','258–259',[[T,'终于到拿撒勒了。靴子里又进了沙。','O',true]]),
+ nazarethIntro:group('nazareth-in','258–259',[[T,'终于到拿撒勒了。总算可以歇一会儿。','O',true]]),
  nazarethPotte:group('nazareth-potte','258',[[T,'波特，你倒一点也不累。','O'],[P,'有这么漂亮的姑娘，谁还顾得上累呢？','O'],[T,'还没看够吗，波特？我只盼着早些上船，回里斯本去。','O']]),
  waterWoman:group('water-woman','258',[['汲水女子','先生，请让一让。我要去泉边。','O'],[T,'她垂下眼睛笑了笑。我连一句讨好的话也懒得说。','A',true],[T,'又是泉水，又是石头。到底还要在这里耽搁多久？我只想回里斯本。','O',true]]),
  // Retained only to resume an older interrupted save; no shared NPC hotspot.
  waterCarriers:group('water-carriers','258',[[T,'一个姑娘扶着肩上的红陶水罐，沿着树下的小路往泉边走。','A',true],[P,'姑娘，你一过来，我们赶路的疲倦都没了！','O'],['','她垂下眼睛笑了笑。波特捻着胡子，又凑过去说了几句。','A'],[T,'哼，搔首弄姿。波特倒还有这样的精神。','A',true]]),
  overlook:group('look','258–259',[[S,'从这里望过去，是以斯德拉伦平原。再远些，那是迦密山。'],[T,'风景倒不错。'],[T,'博士的手指还在远处转。我已经打了第三个哈欠。','A',true]]),
- nazarethScholar:group('nazareth-scholar','257–259',[[S,'我们经过了雅各井，也到过革尼撒勒湖。你似乎一路都没什么精神。','A'],[T,'这些天走得够多了，博士。我的脚可没有睡过。','O']]),
+ nazarethScholar:group('nazareth-scholar','257–259',[[S,'我们经过了雅各井，也到过革尼撒勒湖。你似乎一路都没什么精神。','A'],[T,'这些天走得够多了，博士。我只想坐下来歇歇。','O']]),
  hotelIntro:group('hotel-in','260–262',[[T,'床还是这么软。总算不用再睡帐篷了。','A',true],[P,'先生，荆棘冠的包裹也给您带回来了。','A'],[T,'好波特！这一包带回去，姨姨可要乐坏了。','A']]),
  hotelNews:group('hotel-news','260–261',[[P,'还有件新鲜事！希律门附近开了家咖啡馆，叫西奈休憩所。里面有台球桌！','A'],[T,'台球桌？好极了！有吃的，有台球——我早就盼着好好享受一下了！','A'],[T,'把荆棘冠的包裹放在桌上吧，好波特。晚饭后，咱们就去！','A']]),
- hotelAntiquity:group('hotel-antiquity','261',[[S,'特奥多里科！我们离开的这几天，挖出了一块圣殿的石碑！上面刻着禁止异教徒入内的铭文。饭后我们就去看看！','A'],[T,'那座门……绿色的大理石台阶，忽然又在我眼前闪了一下。','A',true],[T,'不去！博士，我受够了。从今天起，我一块石头也不看了，一处宗教遗迹也不去了！','A'],['','博士走开了。接下来的几天，我忙着核对、整理带给姨姨的圣物。波特也把装箱用的东西备齐了。','A']]),
+ hotelAntiquity:group('hotel-antiquity','261',[[S,'特奥多里科！我们离开的这几天，挖出了一块圣殿的石碑！上面的禁令不许非犹太人进入圣殿内区。饭后我们就去看看！','A'],[T,'那座门……绿色的大理石台阶，忽然又在我眼前闪了一下。','A',true],[T,'不去！博士，我受够了。从今天起，我一块石头也不看了，一处宗教遗迹也不去了！','A'],['','博士走开了。接下来的几天，我忙着核对、整理带给姨姨的圣物。波特也把装箱用的东西备齐了。','A']]),
  window:group('window','259–260',[[T,'又是这扇窗，这些墙，这间软和的客房。我伸手摸了摸床，总算不用再睡帐篷。','A',true]]),
  wardrobe:group('wardrobe','260；265',[[T,'衬衣、袜子，都得收好。路上淋湿的衣服也该干了。','A',true]]),
  packSmall:group('pack-small','261',[[T,'先收这些小圣物。木片、麦秆、念珠，还有约旦河水。','A'],[T,'我把小件分别裹上彩纸，再扎好丝带。','A',true],[T,'把包好的小件一件件放进箱子。外面又加了铁皮，这一路颠簸，可别碰坏了。','A',true],[T,'大箱子盖好了。桌上那包荆棘冠，还得另装。','O',true]]),
@@ -35,7 +35,9 @@ export const bridges={
  spring:{to:'spring',source:'IN-CM 2021, pp.265–267',type:'A',sound:'horse',text:'木箱随行李上了驮马。仆人送回的包裹，却还在我手里。\n\n我盘算着，等离开大家的视线，就找条沟把它扔掉。走到山路上的泉边，博士的马忽然拐过去，怎么拉也不肯走。'},
  return:{to:'lisbon',source:'IN-CM 2021, pp.268–276',type:'A',sound:'sea',text:'我们回到路上。身后，那女人还在祝福我们。\n\n到了雅法，我和波特告别，随博士乘船回埃及。次日，在亚历山德里亚，博士送我上了回葡萄牙的船。他再三保证：可以告诉姨姨，那就是原来的荆棘冠，一根刺也不差。\n\n两周后，我抱着木箱，坐上里斯本的马车。姨姨家的门，已经在前面了。'}
 };
-export const bridgeDuration=id=>Math.max(4,1.5+bridges[id].text.replace(/\s/g,'').length/9);
+export const bridgePages=id=>id==='return'?bridges[id].text.replace('祝福我们。\n\n','祝福我们。').replace('次日，在亚历山德里亚','\n\n次日，在亚历山德里亚').split('\n\n'):[bridges[id].text];
+export const bridgeText=(id,page=0)=>bridgePages(id)[page]||bridgePages(id)[0];
+export const bridgeDuration=(id,page=0)=>Math.max(4,1.5+bridgeText(id,page).replace(/\s/g,'').length/9);
 export const newItems=[
  {id:'c5-relic-box',name:'荆棘冠木盒',shortName:'荆棘冠木盒',icon:'./assets/chapter5/packing-v02/box-closed.webp',text:'荆棘冠的包裹已经放进去了。蓝花布衬着盒壁，白棉花垫在下面，褐纸和红带都没有拆动。盒盖已经钉牢。'},
  {id:'c5-returned-parcel',...parcelAppearance},

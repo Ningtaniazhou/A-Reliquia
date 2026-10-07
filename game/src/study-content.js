@@ -6,7 +6,7 @@ export const studyItems=[
   pt:'Casei. Sou pai. Tenho carruagem […]',
   note:'我的妻子热苏伊娜，是我少年同窗克里斯平的姐妹。',noteType:'source-based summary, pp. 306, 308–309'},
  {id:'medal',title:'基督勋章',textId:'STUDY-T02',version:2,page:'309',x:69,y:61,scale:5,
-  zh:'我受到邻里的敬重，还获得了基督勋章。',
+  zh:'我受到邻里的敬重，还获得了基督勋章——一项体面的荣誉。',
   pt:'Tenho carruagem, a consideração do meu bairro, a Comenda de Cristo.'},
  {id:'deed',title:'莫斯泰罗庄园的契据',textId:'STUDY-T03',page:'310',x:22,y:81,scale:4,
   zh:'我签下了那份契据；经历了那么多希望与失落，我终于成了莫斯泰罗庄园的主人。',
