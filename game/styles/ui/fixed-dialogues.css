@@ -46,6 +46,12 @@ html body .c7-dialogue.chapter-dialogue-fixed p{font-size:clamp(18px,1.55vw,23px
 html body .chapter-dialogue-fixed:not(.shared-black){animation:none!important;transition:none!important}
 /* Paper-stage portraits extend above their panel; scroll only the text itself. */
 html body .arrival-dialogue.chapter-dialogue-fixed,html body #dialogue.chapter-dialogue-fixed:not(.shared-pixel-dialogue),html body .c7-dialogue.chapter-dialogue-fixed{overflow:visible}
-html body #dialogue.chapter-dialogue-fixed:not(.shared-pixel-dialogue)>:is(#words,#line,#speech,.line),html body .c7-dialogue.chapter-dialogue-fixed>p{max-height:calc(var(--chapter-dialogue-height) - 80px);overflow-y:auto;scrollbar-width:thin}
+html body #dialogue.chapter-dialogue-fixed:not(.shared-pixel-dialogue)>:is(#words,#line,#speech,.line),html body .c7-dialogue.chapter-dialogue-fixed>p{max-height:none;overflow:visible}
 
 [data-native-portrait-ready="false"]{visibility:hidden!important}
+
+/* Only constrain prose if the viewport cannot accommodate the measured dialogue. */
+html body #dialogue.chapter-dialogue-fixed:not(.shared-black),html body .c7-dialogue.chapter-dialogue-fixed{display:flex;flex-direction:column}
+html body #dialogue.chapter-dialogue-fixed:not(.shared-black)>:is(#words,#line,#speech,.line),html body .c7-dialogue.chapter-dialogue-fixed>p{min-height:0;flex:0 1 auto;overflow-y:auto;scrollbar-width:thin}
+/* Keep the close control above the prose even on narrator pages without a name. */
+html body .shared-pixel-dialogue.chapter-dialogue-fixed>:is(small,.voyage-speaker,span)[hidden]{display:block!important;visibility:hidden!important}

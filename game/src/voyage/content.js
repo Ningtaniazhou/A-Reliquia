@@ -3,7 +3,7 @@ import {parcelAppearance} from './parcel.js';
 // Second narrative layer, pixel pilgrimage mode. Source boundary: design/第三章开场与登船教学_v0.1.md.
 export const items=[
  {id:'mary-parcel',...parcelAppearance},
- {id:'ticket',name:'“马拉加”号船票',shortName:'船票',icon:'./assets/voyage/items/ticket.png',text:'里斯本 → 直布罗陀 → 马耳他 → 亚历山德里亚。登船凭证。这趟航行结束下船时收回。'},
+ {id:'ticket',name:'“马拉加”号船票',shortName:'船票',icon:'./assets/voyage/items/ticket.webp',text:'里斯本 → 直布罗陀 → 马耳他 → 亚历山德里亚。登船凭证。这趟航行结束下船时收回。'},
 ];
 export const conversations={
  flowers:[['特奥多里科','卖花姑娘面前摆着漂亮的紫罗兰。我停下来，细看这些小小的紫色花朵。']],

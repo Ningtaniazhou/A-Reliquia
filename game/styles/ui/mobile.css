@@ -1,7 +1,7 @@
 /* Input capabilities distinguish phones from small desktop windows. */
 @media (hover:none) and (pointer:coarse) and (max-width:1000px){
  html{ -webkit-text-size-adjust:100%;text-size-adjust:100% }
- html body kbd,html body .key-guide,html body .shared-settings-help,.backpack-footer,.voyage-teaching,.j-menu>footer,.alex-menu>footer,.malta-options>footer{display:none!important}
+ html body kbd,html body .key-guide,html body .shared-settings-help,.backpack-footer,.j-menu>footer,.alex-menu>footer,.malta-options>footer{display:none!important}
  .keyboard-guide{display:none}
  html:root{--game-controls-top:8px;--game-controls-right:8px}
  html body [data-game-control=settings].pixel-control{width:60px!important}

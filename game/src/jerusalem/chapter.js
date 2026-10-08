@@ -1,6 +1,6 @@
 import {holyDone,travelReady,purchasedRelics} from './state.js';
 import {contextualTopics} from './chapter-content.js';
-import {scholarFor} from './regions.js';
+import {scholarFor,scholarAvailable} from './regions.js';
 // The host owns DOM, movement and save writes. This controller only maps intent.
 export function chapterController({state,talk,depart,showMenu,hint}){
  const choice=(label,run)=>({label,run});
@@ -26,11 +26,11 @@ export function chapterController({state,talk,depart,showMenu,hint}){
   if(id==='campScholar'){title='问博士';rows=[speech('耶里哥的遗迹。','ruins'),speech('荒山里的希律与施洗约翰。','herod')];}
   if(id==='forecourtScholar'){title='问博士';rows=[speech('苦路与彼拉多旧居。','viaScholar'),speech('这些圣物的来历。','marketScholar')];}
   if(id==='holyScholar'){title='问博士';rows=[speech('为什么有穆斯林守卫？','guardScholar'),speech('石头、灯火与仪式。','holyScholar')];}
-  if(id==='fatmeNext'){title='法特梅家';const first=s.fatmeStage===1;rows=[choice(first?'付七个金皮阿斯特，请她进来。':'付九个皮阿斯特，请另一位进来。',()=>{s.fatmePaid=first?1:2;talk(first?'fatmeOffer':'fatmeRefusal');})];}
+  if(id==='fatmeNext'){title='法特梅家';const first=s.fatmeStage===1;rows=[choice(first?'付七个金皮阿斯特，请她进来。':'付九个皮阿斯特，请另一位进来。',()=>{s.fatmePaid=first?1:2;s.x=Math.max(470,Math.min(680,s.x));s.facing=-1;s.fatmeAnchor=s.x;talk(first?'fatmeOffer':'fatmeRefusal');})];}
   if(contextualTopics[id]){if(contextualTopics[id].some(k=>!s.asked.includes(k)))rows=rows.filter(row=>!s.asked.includes(row.topic));}
   return title?{title,rows}:null;
  }
- function scholar(){const s=state();if(s.room==='forecourt')return showMenu('forecourtScholar');if(s.room==='holy')return showMenu('holyScholar');if(s.room==='camp')return showMenu('campScholar');if(s.room==='fatmeRoom')return talk('fatmeScholar');if(s.room==='wild'&&!s.seen.includes('treeThought'))return talk('crownScholar');talk(scholarFor(s));}
+ function scholar(){const s=state();if(!scholarAvailable(s))return;if(s.room==='forecourt')return showMenu('forecourtScholar');if(s.room==='holy')return showMenu('holyScholar');if(s.room==='camp')return showMenu('campScholar');if(s.room==='fatmeRoom')return talk('fatmeScholar');if(s.room==='wild'&&!s.seen.includes('treeThought'))return talk('crownScholar');talk(scholarFor(s));}
  function interact(id){const s=state();
   if(id==='mule'||id==='travel'){if(travelReady(s))showMenu('travel');return true;}
   if(id==='fatme'){if(!s.arranged)talk('fatme');else depart('fatmeRoom',860);return true;}

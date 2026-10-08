@@ -12,3 +12,8 @@ button.hotspot.pending:not(:disabled)::before{animation:chapter4-halo 2.8s ease-
 @keyframes chapter4-marker{0%,100%{opacity:1;transform:translate(-50%,-50%) scale(.82);filter:brightness(.85)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.22);filter:brightness(1.15)}}
 @keyframes chapter4-halo{0%,100%{opacity:.25;transform:translate(-50%,-50%) scale(.8)}50%{opacity:.7;transform:translate(-50%,-50%) scale(1.4)}}
 @media(prefers-reduced-motion:reduce){button.hotspot.pending:not(:disabled)::after{animation:none;opacity:1}button.hotspot.pending:not(:disabled)::before{animation:none;opacity:.3}}
+
+@media (hover:none) and (pointer:coarse) and (max-width:1000px){
+ button.hotspot::after{width:7px;height:7px;border-width:1.5px;box-shadow:0 0 0 .5px #f4d48c,0 0 4px 1px #efc36b88}
+ button.hotspot::before{width:13px;height:13px;border-width:.5px}
+}

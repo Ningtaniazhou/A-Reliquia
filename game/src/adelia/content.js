@@ -1,9 +1,9 @@
 export const start="introduction";
 export const nodes={
-  introduction:{id:'ADE-introduction',speaker:'特奥多里科 · 回忆',text:'西尔维里奥，绰号“林尚”，是我在科英布拉的同窗，也是以前的室友。我是在一个下着细雨的傍晚，经由他认识阿德里亚的。他带我去了萨里特雷一栋粉色的房子。那一晚，我坐到阿德里亚身边，连雨伞都忘了放下。后来，我们成了情人。\n\n如今，总算离开姨姨的目光了。今晚，我要去阿德里亚家，和她一起吃晚饭。',next:'arrival',scene:'narration',kind:'A',page:'93–95、108–109'},
+  introduction:{id:'ADE-introduction',speaker:'特奥多里科 · 回忆',text:'西尔维里奥，绰号“林尚”，是我在科英布拉的同窗，也是以前的室友。我是在一个下着细雨的傍晚，经由他认识阿德里娅的。他带我去了萨里特雷一栋粉色的房子。那一晚，我坐到阿德里娅身边，连雨伞都忘了放下。后来，我们成了情人。\n\n现在总算离开姨姨的目光了，我要去阿德里娅家，和她一起吃晚饭。',next:'arrival',scene:'narration',kind:'A',page:'93–95、108–109'},
   "arrival": {
     "id": "ADE-arrival",
-    "speaker": "阿德里亚",
+    "speaker": "阿德里娅",
     "text": "在姨姨那里，又只喝了清水？",
     "next": "sinner",
     "scene": "supper",
@@ -21,7 +21,7 @@ export const nodes={
   },
   "umbrella": {
     "id": "ADE-umbrella",
-    "speaker": "阿德里亚",
+    "speaker": "阿德里娅",
     "text": "还记得初次见面吗？你连雨伞都舍不得放到一旁。",
     "next": null,
     "scene": "supper",
@@ -52,7 +52,7 @@ export const nodes={
   },
   "close_reply": {
     "id": "ADE-close_reply",
-    "speaker": "阿德里亚",
+    "speaker": "阿德里娅",
     "text": "那么今晚，也不许你坐得那么远。",
     "next": "wealth",
     "scene": "supper",
@@ -70,7 +70,7 @@ export const nodes={
   },
   "shy_reply": {
     "id": "ADE-shy_reply",
-    "speaker": "阿德里亚",
+    "speaker": "阿德里娅",
     "text": "如今嘴倒甜了。可别又只顾着发愣。",
     "next": "wealth",
     "scene": "supper",
@@ -79,7 +79,7 @@ export const nodes={
   },
   "wealth": {
     "id": "ADE-wealth",
-    "speaker": "阿德里亚",
+    "speaker": "阿德里娅",
     "text": "你总说姨姨有房产、有银器。若真拿到那些钱，还会记得我吗？",
     "next": null,
     "scene": "supper",
@@ -110,7 +110,7 @@ export const nodes={
   },
   "house_reply": {
     "id": "ADE-house_reply",
-    "speaker": "阿德里亚",
+    "speaker": "阿德里娅",
     "text": "得了吧！你若真拿到钱，就不会再理我了！",
     "next": "leaving",
     "scene": "supper",
@@ -130,7 +130,7 @@ export const nodes={
   "vow_reply": {
     "id": "ADE-vow_reply",
     "version": 7,
-    "speaker": "阿德里亚",
+    "speaker": "阿德里娅",
     "text": "好听的话你倒不少。等真拿到了钱，可别又舍不得花在我身上。",
     "next": "leaving",
     "scene": "supper",
@@ -139,7 +139,7 @@ export const nodes={
   },
   "farewell": {
     "id": "ADE-farewell",
-    "speaker": "阿德里亚",
+    "speaker": "阿德里娅",
     "text": "裹暖些，亲爱的！",
     "next": "bridge",
     "scene": "supper",
@@ -149,7 +149,7 @@ export const nodes={
   },
   "who": {
     "id": "ADE-who",
-    "speaker": "阿德里亚 · 窗口",
+    "speaker": "阿德里娅 · 窗口",
     "text": "谁这么粗鲁？",
     "next": "open",
     "scene": "door",
@@ -169,7 +169,7 @@ export const nodes={
   },
   "refusal": {
     "id": "ADE-refusal",
-    "speaker": "阿德里亚 · 窗口",
+    "speaker": "阿德里娅 · 窗口",
     "text": "不能开门，我晚饭吃得迟，现在困了！",
     "next": "threat",
     "scene": "door",
@@ -189,7 +189,7 @@ export const nodes={
   },
   "dismiss": {
     "id": "ADE-dismiss",
-    "speaker": "阿德里亚 · 窗口",
+    "speaker": "阿德里娅 · 窗口",
     "text": "那就拉倒吧，替我问候你姨姨。",
     "next": null,
     "scene": "door",
@@ -209,7 +209,7 @@ export const nodes={
   },
   "coat": {
     "id": "ADE-coat",
-    "speaker": "阿德里亚",
+    "speaker": "阿德里娅",
     "text": "那就把外套穿好，别只顾着回头看我。",
     "next": "farewell",
     "scene": "supper",
@@ -219,7 +219,7 @@ export const nodes={
   "bridge": {
     "id": "ADE-bridge",
     "speaker": "",
-    "text": "几个月过去，阿德里亚对我渐渐冷淡。七月，她又亲热起来，向我要了八镑。我借神的名义编了个谎，把钱弄来。几天后，刚和她吵过架的女仆告诉我：那个被她称作“外甥”的阿德利诺，其实是她的情人；我的钱给那人买了新衣，还供他们一同出游。当夜一点过后，我来到阿德里亚的门前。",
+    "text": "几个月过去，阿德里娅对我渐渐冷淡。七月，她又亲热起来，向我要了八镑。我借神的名义编了个谎，把钱弄来。几天后，刚和她吵过架的女仆告诉我：那个被她称作“外甥”的阿德利诺，其实是她的情人；我的钱给那人买了新衣，还供他们一同出游。当夜一点过后，我来到阿德里娅的门前。",
     "next": "who",
     "scene": "narration",
     "kind": "A",
@@ -227,4 +227,4 @@ export const nodes={
     "note": "单屏旁白压缩数月过程。有关情人身份与钱款用途保留女仆转述来源；不以全知口吻确认。无分支，仅阅读后继续。"
   }
 };
-export const sourceNote="阿德里亚段依据 IN-CM 2021 p.94、99–100、108–115，跨时期重组。两组选项改变当下回应；离席前两句为原创衔接。黑屏旁白压缩数月过程，情人身份与八镑用途由女仆转述。以门外最后一句拒绝结束。";
+export const sourceNote="阿德里娅段依据 IN-CM 2021 p.94、99–100、108–115，跨时期重组。两组选项改变当下回应；离席前两句为原创衔接。黑屏旁白压缩数月过程，情人身份与八镑用途由女仆转述。以门外最后一句拒绝结束。";

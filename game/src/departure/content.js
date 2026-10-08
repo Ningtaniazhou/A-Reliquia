@@ -1,5 +1,5 @@
 import {nodes as romance} from '../adelia/content.js';
-export const people={teo:'特奥多里科',adelia:'阿德里亚',aunt:'姨姨',casimiro:'卡西米罗神父',pinheiro:'皮涅罗神父',margaride:'马加里德博士'};
+export const people={teo:'特奥多里科',adelia:'阿德里娅',aunt:'姨姨',casimiro:'卡西米罗神父',pinheiro:'皮涅罗神父',margaride:'马加里德博士'};
 const n=(id,scene,person,text,page,kind='A',extra={})=>({id:'DEP-'+id,key:id,scene,person,text,page,kind,...extra});
 export const script=[
  n('cooling','black',null,romance.bridge.text,'110–115'),

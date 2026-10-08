@@ -59,7 +59,7 @@ function render(){checkpoint?.capture(s);
  if(['feast','end'].includes(s.phase)){
   const n=romanceCurrent(s);game.dataset.romanceScene=n.scene;
   setImage($('outside'),n.scene==='door'?'./assets/adelia/door.webp':n.scene==='street'?asset('street',true):asset('feast',true));
-  $('outside').alt=n.scene==='door'?'深夜，特奥多里科被挡在阿德里亚的门外':'特奥多里科回忆与阿德里亚的相处';say(n);
+  $('outside').alt=n.scene==='door'?'深夜，特奥多里科被挡在阿德里娅的门外':'特奥多里科回忆与阿德里娅的相处';say(n);
   $('scene-time').hidden=!n.time;$('scene-time').textContent=n.time||'';
   const choices=$('romance-choices');choices.replaceChildren();choices.hidden=!n.choices;
   for(const c of n.choices||[]){const btn=document.createElement('button');btn.type='button';btn.textContent=c.text;btn.addEventListener('click',()=>{if(tr||paused||!ready)return;void activateSound();sound.pick();commit(romanceChoose(s,c.id));});choices.append(btn);}

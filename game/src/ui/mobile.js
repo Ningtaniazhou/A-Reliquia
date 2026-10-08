@@ -1,6 +1,6 @@
 // Touch-first phones keep the same actions and saves, with device-appropriate hints.
-export const phoneQuery=matchMedia('(hover: none) and (pointer: coarse) and (max-width: 1000px)');
-export const isPhone=()=>phoneQuery.matches;
+import {phoneQuery,isPhone} from './input-device.js';
+export {phoneQuery,isPhone};
 const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href=new URL('../../styles/ui/mobile.css',import.meta.url);document.head.append(sheet);
 
 export function installPhoneOrientation({toggleSettings,closeTop,settingsPanel,enabled}){

@@ -1,3 +1,4 @@
+import {isPhone} from '../ui/input-device.js';
 import {cardFlight} from '../ui/card-flight.js?v=20261003-fix1';
 import {chapterEntryURL,consumeChapterEntry} from '../ui/chapter-entry.js';
 consumeChapterEntry();
@@ -100,18 +101,21 @@ function paintStage(){const a=area(s),empty=['curtainClosed','curtainOpening','e
 }
 function scaleActors(){const a=document.querySelector('.aunt'),t=document.querySelector('.teo');if(!['awaken','challenge','battle','cast','triumphHold','triumph','homeFade'].includes(s.phase))return;const pairs=[[1.65,1],[1.3,1.2],[.95,1.45],[.65,1.7]];let [as,ts]=pairs[s.used.length];if(s.phase==='awaken'){const q=Math.min(1,s.elapsed);as=1+.65*q;ts=1;}if(a)a.style.transform=`scale(${s.used.length===3?1:as})`;if(t)t.style.transform=`scale(${ts})`;}
 function renderBoss(){
- const active=['awaken','challenge','battle','cast','triumphHold','triumph','homeFade'].includes(s.phase),hero=active&&s.used.length===3;
+ const active=['challenge','battle','cast','triumphHold','triumph','homeFade'].includes(s.phase),hero=active&&s.used.length===3;
  const hud=$('boss-hud'),halo=$('saint-halo');hud.hidden=!active||hero;halo.hidden=!hero;
  if(!active)return;
  const actor=document.querySelector(hero?'.teo':'.aunt');if(!actor)return;
  const stage=$('stage').getBoundingClientRect(),r=actor.getBoundingClientRect();
  if(hero){halo.style.left=(r.x-stage.x+r.width/2)+'px';halo.style.top=Math.max(24,r.y-stage.y+r.height*.055)+'px';halo.style.width=Math.min(130,r.width*.43)+'px';return;}
  const hp=Math.max(0,100-(s.used.length+(s.phase==='cast'&&s.elapsed>=2.2?1:0))*100/3);
- hud.dataset.owner='aunt';$('boss-name').textContent='帕特罗西尼奥·达斯内维斯 · 姨姨';
+ hud.dataset.owner='aunt';$('boss-name').textContent=isPhone()?'姨姨':'帕特罗西尼奥·达斯内维斯 · 姨姨';
  $('boss-health').style.width=hp+'%';$('boss-meter').setAttribute('aria-valuenow',String(Math.round(hp)));
  const {width:w,height:h}=hud.getBoundingClientRect();
  hud.style.left=Math.max(12,Math.min(stage.width-w-12,r.x-stage.x+r.width/2-w/2))+'px';
- hud.style.top=Math.max(64-stage.y,r.y-stage.y-h-10)+'px';
+ // The image uses object-fit:contain, anchored at its bottom. Track the drawn head, not the CSS box.
+ const imageHeight=Math.min(r.height,r.width*actor.naturalHeight/actor.naturalWidth);
+ const head=r.bottom-stage.y-imageHeight;
+ hud.style.top=Math.max(4,head-h-6)+'px';
 }
 function renderHotspot(){
  const spots={cardInspect:{x:40,y:24,label:'查看纸卡'},seat:{x:30.5,y:66,label:'点击绿绒座椅坐下'},lights:{x:64,y:59,label:'请姨姨添灯'},unbox:{x:45,y:s.step===0?49:44,label:actionLabels['unbox'+s.step]},take:{x:83,y:78,label:'提起大箱子'},exit:{x:27,y:46,label:'走出房门'},empty:{x:13,y:49,label:'离开祈祷室'}};
@@ -165,7 +169,7 @@ function render(){preferences();sound.scene(s.phase);const signature=[s.phase,['
  $('intertitle').hidden=s.phase!=='eveningBlack';$('intertitle-words').textContent=s.phase==='eveningBlack'?row()?.text||'':'';
 
 }
-const required=['v11/dress-floor','v10/crate-open','v08/chapel-clean','v08/dedication-paper','v08/teo-seated','v08/aunt-seated','v08/guest-0','v08/guest-1','v08/guest-2','v08/guest-3','v08/ribbon-0','v08/ribbon-1','v08/ribbon-2',...['teo-surprised','teo-sad','teo-chair','aunt-angry','aunt-chair',...Array.from({length:4},(_,i)=>'guest-chair-'+i)].map(n=>'v09/'+n),'v02/doorway-v2','v02/chapel-v2','v02/aunt-kneel-v2','v02/dress-v2','v02/aunt-hands-v2','v02/teo-sad-v2','bedroom','gate-night','plain-chair',...Array.from({length:8},(_,i)=>'guest-'+i),...Array.from({length:4},(_,i)=>'extra-'+i),...Array.from({length:8},(_,i)=>'aunt-'+i),...Array.from({length:8},(_,i)=>'people-'+i),...Array.from({length:8},(_,i)=>'obj-'+i),...Array.from({length:3},(_,i)=>'card-'+String(i).padStart(2,'0'))];
+const required=["v11/dress-floor","v10/crate-open","v08/chapel-clean","v08/dedication-paper","v08/teo-seated","v08/aunt-seated","v08/guest-0","v08/guest-1","v08/guest-2","v08/guest-3","v08/ribbon-0","v08/ribbon-1","v08/ribbon-2","v09/teo-surprised","v09/teo-sad","v09/teo-chair","v09/aunt-angry","v09/aunt-chair","v09/guest-chair-0","v09/guest-chair-1","v09/guest-chair-2","v09/guest-chair-3","v02/doorway-v2","v02/aunt-kneel-v2","v02/dress-v2","v02/aunt-hands-v2","bedroom","extra-0","extra-2","extra-3","aunt-0","aunt-1","aunt-4","people-1","people-3","people-5","people-6","obj-0","obj-1","obj-2","obj-3","obj-4","obj-5","obj-6","obj-7","card-00","card-01","card-02","guest-portrait-2","guest-portrait-3","guest-portrait-6"];
 let leavingForBook=false;
 async function finishIntoNotebook(){if(leavingForBook)return;leavingForBook=true;s=normalize({...s,phase:'end',complete:true,elapsed:0});save();$('dialogue').hidden=true;$('ending').hidden=true;$('stage').style.opacity=1;await returnToNotebook($('stage'),{preview,reduced:s.reduced,paused:()=>paused||document.hidden,onFinish:()=>sound.stop()});}
 async function start(){ready=false;$('load').hidden=false;$('retry').hidden=true;try{await Promise.all([...required.map(asset),'./assets/dinner/street.webp'].map(src=>{const image=new Image();image.src=src;return image.decode();}));ready=true;$('load').hidden=true;render();save();if(['ending','end'].includes(s.phase))void finishIntoNotebook();}catch{$('load p').textContent='舞台素材未能载入。';$('retry').hidden=false;}}

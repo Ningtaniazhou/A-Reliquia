@@ -32,13 +32,13 @@ let checkpoint;
 const voyage=new Voyage($('voyage'),{sound,prefs:pref,saved:s.voyage,onSave:value=>{s={...s,voyage:value};checkpoint?.capture(s);return save(store,s);},onMenu:()=>menu()});
 window.reliquiaChapterPause=on=>pause(on);window.reliquiaLeaveChapter=()=>sound.stop();window.reliquiaEnterChapter=()=>{void unlock();};
 const routePlan=new RoutePlan({step:s.routeStep,save:step=>{s={...s,routeStep:step};save(store,s);},finish:()=>commit(interact(s,'unfold')),reduced:()=>pref.reduced});
-const bg={door:'./assets/adelia/door.webp',dinner:'./assets/departure/dinner-facing-aunt.webp',salon:'./assets/departure/private-room.webp',guide:'./assets/departure/paper-no-pen.webp',exit:'./assets/departure/farewell-room.webp',harbor:'./assets/voyage/harbor.webp'};
+const bg={door:'./assets/adelia/door.webp',dinner:'./assets/departure/dinner-facing-aunt.webp',dinnerTear:'./assets/departure/dinner-aunt-tear.webp',salon:'./assets/departure/private-room.webp',guide:'./assets/departure/paper-no-pen.webp',exit:'./assets/departure/farewell-room.webp',harbor:'./assets/voyage/harbor.webp'};
 const labels={paris:'想象中的巴黎',jerusalem:'想象中的耶路撒冷',alexandria:'想象中的亚历山德里亚'};
 function preference(){document.body.classList.toggle('reduced',pref.reduced);sound.update();updateSoundButton($('mute'),pref.muted||pref.volume===0,{shortcut:'M'});$('volume').value=pref.volume;try{if(bridge)bridge.preferences(pref);else store.setItem(PREF,JSON.stringify(pref));}catch{}voyage.ui();}
 function music(){const n=current(s);if(n.scene==='harbor'){voyage.music();sound.sea(false);return;}if(!tr){sound.request(['dinner','salon','guide','exit'].includes(n.scene)?'auntHome':null,1.8);sound.sea(n.scene==='harbor');}}
 function busy(){const lock=!ready||paused||!!tr||hold>0,n=current(s);$('dialogue').disabled=lock||!!n.action||!!n.end;$('unfold').disabled=$('leave').disabled=lock;$('advance').hidden=lock;}
 function render(){checkpoint?.capture(s);const n=current(s);play.dataset.scene=n.scene;delete play.dataset.dream;if(n.dream)play.dataset.dream=n.dream;
- $('backdrop').src=bg[n.scene]||bg.dinner;$('backdrop').alt={door:'深夜，特奥多里科站在关闭的门前，阿德里亚在楼上',dinner:'姨姨家的烛光饭厅',salon:'姨姨家，宗教画像与烛光环绕',guide:'出发前的行程',exit:'通往外面的门',harbor:'像素画风的里斯本港，一艘轮船等待启航'}[n.scene]||'';
+ $('backdrop').src=n.scene==='dinner'&&n.tear?bg.dinnerTear:bg[n.scene]||bg.dinner;$('backdrop').alt={door:'深夜，特奥多里科站在关闭的门前，阿德里娅在楼上',dinner:'姨姨家的烛光饭厅',salon:'姨姨家，宗教画像与烛光环绕',guide:'出发前的行程',exit:'通往外面的门',harbor:'像素画风的里斯本港，一艘轮船等待启航'}[n.scene]||'';
  $('dialogue').hidden=!!n.action||!!n.end;$('speaker').textContent=people[n.person]||'';$('line').textContent=n.text;$('dialogue').setAttribute('aria-label',n.scene==='black'?'阅读后继续':'继续对话');
  $('portrait').hidden=!n.person;$('portrait-art').dataset.person=n.person||'';$('portrait-art').classList.toggle('tear',!!n.tear);
  $('dream').hidden=!n.dream;$('dream-art').dataset.place=n.dream||'';$('dream-label').textContent=labels[n.dream]||'';

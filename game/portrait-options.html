@@ -1,8 +1,0 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>特奥多里科 · 对话立绘比较</title><link rel="stylesheet" href="./styles/portrait-options.css"></head><body>
-<header><div><h1>特奥多里科 · 对话立绘</h1><p id="description">A · 清线插画</p></div><nav aria-label="切换立绘方案"><button data-version="a" aria-pressed="true">A 清线插画</button><button data-version="b" aria-pressed="false">B 几何色块</button><button data-version="c" aria-pressed="false">C 圆润绘本</button></nav></header>
-<main><section id="comparison" aria-label="立绘与文本框位置预览"><div class="background"></div><img id="sprite" src="./assets/portrait-options/v02/a.webp" alt="A版特奥多里科半身立绘"><div class="textbox"><div class="speaker">特奥多里科</div><p>去看教堂，姨姨！</p><span class="advance" aria-hidden="true">◆</span></div></section><p class="note">立绘宽、高均为上一版的四分之一。切换 A / B / C 比较立绘风格；尚未替换其他角色。</p></main>
-<script type="module">
- const labels={a:'A · 清线插画：简洁轮廓与平涂阴影。',b:'B · 几何色块：无描边的简洁几何形状。',c:'C · 圆润绘本：圆润造型与更夸张的表情。'};
- function select(v){if(!labels[v])v='a';document.querySelector('#sprite').src='./assets/portrait-options/v02/'+v+'.webp';document.querySelector('#sprite').alt=v.toUpperCase()+'版特奥多里科半身立绘';document.querySelector('#description').textContent=labels[v];document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.version===v)));const u=new URL(location);u.searchParams.set('v',v);history.replaceState(null,'',u);document.documentElement.dataset.version=v;}
- document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>select(b.dataset.version)));select(new URLSearchParams(location.search).get('v')||'a');
-</script><script type="module" src="src/ui/nonverbal.js"></script></body></html>

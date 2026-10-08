@@ -26,7 +26,7 @@ if(!s.inventoryImported){const prev=read('reliquia.jerusalem-study.v1'+(suffix?'
 const inheritedLetter=read('reliquia.jerusalem-study.v1'+(suffix?'.camp-preview':''));if(inheritedLetter?.letter==='sent')s.letterSent=true;
 s=normalize(s);
 for(const item of [...relicItems,...newItems])itemById.set(item.id,item);
-itemById.set('aunt-letter',{id:'aunt-letter',name:'写给姨姨的信',shortName:'信件',icon:'./assets/jerusalem/letter.png',text:letters.join('\n\n')});
+itemById.set('aunt-letter',{id:'aunt-letter',name:'写给姨姨的信',shortName:'信件',icon:'./assets/jerusalem/letter.webp',text:letters.join('\n\n')});
 Object.assign(s,readPreferences(s));
 const checkpoint=sceneCheckpoint(storage,saveKey+'.scene',s=>s.scene);checkpoint.capture(s);
 const sound=new ChapterSound(),music=new JerusalemAudio(s),images={},pending=new Map(),canvas=$('canvas'),ctx=canvas.getContext('2d'),keys=new Set();
@@ -52,6 +52,8 @@ function nearest(){return spots(s).filter(p=>Math.abs(p.x-s.x)<86).sort((a,b)=>M
 function interact(id){if(blocked())return;const p=id==='scholar'?null:id?spots(s).find(p=>p.id===id):nearest();if(id!=='scholar'&&(!p||Math.abs(p.x-s.x)>=86))return;void unlock();if(id==='scholar'&&!scholarAvailable(s))return;if(id==='scholar')return say({camp:'scholar',nazareth:'nazarethScholar',hotel:'hotelScholar',spring:'springScholar'}[s.scene]);
  const actions={leaveCamp:()=>travel('pilgrimage'),leaveNazareth:()=>travel('hotel'),leaveHotel:()=>{s.x=770;s.facing=1;say('returned');},leaveSpring:()=>travel('return'),potte:()=>say(s.meal||'breakfast'),packSmall:()=>say(!s.read.includes('hotelNews')?'hotelNews':!s.read.includes('hotelAntiquity')?'hotelAntiquity':s.smallPacked?'smallPacked':'packSmall'),pack:()=>say(s.packed?'packed':!s.read.includes('hotelNews')?'hotelNews':!s.read.includes('hotelAntiquity')?'hotelAntiquity':!s.smallPacked?'packSmall':'pack'),nazarethPotte:()=>{s.facing=s.x<335?1:-1;say('nazarethPotte');},waterWoman:()=>{s.facing=s.x<500?1:-1;say('waterWoman');},woman:()=>{s.x=s.x>710?800:620;s.facing=s.x>710?-1:1;say(s.given?'womanAfter':s.read.includes('woman')?'give':'woman');}};(actions[p.id]||(()=>say(p.id)))();}
 function bag(){if(paused||s.dialogue||s.choice||s.bridge||!ready)return;stop();bagOpen=!bagOpen;if(bagOpen)backpack.open(s.items,{checked:true});else backpack.close();render();}
+let homeHandoff=false;
+function continueHome(){if(homeHandoff||!ready||paused)return;homeHandoff=true;persist();sound.stop();music.stop();location.href=chapterEntryURL('./chapter6.html'+(suffix?'?preview=chapter6':'?from=chapter5'));}
 function render(){
  const d=s.dialogue,row=d&&groups[d.id]?.[d.line],black=!!s.bridge,lisbon=s.scene==='lisbon';
  $('#talk').hidden=!row;$('#talk').classList.toggle('thought',!!row?.thought);$('#talk').classList.toggle('interjection',row?.who==='托普修斯');
@@ -59,7 +61,7 @@ function render(){
  $('#choices').hidden=!s.choice;$('#scholar').hidden=black||lisbon;$('#scholar').disabled=blocked()||!scholarAvailable(s);$('#scholar i').hidden=!scholarAvailable(s)|| (s.scene==='camp'?s.scholarRead:s.read.includes({nazareth:'nazarethScholar',hotel:'hotelScholar',spring:'springScholar'}[s.scene]));
  $('#hint').hidden=!!row||s.choice||bagOpen||black||lisbon;$('#hint').textContent=objective(s);$('.voyage-place').textContent=places[s.scene];$('.voyage-hud').hidden=black;$('#bag-button').disabled=!!row||s.choice;$('.voyage-screen').dataset.scene=lisbon?'lisbon':'jerusalem';canvas.setAttribute('aria-label',places[s.scene]+(lisbon?'':'，A D 行走，靠近后按 E 交互'));document.body.classList.toggle('home-mode',lisbon);
  $('#journey').hidden=!black;if(black){$('#journey p').textContent=bridgeText(s.bridge.id,s.bridge.page||0);const t=s.bridge.elapsed||0;$('#journey').style.opacity=s.reduced?'1':String(Math.min(1,t/.55));}else $('#travel-error').hidden=true;
- $('#arrival-end').hidden=!lisbon||!s.complete||bagOpen;preferences();document.querySelectorAll('[data-meal]').forEach((b,i)=>b.classList.toggle('selected',i===selected));markers();
+ if(lisbon&&s.complete&&!bagOpen)queueMicrotask(continueHome);preferences();document.querySelectorAll('[data-meal]').forEach((b,i)=>b.classList.toggle('selected',i===selected));markers();
 }
 function markers(){const host=$('#markers'),near=nearest(),marker=blocked()?'':near?.id||'';if(host.dataset.active===marker&&host.dataset.scene===s.scene)return;host.dataset.active=marker;host.dataset.scene=s.scene;host.replaceChildren();if(!blocked()&&near){const b=document.createElement('button');b.className='voyage-spot near';b.dataset.spot=near.id;b.style.left=near.x/960*100+'%';b.style.top=Math.min(near.y,(s.scene==='hotel'?460:475)-156-14)/540*100+'%';setPixelPrompt(b,near.label);b.onclick=()=>interact(near.id);host.append(b);}}
 function pause(v){paused=v;stop();document.body.classList.toggle('paused',v);sound.pause(v||document.hidden);music.pause(v||document.hidden);if(v){if(!$('#settings').open)$('#settings').showModal();}else {$('#settings').close();$('.voyage-screen').focus({preventScroll:true});}render();}
@@ -68,7 +70,6 @@ restartButton($('#settings'),async()=>{const old=checkpoint.restore();if(!old)re
 $('#sound').onclick=()=>{s.muted=!s.muted;preferences();void unlock();persist();};$('#volume').oninput=e=>{s.volume=+e.target.value;preferences();persist();};
 $('#bag-button').onclick=bag;$('#scholar').onclick=()=>interact('scholar');$('#close-talk').onclick=closeTalk;$('#next').onclick=next;$('#previous').onclick=previous;$('#talk p').onclick=next;
 for(const b of document.querySelectorAll('[data-meal]'))b.onclick=()=>{if(paused)return;s.meal=b.dataset.meal;say(s.meal);};
-$('#chapter6-continue').onclick=()=>{persist();sound.stop();music.stop();location.href=chapterEntryURL('./chapter6.html'+(suffix?'?preview=chapter6':'?from=chapter5'));};
 $('#journey-next').onclick=()=>{if(ready&&!paused)void finishBridge();};
 $('#travel-error').onclick=()=>void prepareBridge();$('#retry').onclick=()=>void start();
 canvas.onclick=e=>{if(blocked())return;const r=canvas.getBoundingClientRect();target=Math.max(55,Math.min(905,(e.clientX-r.left)/r.width*960));};

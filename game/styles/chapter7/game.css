@@ -71,7 +71,38 @@ body{overflow:hidden}#view{height:100svh}.brand{font-size:14px;letter-spacing:.1
 .final-controls{top:auto;bottom:28px;left:12%;width:76%;height:40px;transform:none;background:none;padding:0;z-index:28}
 .final-controls .dialogue-nav{left:0;right:0}
 #game[data-mode="final"] .art-area::after{content:'';position:absolute;inset:0;background:#0005;pointer-events:none}
-.fade-shade{background:#eee6d2;z-index:22}
+.fade-shade{background:#000;z-index:22}
 #ending-book{animation:none}
 .book-overlays .last-words{position:absolute;cursor:default;pointer-events:none;z-index:2}
-.book-arrival-paper{position:absolute;inset:0;background:#eee6d2;pointer-events:none;z-index:1}
+
+
+/* A bridge page remains blank until the flying scene lands on it. */
+#game[data-bridge] .handoff-picture{visibility:hidden}
+/* Keep all of each illustration in the page, including faces and feet. */
+.c7-book .illustration{container-type:size;min-height:0;max-height:none;aspect-ratio:auto}
+.c7-book .ornament-art{width:min(100cqw,169cqh);height:auto;aspect-ratio:1.69;max-height:100%;flex-shrink:0}
+.c7-book .ornament-art>img{object-fit:contain}
+.c7-book .scene-thumb,.c7-book .handoff-picture{width:min(100cqw,177.778cqh);height:auto;max-height:100%;aspect-ratio:16/9;flex-shrink:0}
+.c7-book .scene-thumb img{width:100%;height:100%;object-fit:contain}
+/* Explicit front-plane culling also avoids flattened descendants bleeding through in WebKit. */
+.book-closing .page-left .page-content{transform:translateZ(1px);-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.book-closing .page-left::before{-webkit-backface-visibility:hidden;backface-visibility:hidden}
+#game[data-fold-back=true] .book-closing .page-left .page-content,
+#game[data-fold-back=true] .book-closing .page-left::after{visibility:hidden}
+@media (hover:none) and (pointer:coarse) and (max-width:1000px){
+ .c7-book{padding:48px 22px 10px;align-items:stretch}
+ .c7-book .book-wrap{width:100%;height:calc(100dvh - 58px);min-height:0}
+ .c7-book .page{padding:10px 18px 10px}
+ .c7-book .page-content{display:flex;gap:7px;min-height:0}
+ .c7-book .page-number{display:none}
+ .c7-book .page-prose{font-size:14px;line-height:1.45;letter-spacing:0;max-height:none;flex:0 0 auto;overflow:visible}
+ .c7-book .illustration{flex:1 1 0;min-height:0}
+ .c7-book .close-notebook{width:44px;height:44px;right:0}
+}
+
+/* This single mounted book crossfades underneath the persistent, already typeset words. */
+#ending-book{z-index:23;animation:none}
+
+/* Broad central target; the persistent words themselves also advance the ending. */
+.final-controls{inset:78px 8% 6%;width:auto;height:auto;transform:none;background:none;padding:0;z-index:24;border:0;border-radius:0}
+.final-continue-hint{position:absolute;bottom:0;left:0;right:0;text-align:center;font:14px/1.6 var(--ui);letter-spacing:.08em;color:#e3d6be;opacity:.72;text-shadow:0 1px 5px #000}

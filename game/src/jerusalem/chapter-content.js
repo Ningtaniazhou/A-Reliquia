@@ -17,12 +17,12 @@ export const chapterDialogue={
  potteCaravan:d('164；169；175',[[P,'帐篷、咖啡、行李，都有人照料。您到溪边后，想去附近走走也行，记得认住回来的路。'],[T,'我正需要一段不用听人卖圣物的路。'],[P,'那就去走走吧，先生。只是天黑前记得回营地。']],null,'O'),
  pottePacking:d('175',[[P,'枝条得趁还能弯的时候编。再垫棉花，用纸包好，刺就不会扎破行李。'],[T,'手艺好极了，波特。这样的东西，到了里斯本一定大有用处。']],null,'O'),
  fatmeWelcome:d('158–159',[[F,'请坐。'],[T,'我们是来看“耶里哥之花”的。'],[F,'她今晚不在。德国王子请她去了。'],[T,'德国王子？他请得，我就请不得？'],[S,'德国，特奥多里科，是精神的祖国……'],[T,'葡萄牙也并非一无所有，博士！至少不该让我白跑一趟。'],[F,'还有一位切尔克斯姑娘。七个金皮阿斯特。']],'fatmeWelcome'),
- fatmeOffer:d('159–160',[[N,'姑娘在长榻旁坐下来，向我索要小礼物。我打量着她，越看越觉得自己遭了怠慢。'],['姑娘','给一点小礼物吧，先生。'],[T,'我原以为，这里会让我高兴些。'],[S,'你来时那么高兴，如今倒只顾着生气了。'],[T,'白等了这么久，还要一回回付钱！'],[F,'还可以请另一位姑娘来。九个皮阿斯特。']],'fatmeOffer'),
- fatmeRefusal:d('160–162',[[N,'另一位姑娘进来了。灯光和陌生男人使她不安；她始终缩着身子。'],[T,'她看了我一眼。我竟把那目光，当作对我的好意。'],[N,'我一伸手，她便惊叫着退开，藏到角落里哭了。'],[T,'我只觉得受了侮辱。花了钱，竟连这点体面也得不到！'],[F,'离开之前，还有七个皮阿斯特。'],[N,'白跑一趟，又花了这么多钱！我越想越气。']],'fatmeDone'),
+ fatmeOffer:d('159–160',[[N,'姑娘走到我身边，向我索要小礼物。我打量着她，越看越觉得自己遭了怠慢。'],['姑娘','给一点小礼物吧，先生。'],[T,'我原以为，这里会让我高兴些。'],[S,'你来时那么高兴，如今倒只顾着生气了。'],[T,'白等了这么久，还要一回回付钱！'],[F,'还可以请另一位姑娘来。九个皮阿斯特。']],'fatmeOffer'),
+ fatmeRefusal:d('160–162',[[N,'另一位姑娘进来了。灯光和陌生男人使她不安；她缩着身子，又向后退了几步。'],[T,'她看了我一眼。我竟把那目光，当作对我的好意。'],[N,'我一伸手，她便惊叫着退开，低下头哭了。'],[T,'我只觉得受了侮辱。花了钱，竟连这点体面也得不到！'],[F,'离开之前，还有七个皮阿斯特。'],[N,'白跑一趟，又花了这么多钱！我越想越气。']],'fatmeDone'),
  fatmeScholar:d('160',[[S,'你来时那么高兴，如今倒只顾着生气了。'],[T,'白等了这么久，还要一回回付钱！']]),
  fatmeAfter:d('162',[[F,'您已经结清了。'],[T,'白等了这么久，又花了这么多钱。走吧。']]),
  fatmeObjects:inspect('158','黄绸长榻上有褪色的补丁。红色窗帘、搁在一旁的鲁特琴和拖鞋，围着一只落满灰的火盆。潮气渗在木头里。'),
- fatmeWoman:d('161',[[N,'她退到长榻的尽头，双手攥着披巾。看见我走近，她把目光移开了。']],null,'A'),
+ fatmeWoman:d('161',[[N,'她站在离我稍远的地方，双手攥着披巾。看见我走近，她把目光移开了。']],null,'A'),
  via:inspect('152','窄窄的石拱罩着苦路。墙边的泥水没有干过；有人把一处门洞指作罗马总督彼拉多的旧居。走过这里的脚步，已把石面磨得发亮。'),
  viaScholar:d('152',[[S,'人们指认这一路为耶稣基督受难的道路。那边的门洞，又被指作罗马总督彼拉多的旧居。'],[T,'您怎么知道那是他的住处？'],[S,'人们这样说。不过，要考证这说法，还得另找材料。'],[T,'我只盼这场雨赶快停。']],null,'O'),
  woodOffer:d('152；163', [['木片商贩','圣约瑟亲手刨下的木片！就是抚养耶稣的那位木匠！带回去，家里人会喜欢。'],[T,'这么小的一片？'],['木片商贩','来历可不小，先生。'],[T,'姨姨大概会先看它的来历，再看它的大小。']]),
@@ -67,7 +67,7 @@ export const relicItems=[
  ['thorn-branch','带刺的枝条','我在耶里哥附近的荒野割下的枝条。博士已经向我保证：正是这样的枝条，曾刺伤耶稣基督的额头。','branch'],
  ['thorn-crown','荆棘冠','波特用我在荒野割来的枝条编成，硬刺从交叠处伸出来。','crown'],
  ['thorn-parcel',parcelAppearance.name,parcelAppearance.text,'parcel']
-].map(([id,name,text,icon])=>({id,name,shortName:name,text,icon:`./assets/jerusalem/${icon}.png`,...(id==='thorn-parcel'?parcelAppearance:{})}));
+].map(([id,name,text,icon])=>({id,name,shortName:name,text,icon:`./assets/jerusalem/${icon}.webp`,...(id==='thorn-parcel'?parcelAppearance:{})}));
 
 export const contextualTopics={forecourtScholar:['viaScholar','marketScholar'],holyScholar:['guardScholar','holyScholar'],campScholar:['ruins','herod'],wood:['woodOffer'],straw:['strawOffer'],beads:['beadOffer']};
 export const contextForTopic=id=>Object.keys(contextualTopics).find(group=>contextualTopics[group].includes(id));

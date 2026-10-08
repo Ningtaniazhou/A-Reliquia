@@ -14,7 +14,7 @@ export function book(s,revealIndex=-1,turning=false){
 
  return `<section class="book-scene scene" aria-label="童年的回忆"><div class="book-wrap ${turning?'turning':''}"><div class="book-cover"></div><div class="paper-stack" aria-hidden="true"></div><div class="book-spread">${entries.map((entry,i)=>{
  const revealed=s.revealed>i;const active=s.revealed===i;const road=s.spread===1&&i===1;return `<article class="page ${i===0?'page-left':'page-right'} ${revealed?'written':'blank'} ${active?'page-ready':''}" aria-label="${i===0?'左':'右'}页">
- ${revealIndex===i?pen('writing-pen'):''}<div class="page-content ${revealIndex===i?'ink-reveal':''}" ${!revealed?'hidden':''}><div class="illustration">${picture(entry,road,road&&revealed)}</div><div class="page-prose" tabindex="0" role="region" aria-label="正文">${entry.lines.map(t=>`<p>${t}</p>`).join('')}</div><span class="page-number">${['一','二','三','四'][s.spread*2+i]}</span></div>
+ ${revealIndex===i?pen('writing-pen'):''}${revealed?`<div class="page-content ${revealIndex===i?'ink-reveal':''}" ${!revealed?'hidden':''}><div class="illustration">${picture(entry,road,road&&revealed)}</div><div class="page-prose" tabindex="0" role="region" aria-label="正文">${entry.lines.map(t=>`<p>${t}</p>`).join('')}</div><span class="page-number">${['一','二','三','四'][s.spread*2+i]}</span></div>`: ''}
  ${active?`<button class="write-page" data-action="${i===0?'LEFT':'RIGHT'}" aria-label="在${i===0?'左':'右'}页书写">${pen()}</button>`:''}
 
  </article>`;}).join('')}<div class="spine" aria-hidden="true"></div></div>

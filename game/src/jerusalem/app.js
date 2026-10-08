@@ -9,7 +9,7 @@ import {campBridge,bridgeFrame} from './camp-bridge.js';
 import {sceneCheckpoint,restartButton} from '../ui/scene-checkpoint.js';
 import {presentation} from './presentation.js';
 import {chapterController} from './chapter.js';
-import {scholarPending,regionFiles,needed,regionSpots,heroFeet,objective} from './regions.js';
+import {scholarAvailable,scholarPending,regionFiles,needed,regionSpots,heroFeet,objective} from './regions.js';
 import {topicAvailable,relicItems,contextForTopic} from './chapter-content.js';
 import {holyDone,travelReady} from './state.js';
 import {updateSoundButton} from '../ui/sound-button.js';
@@ -33,10 +33,10 @@ const checkpoint=sceneCheckpoint(storage,SAVE_KEY+'.scene',s=>s.room);checkpoint
 let ready=false,paused=false,menu=null,selected=0,bagOpen=false,ending=false,fade=null,target=null,distance=0,time=0,camera=0,moving=false,last=0,lastSave=0,quietUntil=0,hintUntil=0;
 let dusk=s.toasted?1:0;
 const keys=new Set(),images={},sound=new JerusalemAudio(prefs),abort=new AbortController();
-const files={left:'street-left.webp',middle:'street-middle.webp',right:'street-right.webp',lobby:'lobby.webp',room:'room-v03.webp',potte:'potte.png',clerk:'clerk.png',friar:'friar.png',resident:'resident.png',bedouin:'bedouin.png',woman:'woman.png',porter:'porter.png',mule:'mule.png'};
+const files={left:'street-left.webp',middle:'street-middle.webp',right:'street-right.webp',lobby:'lobby.webp',room:'room-v03.webp',potte:'potte.webp',clerk:'clerk.webp',friar:'friar.webp',resident:'resident.webp',bedouin:'bedouin.webp',woman:'woman.webp',porter:'porter.webp',mule:'mule.webp'};
 Object.assign(files,regionFiles);
 const pending=new Map();
-async function asset(id){if(images[id])return;if(pending.has(id))return pending.get(id);const url=id==='teo'?'./assets/voyage/teodorico-walk-8f.png':id==='idle'?'./assets/voyage/teodorico-idle.png':id==='sharedParcel'?'./assets/alexandria-study/parcel.png':'./assets/jerusalem/'+files[id];const job=(async()=>{const im=new Image();im.src=url;await im.decode();images[id]=im;})();pending.set(id,job);try{await job;}finally{pending.delete(id);}}
+async function asset(id){if(images[id])return;if(pending.has(id))return pending.get(id);const url=id==='teo'?'./assets/voyage/teodorico-walk-8f.webp':id==='idle'?'./assets/voyage/teodorico-idle.webp':id==='sharedParcel'?'./assets/alexandria-study/parcel.webp':'./assets/jerusalem/'+files[id];const job=(async()=>{const im=new Image();im.src=url;await im.decode();images[id]=im;})();pending.set(id,job);try{await job;}finally{pending.delete(id);}}
 const loadScene=(room)=>Promise.all(needed(room,s).map(asset));
 const bridge=campBridge({root:$('.j-ending'),state:()=>s,sound,persist,paused:()=>paused,onContinue:()=>{s.endSeen=true;persist();try{sessionStorage.setItem('reliquia.chapter4.handoff'+(preview?'.preview':''),JSON.stringify(prefs));}catch{}sound.stop();location.href=chapterEntryURL('./chapter4.html?from=camp'+(preview?'&preview=1':''));},returnToCamp:()=>{ending=false;s.complete=false;s.endSeen=false;s.toasted=false;s.danced=false;s.bridgeElapsed=0;s.bridgeLine=0;dusk=0;persist();music();ui();}});
 const loading=Promise.all([asset('teo'),asset('idle'),loadScene(s.room)]);
@@ -48,18 +48,16 @@ function stop(){keys.clear();target=null;moving=false;}
 function blocked(){return !ready||paused||!!fade||s.arrival<arrival.length||!!s.dialogue||!!menu||bagOpen||s.letterOpen||ending;}
 function hint(text,seconds=5){$('.j-hint').textContent=text;hintUntil=time+seconds;$('.j-hint').hidden=false;}
 function music(){if(ending){sound.request(s.bridgeElapsed<6?'caravan':null,3);sound.rain(0);return;}if(s.arrival<arrival.length){sound.request(s.arrival<2?'voyageDeck':null,2);sound.rain(s.arrival>=2?.22:0);return;}const cue=s.room==='holy'?'sepulchre':s.room==='fatmeRoom'||s.room==='camp'&&s.toasted?'caravan':s.room==='wild'||s.room==='camp'?'malta':'jerusalemRain';sound.request(cue,1.7);sound.rain(['street','forecourt'].includes(s.room)?.23:s.room==='lobby'?.09:s.room==='room'?.055:0);}
-let scholarHelpRead=storage.getItem('reliquia.scholar-yellow-help.v1')==='1';
-const scholarHelp=document.createElement('span');scholarHelp.className='j-scholar-help';scholarHelp.textContent='头像背景泛起金光时，按 R 听托普修斯说些什么';$('.j-scholar').append(scholarHelp);
-function askScholar(){scholarHelpRead=true;try{storage.setItem('reliquia.scholar-yellow-help.v1','1');}catch{}chapter.scholar();ui();}
+function askScholar(){chapter.scholar();ui();}
 function settings(){stop();pause(true);$('#settings').showModal();}
 function pause(on){paused=on;stop();sound.pause(on);document.body.classList.toggle('paused',on);if(!on&&sound.ctx)void sound.unlock().then(music);}
 function preference(){document.body.classList.toggle('reduced',prefs.reduced);prefs.volume=Math.max(0,Math.min(1,Number(prefs.volume)||0));sound.update();$('#volume').value=prefs.volume;updateSoundButton($('#mute'),prefs.muted||prefs.volume===0,{shortcut:'M'});try{storage.setItem('reliquia.jerusalem-study.settings',JSON.stringify(prefs));}catch{}}
 const backpack=new Backpack($('.voyage-bag'),{signal:abort.signal,onClose:()=>bag()});
-function letterItem(){itemById.set('aunt-letter',{id:'aunt-letter',name:'写给姨姨的信',shortName:s.letter==='sent'?'信 · 已交寄':'信 · 待交寄',icon:'./assets/jerusalem/letter.png',text:(s.letter==='sent'?'前台已收下信件，答应代为交寄。信的记录留在我的背包中。':'信已经封好，可以交给大堂前台代寄。')+'\n\n'+letters.join('\n\n')});}
+function letterItem(){itemById.set('aunt-letter',{id:'aunt-letter',name:'写给姨姨的信',shortName:s.letter==='sent'?'信 · 已交寄':'信 · 待交寄',icon:'./assets/jerusalem/letter.webp',text:(s.letter==='sent'?'前台已收下信件，答应代为交寄。信的记录留在我的背包中。':'信已经封好，可以交给大堂前台代寄。')+'\n\n'+letters.join('\n\n')});}
 function bag(){if(paused||fade||s.arrival<arrival.length||s.dialogue||menu||s.letterOpen||ending||!ready)return;stop();bagOpen=!bagOpen;if(bagOpen){letterItem();backpack.open(s.items,{checked:true});backpack.q('.backpack-heading p').textContent='旅途所得';}else{backpack.close();screen.focus();}ui();}
 function talk(id){if(paused||fade||bagOpen||!ready)return;stop();menu=null;s=begin(s,id);persist();ui();}
 function next(){if(paused||!ready||fade)return;
- if(s.arrival<arrival.length){s.arrival++;persist();music();if(s.arrival===arrival.length){fade={t:0,room:'street',x:s.x,swapped:true,reveal:true};hint(isPhone()?'点击地面行走，靠近后点击动作互动':'A / D 行走 · E 交互 · 点击地面也可行走',8);}ui();return;}
+ if(s.arrival<arrival.length){s.arrival++;persist();music();if(s.arrival===arrival.length){fade={t:0,room:'street',x:s.x,swapped:true,reveal:true};}ui();return;}
  if(menu){menu.rows[selected]?.run();return;}
  if(!s.dialogue)return;
  const id=s.dialogue;s=advance(s);if(id==='window'&&(s.cursors.window===2||!s.dialogue))quietUntil=time+8;
@@ -93,7 +91,7 @@ function spots(){const extra=regionSpots(s);if(extra)return extra;if(s.room==='s
  return [{id:'window',x:256,y:281,label:'看看窗外'},{id:'wallpaper',x:495,y:245,label:'查看隔墙'},{id:'desk',x:623,y:333,label:'查看信纸'},{id:'wardrobe',x:764,y:313,label:'查看衣柜'},{id:'exit',x:904,y:367,label:'回到大堂'}];}
 function nearest(){return spots().filter(p=>Math.abs(p.x-s.x)<86).sort((a,b)=>Math.abs(a.x-s.x)-Math.abs(b.x-s.x))[0];}
 function interact(id){if(blocked())return;const p=id?spots().find(p=>p.id===id):nearest();if(!p)return;
- if(Math.abs(p.x-s.x)>=86){target={x:p.x,id:p.id};return;}
+ if(Math.abs(p.x-s.x)>=86){target={x:p.x};return;}
  if(chapter.interact(p.id))return;
  if(p.id==='hotel')return go('lobby',135);
  if(p.id==='exit')return go(s.room==='room'?'lobby':'street',s.room==='room'?874:1368);
@@ -107,10 +105,10 @@ function updateLetter(){const n=s.letterPage;$('.j-letter p').textContent=letter
 function previousLetter(){if(!paused&&s.letterOpen&&s.letterPage>0){s.letterPage--;persist();ui();}}
 function nextLetter(){if(paused||!s.letterOpen)return;if(s.letterPage<letters.length-1){s.letterPage++;persist();ui();}else{s.letterOpen=false;if(s.letter==='none')talk('seal');else{persist();ui();}}}
 function ui(){const busy=!!s.dialogue||!!menu||s.letterOpen||ending||!!fade||s.arrival<arrival.length;
- $('.voyage-place').textContent=places[s.room]+(s.room==='camp'&&s.toasted?' · 夜':'');$('.j-objective').textContent=objective(s);$('.j-objective').hidden=busy||bagOpen;canvas.setAttribute('aria-label',places[s.room]+'，A D 行走，E 交互');
+ $('.voyage-place').textContent=places[s.room]+(s.room==='camp'&&s.toasted?' · 夜':'');$('.j-objective').textContent=objective(s);$('.j-objective').hidden=busy||bagOpen;canvas.setAttribute('aria-label',places[s.room]+(isPhone()?'，点击地面行走，点击动作按钮交互':'，A D 行走，E 交互'));
  $('.j-talk').hidden=!s.dialogue;$('.j-menu').hidden=!menu;$('.j-letter').hidden=!s.letterOpen;$('.j-ending').hidden=!ending;$('.voyage-bag').hidden=!bagOpen;
- $('.voyage-hud').hidden=s.arrival<arrival.length||!!fade;$('.utilities').hidden=!!fade;$('.voyage-hud').inert=busy||bagOpen;$('.j-scholar').hidden=s.arrival<arrival.length;$('.j-scholar').disabled=busy||bagOpen;$('.j-scholar i').hidden=!scholarPending(s);
- const teach=!scholarHelpRead&&!$('.j-scholar i').hidden&&!busy&&!bagOpen;scholarHelp.hidden=!teach;$('.j-scholar').classList.toggle('first-light',teach);
+ $('.voyage-hud').hidden=s.arrival<arrival.length||!!fade;$('.utilities').hidden=!!fade;$('.voyage-hud').inert=busy||bagOpen;$('.j-scholar').hidden=s.arrival<arrival.length||!scholarAvailable(s);$('.j-scholar').disabled=busy||bagOpen;$('.j-scholar i').hidden=!scholarPending(s);
+
  if(s.dialogue){const entry=dialogue[s.dialogue],row=dialogueRow(s.dialogue,s.cursors[s.dialogue]||0,s);const view=presentation(s.dialogue,entry,s.cursors[s.dialogue]||0);$('.j-talk small').textContent=view.label;$('.j-talk small').hidden=!view.label;$('.j-talk p').textContent=row[1];$('.j-talk').classList.toggle('thought',view.thought);$('.j-talk').classList.toggle('interjection',row[0]==='托普修斯');$('.j-talk').scrollTop=0;}
  if(menu){$('.j-menu h2').textContent=menu.title;const box=$('.j-menu div');box.replaceChildren();menu.rows.forEach((r,i)=>{const b=document.createElement('button');b.textContent=r.label;b.setAttribute('aria-label',r.label);if(i===selected){const key=document.createElement('kbd');key.textContent='␣';key.setAttribute('aria-label','空格键');b.append(key);}b.classList.toggle('selected',i===selected);b.onclick=()=>{if(!paused){selected=i;r.run();}};box.append(b);});}
  if(s.letterOpen)updateLetter();
@@ -126,6 +124,14 @@ function blendSection(im,x,w,h,overlap){
  for(let i=0;i<overlap;i+=2){ctx.globalAlpha=(i+1)/overlap;ctx.drawImage(im,i*scale,0,2*scale,im.height,x+i,0,2,h);}
  ctx.globalAlpha=1;ctx.drawImage(im,overlap*scale,0,im.width-overlap*scale,im.height,x+overlap,0,w-overlap,h);
 }
+let dancerKey='',dancerX=0;
+function dancerTarget(){const anchor=s.fatmeAnchor||680;return anchor-(s.fatmePaid===1?65:(s.cursors.fatmeRefusal||0)>=2||s.fatmeStage>=3?270:205);}
+function tickDancer(dt){
+ const key=s.room==='fatmeRoom'?String(s.fatmePaid):'';
+ if(key!==dancerKey){dancerKey=key;dancerX=(s.fatmeAnchor||680)-140;}
+ if(!key||!s.fatmePaid)return;
+ const goal=dancerTarget();dancerX=prefs.reduced?goal:dancerX+Math.sign(goal-dancerX)*Math.min(Math.abs(goal-dancerX),dt*65);
+}
 function paint(){if(!ready)return;ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,960,540);if(s.arrival<arrival.length){ctx.fillStyle='#050810';ctx.fillRect(0,0,960,540);return;}
  if(s.room==='street'){
   ctx.drawImage(images.left,-camera,-1,780,558);
@@ -136,7 +142,7 @@ function paint(){if(!ready)return;ctx.imageSmoothingEnabled=false;ctx.clearRect(
   npc('friar',570-camera,465,178);npc('woman',875-camera,450,143,-1);npc('porter',1135-camera,461,149);npc('resident',1785-camera,457,150);npc('bedouin',2350-camera,477,156);npc('resident',2610-camera,439,132,-1);npc('mule',1595-camera,443,119);
   ctx.font='13px "Songti SC",serif';ctx.textAlign='center';ctx.fillStyle='#eee0bc';ctx.fillText('地 中 海 旅 馆',1368-camera,237);
  }else{ctx.drawImage(images[s.room],0,0,960,540);if(s.room==='camp'&&s.toasted){ctx.globalAlpha=dusk;ctx.drawImage(images.campMoon,0,0,960,540);ctx.globalAlpha=1;{ctx.globalAlpha=dusk*(ending?bridgeFrame(s.bridgeElapsed).embers:s.dialogue==='fire'||s.danced?0:1);ctx.drawImage(images.campEmbers,0,images.campEmbers.height*190/540,images.campEmbers.width,images.campEmbers.height*350/540,0,190,960,350);ctx.globalAlpha=1;}}if(s.room==='lobby'){npc('potte',425,478);npc('clerk',736,407,145);/* The counter occludes the clerk below the tabletop. */ctx.drawImage(images.lobby,512,312,320,121,512,312,320,121);}}
- if(s.room==='fatmeRoom'){npc('fatmeLady',775,476,159);if(s.fatmePaid===1)npc('circassian',350,478,153);if(s.fatmePaid>=2)npc('nubian',250,475,149);}
+ if(s.room==='fatmeRoom'){npc('fatmeLady',775,476,159);const walking=Math.abs(dancerX-dancerTarget())>1;const bob=walking&&!prefs.reduced?Math.sin(time*13)*1.5:0;if(s.fatmePaid===1)npc('circassian',dancerX,478+bob,153);if(s.fatmePaid>=2)npc('nubian',dancerX,475+bob,149);}
  if(s.room==='forecourt')npc('mule',95,461,105);
  if(s.room==='wild')npc('mule',115,420,110);
  if(s.room==='camp'&&s.thorn>=3&&images.sharedParcel)ctx.drawImage(images.sharedParcel,470,310,52,40);
@@ -148,9 +154,9 @@ function paint(){if(!ready)return;ctx.imageSmoothingEnabled=false;ctx.clearRect(
  else if(s.room==='room')rain({x:202,y:108,w:132,h:195},90);else if(s.room==='lobby')rain({x:40,y:163,w:94,h:205},90);
 }
 function frame(now){const dt=last?Math.min(65,now-last)/1000:0;last=now;
- if(ready&&!paused){if(ending)bridge.tick(dt);time+=dt;dusk=s.toasted?Math.min(1,dusk+dt/2.2):0;if(fade){fade.t=Math.min(fade.t+dt,(!fade.loaded&&!fade.swapped)?.64:99);if(!fade.swapped&&fade.loaded&&fade.t>=.65){s.room=fade.room;s.x=fade.x;s.facing=1;fade.swapped=true;persist();music();ui();}if(fade.t>=1.4){const arrived=fade.room;fade=null;ui();if(['camp','wild'].includes(arrived)&&!s.campVisited)talk('travelFirst');}}else if(!blocked()){
+ if(ready&&!paused){if(ending)bridge.tick(dt);time+=dt;tickDancer(dt);dusk=s.toasted?Math.min(1,dusk+dt/2.2):0;if(fade){fade.t=Math.min(fade.t+dt,(!fade.loaded&&!fade.swapped)?.64:99);if(!fade.swapped&&fade.loaded&&fade.t>=.65){s.room=fade.room;s.x=fade.x;s.facing=1;fade.swapped=true;persist();music();ui();}if(fade.t>=1.4){const arrived=fade.room;fade=null;ui();if(arrived==='camp'&&!s.campVisited)talk('travelFirst');}}else if(!blocked()){
   let dir=(keys.has('KeyD')||keys.has('ArrowRight')?1:0)-(keys.has('KeyA')||keys.has('ArrowLeft')?1:0);let step=210*dt;
-  if(target){const dx=target.x-s.x;if(Math.abs(dx)<3){const id=target.id;target=null;if(id)interact(id);}else{dir=Math.sign(dx);step=Math.min(step,Math.abs(dx));}}
+  if(target){const dx=target.x-s.x;if(Math.abs(dx)<3){target=null;}else{dir=Math.sign(dx);step=Math.min(step,Math.abs(dx));}}
   const old=s.x;if(!blocked())s.x=Math.max(55,Math.min(s.room==='street'?WIDTH-55:905,s.x+dir*step));moving=old!==s.x;if(moving){s.facing=dir;distance+=Math.abs(s.x-old);if(time-lastSave>.5){persist();lastSave=time;}}else moving=false;
  }else moving=false;
  const level=time<quietUntil ? 0 : (s.dialogue||menu||s.letterOpen) ? .29 : s.room==='room' ? .39 : .66;if(!ending)sound.setMix(level);
@@ -165,7 +171,7 @@ function key(e){if(e.ctrlKey||e.metaKey||e.altKey||e.target.matches('input,summa
  if(menu){if(['KeyW','KeyS','ArrowUp','ArrowDown'].includes(k)){selected=(selected+(['KeyS','ArrowDown'].includes(k)?1:-1)+menu.rows.length)%menu.rows.length;ui();$('.j-menu div button.selected')?.scrollIntoView({block:'nearest'});}else if(k==='Space')next();return;}
  if(k==='Space'){next();return;}if(k==='Tab'){bag();return;}if(blocked())return;if(k==='KeyE')interact();else if(k==='KeyR')askScholar();else if(['KeyA','KeyD','ArrowLeft','ArrowRight'].includes(k)){keys.add(k);target=null;}
 }
-canvas.addEventListener('pointerdown',e=>{if(blocked())return;void sound.unlock();const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*960+camera,y=(e.clientY-r.top)/r.height*540;const p=spots().filter(p=>Math.abs(p.x-x)<52&&y>190).sort((a,b)=>Math.abs(a.x-x)-Math.abs(b.x-x))[0];if(p)interact(p.id);else target={x:Math.max(55,Math.min(s.room==='street'?WIDTH-55:905,x))};});
+canvas.addEventListener('pointerdown',e=>{if(blocked())return;void sound.unlock();const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*960+camera;target={x:Math.max(55,Math.min(s.room==='street'?WIDTH-55:905,x))};});
 $('.j-talk [data-next]').onclick=next;$('.j-talk p').onclick=next;$('.j-talk [data-close]').onclick=close;$('#arrival-next').onclick=next;$('#bag-button').onclick=bag;$('.j-scholar').onclick=()=>{if(!blocked())askScholar();};$('#letter-next').onclick=nextLetter;$('#letter-back').onclick=previousLetter;$('#letter-close').onclick=close;
 $('#settings-button').onclick=settings;$('#settings').addEventListener('close',()=>{pause(document.hidden);screen.focus();});$('#volume').oninput=e=>{prefs.volume=+e.target.value;if(prefs.volume>0)prefs.muted=false;preference();};$('#mute').onclick=()=>{prefs.muted=!prefs.muted;if(!prefs.muted&&!prefs.volume)prefs.volume=.48;preference();void sound.unlock();};
 $('#restart').onclick=async()=>{bridge.hide();await loadScene('street');checkpoint.clear();s=initial();menu=null;fade=null;ending=false;bagOpen=false;quietUntil=0;distance=0;backpack.close();stop();persist();music();ui();$('#settings').close();};

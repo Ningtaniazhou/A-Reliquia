@@ -4,6 +4,7 @@
 !/game/
 !/scripts/
 /scripts/*
+!/scripts/audit-assets.mjs
 !/scripts/build.mjs
 !/scripts/serve.mjs
 !/.openai/

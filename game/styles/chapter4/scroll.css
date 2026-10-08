@@ -2,7 +2,7 @@
 html body:has(#painting) #frame{width:min(100%,calc((100dvh - 58px)*16/9))!important}
 html body #dialogue.paper-scroll{position:fixed!important;left:3%!important;bottom:20px!important;width:94%!important;height:var(--scroll-height,200px)!important;min-height:0!important;max-height:none!important;padding:0!important;border:0;background:none;transform:none!important;z-index:7;overflow:visible!important;color:#42382a;filter:drop-shadow(0 3px 3px #0003)}
 .paper-scroll .scroll-paper{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.paper-scroll .scroll-paper::before{content:'';position:absolute;width:103.535%;height:169.231%;left:-1.768%;top:-32.634%;background:url('../../assets/ui/chapter4-scroll.png') center/100% 100% no-repeat}
+.paper-scroll .scroll-paper::before{content:'';position:absolute;width:103.535%;height:169.231%;left:-1.768%;top:-32.634%;background:url('../../assets/ui/chapter4-scroll.webp') center/100% 100% no-repeat}
 .paper-scroll .scroll-copy{position:absolute;inset:24px 105px 36px;display:flex;flex-direction:column;justify-content:center;gap:6px}
 html body #dialogue.paper-scroll #speaker{font:18px/24px Song,serif;color:#82704c;min-height:24px;margin:0}
 html body #dialogue.paper-scroll #speaker em{color:#82704c}

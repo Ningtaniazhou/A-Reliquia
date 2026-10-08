@@ -65,6 +65,11 @@ const fatmeEarly=[
 ];
 export function dialogueRow(id,index,state){
  const row=dialogue[id].rows[index];
+ if(state.room&&state.room!=='room'){
+  if(id==='scholar'&&index===2)return [row[0],state.room==='lobby'?'等安顿下来，可以到街上看看。眼前这座城，和你一路想象的未必相同。':'不妨看看眼前的街道。这座城，和你一路想象的未必相同。'];
+  if(id==='scholarSeen'&&index===2)return [row[0],state.room==='lobby'?'刚才在街上，我只见到雨水和冷清的屋顶。博士所说的热闹，我一点也看不出来。':'我环顾这条湿漉漉的街道。博士所说的热闹，我一点也看不出来。'];
+ }
+
  if(id==='routeFatme'&&index===2&&state.arranged)return [row[0],'我已经替您打过招呼，直接过去就好。'];
  if(id==='fatmeScholar'&&state.fatmeStage<2)return [row[0],fatmeEarly[state.fatmeStage||0][index]];
  return row;
@@ -72,9 +77,13 @@ export function dialogueRow(id,index,state){
 
 // v06 approved Chinese rewrites are adaptations, not newly authenticated quotations.
 const revisedRows={routeFatme:[2],fatmeArrange:[2],fatmeComplaint:[1],potteCaravan:[2],viaScholar:[2],marketScholar:[1],holyScholar:[0,2],takeWood:[1],cut:[2],pack:[2],treeAfter:[0],tableAfter:[0],fire:[2],scholarSeen:[2]};
+const revisedRowsV9={fatmeOffer:[0],fatmeRefusal:[0,2],fatmeWoman:[0]};
 const revisedRowsV7={fatmeComplaint:[3],fatmeRefusal:[5],fatmeOffer:[3,4],fatmeScholar:[0,1],herod:[2,3,4],takeWood:[0],takeStraw:[0],takeBeads:[0],wardrobe:[0],shutters:[0],tree:[0],treeThought:[4]};
-export const textRecords=Object.entries(dialogue).flatMap(([id,d])=>d.rows.map(([speaker,text],i)=>({id:`J34-${id.toUpperCase()}-${String(i+1).padStart(2,'0')}`,version:id==='wardrobe'?8:revisedRowsV7[id]?.includes(i)?7:revisedRows[id]?.includes(i)?6:5,mode:presentation(id,d,i).thought?'thought':presentation(id,d,i).label?'speech':'description',kind:revisedRowsV7[id]?.includes(i)||revisedRows[id]?.includes(i)?'A+O':d.kind,source:d.source,edition:'IN-CM 2021',speaker,text})));
+export const textRecords=Object.entries(dialogue).flatMap(([id,d])=>d.rows.map(([speaker,text],i)=>({id:`J34-${id.toUpperCase()}-${String(i+1).padStart(2,'0')}`,version:revisedRowsV9[id]?.includes(i)?9:id==='wardrobe'?8:revisedRowsV7[id]?.includes(i)?7:revisedRows[id]?.includes(i)?6:5,mode:presentation(id,d,i).thought?'thought':presentation(id,d,i).label?'speech':'description',kind:revisedRowsV9[id]?.includes(i)||revisedRowsV7[id]?.includes(i)||revisedRows[id]?.includes(i)?'A+O':d.kind,source:d.source,edition:'IN-CM 2021',speaker,text})));
 
 textRecords.push({...textRecords.find(r=>r.id==='J34-ROUTEFATME-03'),id:'J34-ROUTEFATME-03-ARRANGED',condition:'arranged',text:dialogueRow('routeFatme',2,{arranged:true})[1]});
 
 for(let stage=0;stage<2;stage++)for(let index=0;index<2;index++){const row=dialogueRow('fatmeScholar',index,{fatmeStage:stage});textRecords.push({id:`J34-FATMESCHOLAR-${String(index+1).padStart(2,'0')}-STAGE${stage}`,version:7,mode:'speech',kind:'O',source:'改编连接；原场景159–160页',edition:'IN-CM 2021',condition:`fatmeStage=${stage}`,speaker:row[0],text:row[1]});}
+
+export const contextualScholarRows=['street','lobby'].flatMap(room=>['scholar','scholarSeen'].map(id=>({room,id,row:dialogueRow(id,2,{room})})));
+for(const {room,id,row} of contextualScholarRows)textRecords.push({id:`J34-${id.toUpperCase()}-03-${room.toUpperCase()}`,version:9,mode:id==='scholarSeen'?'thought':'speech',kind:'A+O',source:dialogue[id].source,edition:'IN-CM 2021',condition:`room=${room}`,speaker:row[0],text:row[1]});

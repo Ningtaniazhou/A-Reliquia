@@ -1,4 +1,6 @@
 import {pages,scenes,ending} from './content.js';
+export const finalIdleSeconds=10;
+export const endingTiming={settle:4,reveal:3.5,total:7.5};
 export const initial=()=>({version:3,mode:'book',spread:0,written:1,done:[],scene:null,line:0,seen:[],ring:false,deed:false,finalLine:0,elapsed:0});
 export const lastSpread=Math.ceil(pages.length/2)-1;
 export const pageReady=(s,n)=>!pages[n]||(s.written>n&&(!pages[n].scene||s.done.includes(pages[n].scene)));
@@ -11,7 +13,7 @@ export function restore(data){
  s.done=Array.isArray(s.done)?s.done.filter(x=>['market','inheritance','conscience'].includes(x)):[];s.seen=Array.isArray(s.seen)?s.seen:[];
  if(!['book','scene','closing','desk','final','fade','credits'].includes(s.mode))return initial();
  if(s.mode==='scene'){if(!scenes[s.scene])return initial();s.line=Math.max(0,Math.min(scenes[s.scene].rows.length-1,Math.trunc(s.line)||0));}
- s.finalLine=Math.max(0,Math.min(ending.length-1,Math.trunc(s.finalLine)||0));s.elapsed=Math.max(0,Math.min(5,Number(s.elapsed)||0));return s;
+ s.finalLine=Math.max(0,Math.min(ending.length-1,Math.trunc(s.finalLine)||0));s.elapsed=Math.max(0,Math.min(s.mode==='final'?finalIdleSeconds:endingTiming.total,Number(s.elapsed)||0));return s;
 }
 export function reduce(s,a){
  const n=structuredClone(s);
@@ -36,10 +38,10 @@ export function reduce(s,a){
   if(a.type==='deed'&&s.ring&&!s.deed){n.mode='scene';n.scene='deed';n.line=0;}
   if(a.type==='book'){n.mode='book';n.spread=lastSpread;}
  }else if(s.mode==='final'){
-  if(a.type==='next'){if(s.finalLine<ending.length-1){n.finalLine++;n.elapsed=n.finalLine===2?3:0;}else{n.mode='fade';n.elapsed=0;}}
-  if(a.type==='back'){n.finalLine=Math.max(0,s.finalLine-1);n.elapsed=3;}
+  if(a.type==='next'){if(s.finalLine<ending.length-1){n.finalLine++;n.elapsed=0;}else{n.mode='fade';n.elapsed=0;}}
+  if(a.type==='back'){n.finalLine=Math.max(0,s.finalLine-1);n.elapsed=0;}
  }
- if(a.type==='tick'&&s.mode==='final')n.elapsed=Math.min(3,s.elapsed+Math.max(0,Math.min(.1,a.dt)));
- if(a.type==='tick'&&['closing','fade'].includes(s.mode)){n.elapsed+=Math.max(0,Math.min(.1,a.dt));if(n.elapsed>=(s.mode==='closing'?4.8:4.5)){n.mode=s.mode==='closing'?'desk':'credits';n.elapsed=0;}}
+ if(a.type==='tick'&&s.mode==='final'){n.elapsed=Math.min(finalIdleSeconds,s.elapsed+Math.max(0,Math.min(.1,a.dt)));if(n.elapsed>=finalIdleSeconds&&s.finalLine<ending.length-1){n.finalLine++;n.elapsed=0;}}
+ if(a.type==='tick'&&['closing','fade'].includes(s.mode)){n.elapsed+=Math.max(0,Math.min(.1,a.dt));if(n.elapsed>=(s.mode==='closing'?4.8:endingTiming.total)){n.mode=s.mode==='closing'?'desk':'credits';n.elapsed=0;}}
  return n;
 }

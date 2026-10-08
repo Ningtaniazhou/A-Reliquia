@@ -2,7 +2,7 @@ import {relicItems} from './chapter-content.js';
 import {dialogue,topicIds,arrival,letters} from './content.js';
 export const SAVE_KEY='reliquia.jerusalem-study.v1';
 export const WIDTH=2880, VIEW=960;
-export const initial=()=>({version:2,room:'street',x:140,facing:1,arrival:0,checked:false,potteMet:false,windowSeen:false,letter:'none',letterPage:0,asked:[],seen:[],cursors:{},dialogue:null,letterOpen:false,complete:false,endSeen:false,items:['mary-parcel'],fatmeStage:0,fatmePaid:0,arranged:false,campVisited:false,thorn:0,toasted:false,danced:false,bridgeElapsed:0,bridgeLine:0,celebration:false});
+export const initial=()=>({version:2,room:'street',x:140,facing:1,arrival:0,checked:false,potteMet:false,windowSeen:false,letter:'none',letterPage:0,asked:[],seen:[],cursors:{},dialogue:null,letterOpen:false,complete:false,endSeen:false,items:['mary-parcel'],fatmeStage:0,fatmePaid:0,scholarInvited:false,arranged:false,campVisited:false,thorn:0,toasted:false,danced:false,bridgeElapsed:0,bridgeLine:0,celebration:false});
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,Number.isFinite(v)?v:a));
 export function normalize(raw){
  const s={...initial(),...raw};s.version=2;
@@ -18,6 +18,8 @@ export function normalize(raw){
  s.cursors=Object.fromEntries(Object.entries(s.cursors&&typeof s.cursors==='object'?s.cursors:{}).filter(([id])=>id in dialogue).map(([id,n])=>[id,Math.floor(clamp(n,0,dialogue[id].rows.length-1))]));
  if(!(s.dialogue in dialogue)||s.dialogue==='pottePacking')s.dialogue=null;
  s.fatmeStage=Math.floor(clamp(s.fatmeStage,0,3));s.fatmePaid=Math.floor(clamp(raw?.fatmePaid??Math.min(2,s.fatmeStage),0,2));s.arranged=!!s.arranged;s.campVisited=!!s.campVisited;
+ s.scholarInvited=!!s.scholarInvited||s.dialogue==='treeScholar'||s.seen.includes('treeScholar')||Number(s.thorn)>0;
+ s.fatmeAnchor=clamp(raw?.fatmeAnchor??680,470,680);
  s.thorn=Math.floor(clamp(s.thorn,0,3));s.toasted=!!s.toasted&&s.thorn===3;s.danced=!!s.danced&&s.toasted;
  const valid=new Set(relicItems.map(i=>i.id));s.items=[...new Set(['mary-parcel',...(s.letter==='sealed'?['aunt-letter']:[]),...(Array.isArray(s.items)?s.items.filter(id=>valid.has(id)&&!id.startsWith('thorn-')):[])])];
  if(s.thorn)s.items.push(['','thorn-branch','thorn-crown','thorn-parcel'][s.thorn]);
@@ -28,7 +30,7 @@ export function normalize(raw){
  if(['camp','wild'].includes(s.room)&&!holyDone(s)){s.room='forecourt';s.x=140;s.dialogue=null;s.celebration=false;s.complete=false;s.endSeen=false;s.bridgeElapsed=0;s.bridgeLine=0;}
  return s;
 }
-export function begin(s,id){if(!(id in dialogue))return s;return {...s,dialogue:id,letterOpen:false};}
+export function begin(s,id){if(!(id in dialogue))return s;return {...s,dialogue:id,letterOpen:false,scholarInvited:s.scholarInvited||id==='treeScholar'};}
 export function finish(s,id){
  const event=dialogue[id]?.event;if(!event&&!dialogue[id])return s;
  const next={...s,dialogue:null,cursors:{...s.cursors,[id]:0},seen:[...new Set([...s.seen,id])],asked:topicIds.includes(id)?[...new Set([...s.asked,id])]:s.asked};

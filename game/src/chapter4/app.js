@@ -72,6 +72,7 @@ function tick(now){const dt=Math.min(.1,(now-last)/1000);last=now;
 }requestAnimationFrame(tick);
 // Read-only diagnostics used by local acceptance tests.
 window.chapter4={snapshot:()=>JSON.parse(JSON.stringify(s)),sound:()=>sound.status(),scene:()=>current(s).id,transition:()=>transition?{...transition}:null};
+$('gate').hidden=params.get('from')==='camp'||window.self!==window.top;
 void loadScene(s.index).then(()=>{if(params.get('from')==='camp')$('start').click();else if(started&&s.phase==='travel')travel();});render();
 document.addEventListener('pointerdown',()=>{if(started&&!paused)void sound.unlock().catch(()=>{});});
 

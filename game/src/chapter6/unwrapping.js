@@ -6,7 +6,7 @@ export const unwrapSteps=[
  {kind:'tap',label:'点击包裹，揭开褐纸'},
  {kind:'tap',label:'点击包裹，打开内层'},
  {kind:'tap',label:'点击白布，将它取出'},
- {kind:'tap',label:'点击衣料，将它展开'}
+ {kind:'tap',label:'点击布料，将它展开'}
 ];
 export function normalizedProgress(v){return Math.max(0,Math.min(1,Number(v)||0));}
 export class UnwrapInteraction{

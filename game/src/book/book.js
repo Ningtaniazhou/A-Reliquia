@@ -24,7 +24,7 @@ export async function mountBook(host,{mode='front',lastPage=null,arrival=false,g
  const panel=overlay.querySelector('.book-copy'),scroll=overlay.querySelector('.book-copy-scroll'),actions=overlay.querySelector('.book-copy-actions'),entry=overlay.querySelector('.book-enter'),hint=overlay.querySelector('.book-scroll-note'),handle=overlay.querySelector('.book-hand'),live=overlay.querySelector('.book-live');
  let phase='front',disposed=false,dirty=true,animation=null,raf,last=performance.now(),reading=0,readEnd=false,atEndFor=0,width=1,height=1,paperWidth=1,paperHeight=1,fitKey='';
  let arrivalTime=arrival?0:4;
- const arrivalPaper=document.createElement('div');arrivalPaper.className='book-arrival-paper';arrivalPaper.hidden=!arrival;overlay.prepend(arrivalPaper);
+
  if(lastPage){overlay.append(lastPage);lastPage.classList.add('on-paper');lastPage.hidden=false;}
  const pose={...poses.front};
  const reduced=()=>getPreferences().reduced||matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -55,7 +55,7 @@ export async function mountBook(host,{mode='front',lastPage=null,arrival=false,g
    lastPage.style.transform=`matrix(${target.join(',')})`;
   }
  }
- const arrivalProgress=Math.min(1,arrivalTime/4);arrivalPaper.style.opacity=1-arrivalProgress;arrivalPaper.hidden=arrivalProgress>=1;
+ const arrivalProgress=Math.min(1,arrivalTime/4);renderer.domElement.style.opacity=arrival?arrivalProgress:1;
  panel.style.opacity=arrival?Math.max(0,(arrivalProgress-.45)/.55):1;
 if(phase==='intro')putPanel(model.fold,-.15,-SIZE.flap+.15,-.006);if(phase==='closing')panel.hidden=pose.back<Math.PI/2;if(phase==='ending'||phase==='closing')putPanel(model.backFold,-SIZE.flap+.1,-.1,.009);
  if(phase==='front')putHand(model.front,SIZE.w,0,.045,'展开护封');else if(phase==='back')putHand(model.rig,-.10,0,SIZE.t/2,'翻回封面');else if(phase==='ending'&&readEnd)putHand(model.back,SIZE.w,0,.06,'合上书');
@@ -74,7 +74,7 @@ if(phase==='intro')putPanel(model.fold,-.15,-SIZE.flap+.15,-.006);if(phase==='cl
  }
  renderer.domElement.addEventListener('webglcontextlost',e=>{if(disposed)return;e.preventDefault();host.dataset.contextLost='true';live.textContent='画面暂时中断，请刷新恢复。';});
  renderer.domElement.addEventListener('webglcontextrestored',()=>{dirty=true;delete host.dataset.contextLost;});
- if(['ending','back','intro'].includes(mode)){Object.assign(pose,poses[mode]);setPhase(mode);}else setPhase('front');resize();raf=requestAnimationFrame(frame);
+ if(['ending','back','intro'].includes(mode)){Object.assign(pose,poses[mode]);setPhase(mode);}else setPhase('front');resize();renderer.render(scene,camera);raf=requestAnimationFrame(frame);
  // Project the actual printed arch, including camera tilt, instead of estimating its bounds.
  function paintingTransition(){
   const pixels=[[180,1115],[180,650]];
@@ -87,5 +87,5 @@ if(phase==='intro')putPanel(model.fold,-.15,-SIZE.flap+.15,-.006);if(phase==='cl
   renderer.render(scene,camera);
   return {x,y,width:w,height:h,clip,expanded,image:renderer.domElement.toDataURL()};
  }
- return {open,ending,close,flip,model,scene,renderer,camera,paintingTransition,snapshot:()=>({phase,pose:{...pose},reading,readEnd,animating:!!animation}),get paintingRect(){const a=project(model.front,.46,1.0,.04),b=project(model.front,2.34,-1.4,.04);return {x:Math.min(a.x,b.x),y:Math.min(a.y,b.y),width:Math.abs(b.x-a.x),height:Math.abs(b.y-a.y)};},dispose(){disposed=true;cancelAnimationFrame(raf);observer.disconnect();animation?.resolve();scene.traverse(o=>{o.geometry?.dispose();if(o.material)for(const m of Array.isArray(o.material)?o.material:[o.material])m.dispose();});model.textures.forEach(t=>t.dispose());renderer.dispose();renderer.forceContextLoss();host.replaceChildren();}};
+ return {attachLastPage(node){lastPage=node;overlay.append(node);node.classList.add('on-paper');node.style.color='#000';node.style.textShadow='none';position();},open,ending,close,flip,model,scene,renderer,camera,paintingTransition,snapshot:()=>({phase,pose:{...pose},reading,readEnd,animating:!!animation}),get paintingRect(){const a=project(model.front,.46,1.0,.04),b=project(model.front,2.34,-1.4,.04);return {x:Math.min(a.x,b.x),y:Math.min(a.y,b.y),width:Math.abs(b.x-a.x),height:Math.abs(b.y-a.y)};},dispose(){disposed=true;cancelAnimationFrame(raf);observer.disconnect();animation?.resolve();scene.traverse(o=>{o.geometry?.dispose();if(o.material)for(const m of Array.isArray(o.material)?o.material:[o.material])m.dispose();});model.textures.forEach(t=>t.dispose());renderer.dispose();renderer.forceContextLoss();host.replaceChildren();}};
 }

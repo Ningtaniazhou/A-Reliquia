@@ -1,3 +1,4 @@
+import {isPhone} from './input-device.js';
 // Read-only page history. Replaying a page never replays a game action or save event.
 const specs=[
 ['#dialogue','#speech','#speaker','#next'],
@@ -10,7 +11,7 @@ const installed=new WeakSet(),pagers=[];
 const visible=el=>!!el&&el.getClientRects().length>0&&!el.closest('[hidden]')&&getComputedStyle(el).visibility!=='hidden';
 function install(panel,text,who,next){
  if(installed.has(panel))return;installed.add(panel);if(getComputedStyle(panel).position==='static')panel.style.position='relative';
- const prev=document.createElement('button');prev.className='page-back';prev.textContent='‹';prev.setAttribute('aria-label','上一页 A');if(next.parentElement.tagName==='FOOTER')next.parentElement.prepend(prev);else next.before(prev);next.classList.add('page-forward');next.setAttribute('aria-label','下一页 D');
+ const prev=document.createElement('button');prev.className='page-back';prev.textContent='‹';prev.setAttribute('aria-label',isPhone()?'上一页':'上一页 A');if(next.parentElement.tagName==='FOOTER')next.parentElement.prepend(prev);else next.before(prev);next.classList.add('page-forward');next.setAttribute('aria-label',isPhone()?'下一页':'下一页 D');
  const review=document.createElement('div');review.className='page-review';review.hidden=true;review.innerHTML='<small></small><p></p>';panel.append(review);
  let history=[],at=-1,key='',wasVisible=false;
  const read=()=>({who:who?.textContent||'',text:text.textContent,scholar:panel.matches('.is-scholar,.interjection')});

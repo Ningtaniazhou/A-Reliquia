@@ -28,7 +28,7 @@ export class ChapterSound{
  build(id){const c=this.ctx,token=this.generation;for(const s of this.voices){try{s.stop(c.currentTime+.4);}catch{}}const p=profiles[id]||profiles.tent;
   const src=c.createBufferSource(),filter=c.createBiquadFilter(),gain=c.createGain();src.buffer=this.bufferNoise(12);src.loop=true;filter.type='lowpass';filter.frequency.value=p[1];gain.gain.setValueAtTime(0,c.currentTime);gain.gain.linearRampToValueAtTime(p[0]*2.2,c.currentTime+.7);src.connect(filter);filter.connect(gain).connect(this.master);this.voices.add(src);this.ambientGains.set(src,gain);src.onended=()=>{this.voices.delete(src);this.ambientGains.delete(src);src.disconnect();filter.disconnect();gain.disconnect();};src.start();
   if(p[2]==='crowd'||id==='house'){
-   this.crowdPromise??=fetch('./assets/dream-trial/courtyard.wav').then(r=>{if(!r.ok)throw Error('crowd');return r.arrayBuffer();}).then(b=>c.decodeAudioData(b)).catch(()=>null);
+   this.crowdPromise??=fetch('./assets/dream-trial/courtyard.m4a').then(r=>{if(!r.ok)throw Error('crowd');return r.arrayBuffer();}).then(b=>c.decodeAudioData(b)).catch(()=>null);
    this.crowdPromise.then(b=>{if(!b||token!==this.generation||id!==this.scene)return;const s=c.createBufferSource(),g=c.createGain();s.buffer=b;s.loop=true;g.gain.value=id==='house'?1.1:5;this.track(s,g);s.start();});
   }
  }

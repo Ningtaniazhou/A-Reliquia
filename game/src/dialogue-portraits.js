@@ -2,14 +2,14 @@ import {paperPortrait,portraitMarkup} from './ui/character-portraits.js';
 import {dialoguePortraitName} from './ui/dialogue-speaker.js';
 import {portraits} from './portrait-data.js';
 const style=document.createElement('link');style.rel='stylesheet';style.href=new URL('../styles/dialogue-portraits.css',import.meta.url);document.head.append(style);
-const aliases={'姨姨':'aunt','小特奥多里科':'child','特奥多里科':'teo','特奥多里克':'teo','阿德里亚':'adelia','阿德莉娅':'adelia','马蒂亚斯':'matias','卡西米罗神父':'casimiro','皮涅罗神父':'pinheiro','马加里德博士':'margaride'};
+const aliases={'姨姨':'aunt','小特奥多里科':'child','特奥多里科':'teo','特奥多里克':'teo','阿德里亚':'adelia','阿德里娅':'adelia','阿德莉娅':'adelia','马蒂亚斯':'matias','卡西米罗神父':'casimiro','皮涅罗神父':'pinheiro','马加里德博士':'margaride'};
 const src=id=>new URL(`../assets/portraits/${id}.webp`,import.meta.url).href;
 let queued=false;
 const loaded=new Map();
 function imageReady(url){if(loaded.has(url))return loaded.get(url);const i=new Image();loaded.set(url,false);i.src=url;i.decode().then(()=>{loaded.set(url,true);schedule();}).catch(()=>{loaded.set(url,true);schedule();});return false;}
 for(const id of Object.keys(portraits))imageReady(src(id));
 imageReady(new URL('../assets/portraits/teo-sad.webp',import.meta.url).href);
-imageReady(new URL('../assets/portraits/shared-v1/aunt-expressions.png',import.meta.url).href);
+imageReady(new URL('../assets/portraits/shared-v1/aunt-expressions.webp',import.meta.url).href);
 function sync(){queued=false;
  for(const old of document.querySelectorAll('.dialogue-bust'))if(!old._panel?.isConnected)old.remove();
  for(const panel of document.querySelectorAll('.arrival-dialogue,#dialogue,#subtitle')){

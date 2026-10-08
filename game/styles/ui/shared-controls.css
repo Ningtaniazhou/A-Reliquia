@@ -30,3 +30,9 @@ body .utilities:has([data-game-control]){z-index:46!important}
 .cover-preview *{animation-play-state:paused!important}
 
 .cover-preview #gate{visibility:hidden!important}
+
+/* Chapter identification stays in the same upper-left reading position. */
+.chapter-marker{position:absolute;top:22px;left:24px;z-index:12;color:#dfca9b;font:16px/1.5 'Songti SC',serif;pointer-events:none;text-shadow:0 1px 5px #000}
+.chapter-marker-inline{padding:4px 8px;background:#17131cba;border-radius:2px;color:#dfca9b;font:16px/1.5 'Songti SC',serif;white-space:nowrap;margin-right:16px}
+.book-staged .chapter-marker,.cover-preview .chapter-marker,.cover-preview .chapter-marker-inline{visibility:hidden}
+@media(hover:none) and (pointer:coarse) and (max-width:1000px){.chapter-marker{top:14px;left:14px;font-size:12px}.chapter-marker-inline{font-size:12px;margin-right:8px}}

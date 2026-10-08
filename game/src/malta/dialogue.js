@@ -13,7 +13,7 @@ export const topics=[
  ['特奥多里科','我叫特奥多里科，来自葡萄牙。这一趟是去耶路撒冷朝圣。看来，我们走的是同一条路。','Chamo-me Teodorico, sou português e vou em peregrinação a Jerusalém. Parece que seguimos o mesmo caminho.','A','130'],
  ['托普修斯','是同路。不过，我的朝圣是为科学搜集材料：先去犹太地区，再去加利利。','Seguimos, sim. A minha peregrinação é científica: a Judeia, a Galileia e a História que nos espera pelo caminho.','A+O','130']]}
 ];
-export const opening=[['特奥多里科','先生，打扰一下。您拿伞抵着墙，是在测量什么吗？','Desculpe, senhor. Está a medir a parede com o guarda-sol?','O','130']];
+export const opening=[['特奥多里科','先生，打扰一下。您拿伞抵着墙，是在测量什么吗？','Desculpe, senhor. Está a medir a parede com o guarda-sol?','O','130'],...topics.find(t=>t.id==='wall').pages];
 export const ending=[
  ['特奥多里科','既然行程相同，托普修斯博士，我们何不结伴？','Já que seguimos o mesmo roteiro, doutor Topsius, por que não viajamos juntos?','A','130'],
  ['托普修斯','那就结伴吧，特奥多里科先生！旅途添个伴，花费还能省一些。','Pois acamarademos, Teodorico! Será uma deleitosa economia!','A','130',true],
