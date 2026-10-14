@@ -1,3 +1,4 @@
+import {localizeText,localizeMarkup} from '../i18n/display.js';
 import {point} from '../interaction-marks.js';
 // Keep one live chapter canvas at its final viewport size. Only its enclosing
 // window scales, so actors never reflow or spring when the illustration expands.
@@ -12,11 +13,11 @@ export class ChapterPortal{
    save:value=>this.options.save(value),
    preferences:value=>this.options.preferences(value),
    ready:()=>{this.ready=true;this.button.hidden=false;this.layout();if(this.options.isActive())this.activate();},
-   failed:()=>{this.error=true;this.button.hidden=false;this.button.setAttribute('aria-label','重新载入饭厅');},
+   failed:()=>{this.error=true;this.button.hidden=false;this.button.setAttribute('aria-label',localizeText('重新载入饭厅'));},
   };
   this.el=document.createElement('div');this.el.className='chapter-portal';
-  this.frame=document.createElement('iframe');this.frame.title='姨姨家的晚饭';this.frame.src='./boss.html?integrated=1';this.frame.tabIndex=-1;this.frame.setAttribute('aria-hidden','true');
-  this.button=document.createElement('button');this.button.className='portal-point';this.button.innerHTML=point();this.button.setAttribute('aria-label','走进特奥多里科在姨姨家的一顿晚饭');this.button.hidden=true;
+  this.frame=document.createElement('iframe');this.frame.title=localizeText('姨姨家的晚饭');this.frame.src='./boss.html?integrated=1';this.frame.tabIndex=-1;this.frame.setAttribute('aria-hidden','true');
+  this.button=document.createElement('button');this.button.className='portal-point';this.button.innerHTML=localizeMarkup(point());this.button.setAttribute('aria-label',localizeText('走进特奥多里科在姨姨家的一顿晚饭'));this.button.hidden=true;
   this.button.onclick=()=>{if(this.error){this.error=false;this.ready=false;this.button.hidden=true;this.frame.src='./boss.html?integrated=1';return;}this.options.enter();};
   this.el.append(this.frame,this.button);document.body.append(this.el);this.layout();
  }

@@ -1,0 +1,8 @@
+{
+  "release": "10d8d7ae07c4bbe701ed",
+  "authorizedBy": "user",
+  "decision": "publish-with-mobile-device-check-deferred",
+  "date": "2026-10-14",
+  "request": "你推送到github吧",
+  "context": "User authorized publication after desktop QA and explicit discussion of the remaining real-phone risk. This authorization applies only to this content hash. It does not mark real-phone testing as passed or waive other checks."
+}

@@ -1,10 +1,11 @@
+import {localizeText} from '../i18n/display.js';
 import {isPhone} from '../ui/mobile.js';
 import {endingTextMatrix} from '../book/page-layout.js';
 import {ease} from '../book/motion.js';
 // One persistent text block survives the scene-to-paper transition.
 export function createLastWords(lines){
- const node=document.createElement('section');node.className='last-words';node.setAttribute('aria-label','特奥多里科最后的心声');
- for(const text of lines){const p=document.createElement('p');p.textContent=text;node.append(p);}return node;
+ const node=document.createElement('section');node.className='last-words';node.setAttribute('aria-label',localizeText('特奥多里科最后的心声'));
+ for(const text of lines){const p=document.createElement('p');p.textContent=localizeText(text);node.append(p);}return node;
 }
 export function centerLastWords(node){
  const w=Math.max(240,Math.min(440,innerWidth*.32));node.style.width=w+'px';node.style.fontSize=(isPhone()?14:Math.max(14,Math.min(20,w/22)))+'px';

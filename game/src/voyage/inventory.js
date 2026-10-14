@@ -1,3 +1,7 @@
+import {localizeMarkup,localizeText} from '../i18n/display.js';
+import {localizedItem} from '../i18n/items.js';
+import {tr,trMarkup} from '../i18n/ui.js';
+import {bilingual} from '../i18n/locale.js';
 import {items} from './content.js';
 
 export const INVENTORY_COLUMNS=2;
@@ -19,7 +23,7 @@ export function nextItem(index,key,count){
 export class Backpack {
  constructor(root,{onClose,signal}){
   this.root=root;this.onClose=onClose;this.selected=0;this.detailOpen=false;
-  root.innerHTML=`<div class="backpack-panel"><header class="backpack-heading"><div><p>旅途随身物</p><h2 id="backpack-title">旅行背包 <small class="backpack-count"></small></h2></div><button data-bag-close aria-label="合上背包">合上 <kbd>Tab</kbd></button></header><div class="backpack-body"><div class="backpack-leather"><div class="backpack-flap" aria-hidden="true"><i></i><i></i></div><div class="backpack-grid" role="toolbar" aria-label="背包物品"></div></div><aside class="backpack-inspection"><div class="backpack-idle"><span aria-hidden="true">◇</span><p><span class="desktop-instruction"><kbd aria-label="空格键">␣</kbd> 查看 · </span>点击物品查看</p></div><section class="backpack-detail" aria-live="polite" aria-label="物品说明" hidden><div class="backpack-detail-art"></div><p class="backpack-tag">随身物件</p><h3></h3><p class="backpack-description"></p><button data-bag-back>收起说明 <kbd>Esc</kbd></button></section></aside></div><footer class="backpack-footer"><span>W A S D 选择</span><span><kbd aria-label="空格键">␣</kbd> 查看</span><span><kbd>Tab</kbd> 返回旅途</span></footer></div>`;
+  root.innerHTML=localizeMarkup(trMarkup(`<div class="backpack-panel"><header class="backpack-heading"><div><p>旅途随身物</p><h2 id="backpack-title">旅行背包 <small class="backpack-count"></small></h2></div><button data-bag-close aria-label="合上背包">合上 <kbd>Tab</kbd></button></header><div class="backpack-body"><div class="backpack-leather"><div class="backpack-flap" aria-hidden="true"><i></i><i></i></div><div class="backpack-grid" role="toolbar" aria-label="背包物品"></div></div><aside class="backpack-inspection"><div class="backpack-idle"><span aria-hidden="true">◇</span><p><span class="desktop-instruction"><kbd aria-label="空格键">␣</kbd> 查看 · </span>点击物品查看</p></div><section class="backpack-detail" aria-live="polite" aria-label="物品说明" hidden><div class="backpack-detail-art"></div><p class="backpack-tag">随身物件</p><h3></h3><p class="backpack-description"></p><button data-bag-back>收起说明 <kbd>Esc</kbd></button></section></aside></div><footer class="backpack-footer"><span>W A S D 选择</span><span><kbd aria-label="空格键">␣</kbd> 查看</span><span><kbd>Tab</kbd> 返回旅途</span></footer></div>`));
   this.q=selector=>root.querySelector(selector);
   root.addEventListener('click',event=>{
    if(event.target.closest('[data-bag-close]'))return this.onClose();
@@ -30,17 +34,17 @@ export class Backpack {
  }
  open(ids,{checked=false}={}){
   const oldId=this.owned?.[this.selected]?.id;
-  this.owned=normalizeItems(ids).map(id=>itemById.get(id));this.checked=checked;this.detailOpen=false;
+  this.owned=normalizeItems(ids).map(id=>localizedItem(itemById.get(id)));this.checked=checked;this.detailOpen=false;
   this.selected=Math.max(0,this.owned.findIndex(item=>item.id===oldId));
   this.root.hidden=false;
-  this.q('.backpack-count').textContent=`${this.owned.length} 件`;
+  this.q('.backpack-count').textContent=localizeText(bilingual(`${this.owned.length} 件`,`${this.owned.length}`));
   const grid=this.q('.backpack-grid');grid.replaceChildren();
   const slots=Math.max(6,Math.ceil(this.owned.length/INVENTORY_COLUMNS)*INVENTORY_COLUMNS);
   for(let index=0;index<slots;index++){
    const item=this.owned[index],slot=document.createElement(item?'button':'div');
    slot.className='backpack-slot'+(item?'':' empty');
-   if(item){slot.dataset.itemIndex=index;slot.setAttribute('aria-label',item.name);slot.setAttribute('aria-pressed','false');slot.tabIndex=-1;slot.innerHTML=`<img src="${item.icon}" alt="" draggable="false"><span>${item.shortName}</span>`;}
-   else {slot.setAttribute('aria-hidden','true');slot.innerHTML='<span>·</span>';}
+   if(item){slot.dataset.itemIndex=index;slot.setAttribute('aria-label',localizeText(item.name));slot.setAttribute('aria-pressed','false');slot.tabIndex=-1;slot.innerHTML=localizeMarkup(`<img src="${item.icon}" alt="" draggable="false"><span>${item.shortName}</span>`);}
+   else {slot.setAttribute('aria-hidden','true');slot.innerHTML=localizeMarkup('<span>·</span>');}
    grid.append(slot);
   }
   this.select(this.selected);this.renderDetail();
@@ -61,10 +65,10 @@ export class Backpack {
   const item=this.owned[this.selected],show=this.detailOpen&&!!item;
   this.q('.backpack-idle').hidden=show;this.q('.backpack-detail').hidden=!show;
   if(!show)return;
-  this.q('.backpack-detail-art').innerHTML=`<img src="${item.icon}" alt="">`;
-  this.q('.backpack-tag').textContent=item.id==='ticket'?(this.checked?'船票 · 已验票':'船票 · 待查验'):'随身物件';
-  this.q('.backpack-detail h3').textContent=item.name;
-  this.q('.backpack-description').textContent=item.text;
+  this.q('.backpack-detail-art').innerHTML=localizeMarkup(`<img src="${item.icon}" alt="">`);
+  this.q('.backpack-tag').textContent=localizeText(tr(item.id==='ticket'?(this.checked?'船票 · 已验票':'船票 · 待查验'):'随身物件'));
+  this.q('.backpack-detail h3').textContent=localizeText(item.name);
+  this.q('.backpack-description').textContent=localizeText(item.text);
  }
  key(event){
   const code=event.code;

@@ -1,3 +1,5 @@
+import {localizeText} from '../i18n/display.js';
+import {isPortuguese,bilingual} from '../i18n/locale.js';
 import * as T from '../../vendor/three/three.module.js';
 // Parametric hardcover, XY is the page plane; Z is thickness. All hinges are local Y axes.
 export const SIZE={w:2.8,h:4,t:.28,flap:1.7};
@@ -36,7 +38,7 @@ export async function createBook(){
  // Wait for decoded pixels before baking the canvas texture, including a cold mobile load.
  await image.decode();
  if(!image.naturalWidth||!image.naturalHeight)throw new Error('Cover image has no decoded pixels');
- const coverArt=texture((c,cw,ch)=>{c.clearRect(0,0,cw,ch);c.fillStyle='#e6ce92';c.textAlign='center';c.font='34px "Songti SC",serif';c.fillText('埃萨·德·凯罗斯',cw/2,145);c.font='100px "Songti SC",serif';c.fillText('圣遗物',cw/2,300);c.font='25px Georgia,serif';c.fillText('A RELÍQUIA',cw/2,363);c.save();c.beginPath();c.moveTo(180,1115);c.lineTo(180,650);c.bezierCurveTo(180,365,844,365,844,650);c.lineTo(844,1115);c.closePath();c.clip();const ratio=Math.max(664/image.width,680/image.height);c.drawImage(image,512-image.width*ratio/2,785-image.height*ratio/2,image.width*ratio,image.height*ratio);c.restore();c.strokeStyle='#bca36d';c.lineWidth=3;c.beginPath();c.moveTo(180,1115);c.lineTo(180,650);c.bezierCurveTo(180,365,844,365,844,650);c.lineTo(844,1115);c.closePath();c.stroke();},1024,1463);
+ const coverArt=texture((c,cw,ch)=>{c.clearRect(0,0,cw,ch);c.fillStyle='#e6ce92';c.textAlign='center';c.font='34px "Songti SC",serif';c.fillText(localizeText(bilingual('埃萨·德·凯罗斯','Eça de Queirós')),cw/2,145);c.font=isPortuguese?'76px Georgia,serif':'100px "Songti SC",serif';c.fillText(localizeText(bilingual('圣遗物','A RELÍQUIA')),cw/2,300);c.font='25px Georgia,serif';c.fillText(localizeText(isPortuguese?'':'A RELÍQUIA'),cw/2,363);c.save();c.beginPath();c.moveTo(180,1115);c.lineTo(180,650);c.bezierCurveTo(180,365,844,365,844,650);c.lineTo(844,1115);c.closePath();c.clip();const ratio=Math.max(664/image.width,680/image.height);c.drawImage(image,512-image.width*ratio/2,785-image.height*ratio/2,image.width*ratio,image.height*ratio);c.restore();c.strokeStyle='#bca36d';c.lineWidth=3;c.beginPath();c.moveTo(180,1115);c.lineTo(180,650);c.bezierCurveTo(180,365,844,365,844,650);c.lineTo(844,1115);c.closePath();c.stroke();},1024,1463);
  const art=sheet('FrontCoverArtwork',front,w-.1,h-.1,w/2,.038,new T.MeshStandardMaterial({map:coverArt,transparent:true,roughness:.8,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1}));
  root.userData={title:'圣遗物 · 前后护封书本',units:'relative',version:1,hinges:'FrontCoverHinge, FrontFlapHinge, BackCoverHinge, RearFlapHinge, LastLeafHinge',text:'Runtime copy is separate from geometry; cover lettering is generated from editable source.'};
  return {root,rig,front,back,fold,backFold,block,lastLeaf,art,textures};

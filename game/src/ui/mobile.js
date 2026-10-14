@@ -1,3 +1,5 @@
+import {localizeText,localizeMarkup} from '../i18n/display.js';
+import {tr,trMarkup} from '../i18n/ui.js';
 // Touch-first phones keep the same actions and saves, with device-appropriate hints.
 import {phoneQuery,isPhone} from './input-device.js';
 export {phoneQuery,isPhone};
@@ -5,7 +7,7 @@ const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href=new
 
 export function installPhoneOrientation({toggleSettings,closeTop,settingsPanel,enabled}){
  const portrait=matchMedia('(orientation: portrait)');
- const gate=document.createElement('dialog');gate.className='mobile-rotate';gate.setAttribute('aria-label','请横屏游玩');gate.innerHTML='<strong>请横屏游玩</strong><p>将手机横过来，即可继续游戏。</p>';document.body.append(gate);
+ const gate=document.createElement('dialog');gate.className='mobile-rotate';gate.setAttribute('aria-label',localizeText(tr('请横屏游玩')));gate.innerHTML=localizeMarkup(trMarkup('<strong>请横屏游玩</strong><p>将手机横过来，即可继续游戏。</p>'));document.body.append(gate);
  let autoPaused=false;
  gate.addEventListener('cancel',e=>e.preventDefault());
  function sync(){

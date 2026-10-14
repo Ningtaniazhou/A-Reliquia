@@ -1,7 +1,10 @@
+import {isPortuguese} from '../i18n/locale.js';
+import {trC5,bridgeTranslations} from '../i18n/chapter5-ui.js';
+import {localizeRow} from '../i18n/chapter5.js';
 import {parcelAppearance} from '../voyage/parcel.js';
 // C5-J IDs are stable. A = adaptation, O = original connective writing; printed IN-CM 2021 pages.
 const T='特奥多里科',P='波特',S='托普修斯';
-const group=(id,page,lines)=>lines.map(([who,text,type='A',thought=false],i)=>({id:`C5-J-${id}-${i+1}`,who,text,type,thought,source:`IN-CM 2021, pp.${page}`}));
+const group=(id,page,lines)=>lines.map(([who,text,type='A',thought=false],i)=>localizeRow({id:`C5-J-${id}-${i+1}`,who,text,type,thought,source:`IN-CM 2021, pp.${page}`}));
 export const journey={
  nazarethIntro:group('nazareth-in','258–259',[[T,'终于到拿撒勒了。总算可以歇一会儿。','O',true]]),
  nazarethPotte:group('nazareth-potte','258',[[T,'波特，你倒一点也不累。','O'],[P,'有这么漂亮的姑娘，谁还顾得上累呢？','O'],[T,'还没看够吗，波特？我只盼着早些上船，回里斯本去。','O']]),
@@ -35,11 +38,11 @@ export const bridges={
  spring:{to:'spring',source:'IN-CM 2021, pp.265–267',type:'A',sound:'horse',text:'木箱随行李上了驮马。仆人送回的包裹，却还在我手里。\n\n我盘算着，等离开大家的视线，就找条沟把它扔掉。走到山路上的泉边，博士的马忽然拐过去，怎么拉也不肯走。'},
  return:{to:'lisbon',source:'IN-CM 2021, pp.268–276',type:'A',sound:'sea',text:'我们回到路上。身后，那女人还在祝福我们。\n\n到了雅法，我和波特告别，随博士乘船回埃及。次日，在亚历山德里亚，博士送我上了回葡萄牙的船。他再三保证：可以告诉姨姨，那就是原来的荆棘冠，一根刺也不差。\n\n两周后，我抱着木箱，坐上里斯本的马车。姨姨家的门，已经在前面了。'}
 };
-export const bridgePages=id=>id==='return'?bridges[id].text.replace('祝福我们。\n\n','祝福我们。').replace('次日，在亚历山德里亚','\n\n次日，在亚历山德里亚').split('\n\n'):[bridges[id].text];
+export const bridgePages=id=>isPortuguese?bridgeTranslations[id]:id==='return'?bridges[id].text.replace('祝福我们。\n\n','祝福我们。').replace('次日，在亚历山德里亚','\n\n次日，在亚历山德里亚').split('\n\n'):[bridges[id].text];
 export const bridgeText=(id,page=0)=>bridgePages(id)[page]||bridgePages(id)[0];
-export const bridgeDuration=(id,page=0)=>Math.max(4,1.5+bridgeText(id,page).replace(/\s/g,'').length/9);
+export const bridgeDuration=(id,page=0)=>Math.max(4,1.5+(isPortuguese?bridgeText(id,page).trim().split(/\s+/).length/2.8:bridgeText(id,page).replace(/\s/g,'').length/9));
 export const newItems=[
  {id:'c5-relic-box',name:'荆棘冠木盒',shortName:'荆棘冠木盒',icon:'./assets/chapter5/packing-v02/box-closed.webp',text:'荆棘冠的包裹已经放进去了。蓝花布衬着盒壁，白棉花垫在下面，褐纸和红带都没有拆动。盒盖已经钉牢。'},
  {id:'c5-returned-parcel',...parcelAppearance},
  {id:'c5-small-crate',name:'圣物箱',shortName:'圣物箱',icon:'./assets/chapter5/packing-v01/crate-closed.webp',text:'给姨姨带的小圣物都装在里面，彩纸和丝带裹得妥妥当当。箱外又加了铁皮，路上颠簸也不怕。'}
-];
+].map(item=>({...item,name:trC5(item.name),shortName:trC5(item.shortName),text:trC5(item.text)}));

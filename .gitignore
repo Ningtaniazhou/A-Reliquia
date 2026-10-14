@@ -7,6 +7,12 @@
 !/scripts/audit-assets.mjs
 !/scripts/build.mjs
 !/scripts/serve.mjs
+!/scripts/release-build.mjs
+!/scripts/releases.json
+!/scripts/check-release-history.mjs
+!/scripts/check-localization.mjs
+!/scripts/release-authorization.json
+/game/notebook-test.html
 !/.openai/
 /.openai/*
 !/.openai/hosting.json

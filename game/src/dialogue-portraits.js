@@ -1,3 +1,4 @@
+import {localizeMarkup} from './i18n/display.js';
 import {paperPortrait,portraitMarkup} from './ui/character-portraits.js';
 import {dialoguePortraitName} from './ui/dialogue-speaker.js';
 import {portraits} from './portrait-data.js';
@@ -30,7 +31,7 @@ function sync(){queued=false;
  let bust=panel._bust;
  if(!bust){bust=document.createElement('div');bust.className='dialogue-bust';bust._panel=panel;panel._bust=bust;panel.prepend(bust);new ResizeObserver(schedule).observe(panel);}
  bust.hidden=!visible;if(!visible)continue;
- if(asset&&bust.dataset.person!==asset.id){bust.dataset.person=asset.id;bust.innerHTML=portraitMarkup(asset);}
+ if(asset&&bust.dataset.person!==asset.id){bust.dataset.person=asset.id;bust.innerHTML=localizeMarkup(portraitMarkup(asset));}
  // Portrait shares the panel background and stays inside its left column.
  bust.style.cssText='';
  }

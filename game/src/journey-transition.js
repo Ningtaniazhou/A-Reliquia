@@ -1,3 +1,4 @@
+import {localizeText} from './i18n/display.js';
 // Landscape expands separately; the carriage follows a single, uniform FLIP.
 // Never shrink the carriage inside a simultaneously enlarging parent.
 export function expandJourney(root,rect,backdrop,reduced,sourceCar){
@@ -13,7 +14,7 @@ export function expandJourney(root,rect,backdrop,reduced,sourceCar){
  const animation=frame.animate([{transform:`translate(${rect.x}px,${rect.y}px) scale(${rect.width/frame.offsetWidth},${rect.height/frame.offsetHeight})`},{transform:'none'}],options);
  car.style.transformOrigin='0 0';
  const carAnimation=sourceCar?car.animate([{transform:`translate(${sourceCar.x-destination.x}px,${sourceCar.y-destination.y}px) scale(${sourceCar.width/destination.width})`},{transform:'none'}],options):null;
- const border=document.createElement('img');border.className='journey-border expanding-border';border.src='./assets/journey-border.webp';border.alt='';frame.append(border);border.animate([{opacity:1},{opacity:0}],options);
+ const border=document.createElement('img');border.className='journey-border expanding-border';border.src='./assets/journey-border.webp';border.alt=localizeText('');frame.append(border);border.animate([{opacity:1},{opacity:0}],options);
  let finished=false;const cleanup=()=>{if(finished)return;finished=true;animation.cancel();carAnimation?.cancel();frame.append(car);car.style.left='25%';car.style.top='';car.style.bottom='';car.style.width='';car.style.height='';layer.remove();backdrop.remove();scene.classList.remove('expanding-road');border.remove();frame.style.transformOrigin='';car.style.transformOrigin='';window.removeEventListener('resize',cleanup);};
  animation.finished.catch(()=>{}).finally(cleanup);window.addEventListener('resize',cleanup,{once:true});
 }

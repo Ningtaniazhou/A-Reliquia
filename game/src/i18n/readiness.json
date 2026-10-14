@@ -1,0 +1,29 @@
+{
+  "locale": "pt-PT",
+  "completedChapters": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "sourceReviewComplete": true,
+  "addressFormsReviewComplete": true,
+  "fullPlaythroughPassed": true,
+  "legacySaveRegressionPassed": true,
+  "mobileLandscapePassed": false,
+  "deploymentTransitionPassed": true,
+  "note": "2026-10-14: Seven-chapter ZH and PT automated full playthroughs passed on the candidate release, plus visible desktop Chinese entry/notebook/refresh checks, 32 legacy-save/locale cases, retained old-page C5-to-C6 transition across a simulated deployment, subpath, artifact and rollback checks. Evidence: qa/pre-release-20261014. Earlier source/address editorial evidence: qa/i18n/final-review (assistant review, not external native-speaker certification). Real iPhone landscape acceptance remains outstanding; no publication authorized.",
+  "implementedChapters": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "desktopReviewPassed": true
+}

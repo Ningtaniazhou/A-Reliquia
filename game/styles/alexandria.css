@@ -11,3 +11,10 @@ kbd[aria-label="空格键"]{font-size:0!important;min-width:36px;vertical-align:
 .alex-talk.is-interjection{background:#292039f2;border-color:#b69bd4}.alex-talk.is-interjection small{color:#d3b7ef}.alex-talk.is-interjection p{color:#eee2fa}
 
 .voyage-dialogue.is-interjection{background:#292039f2;border-color:#b69bd4}.voyage-dialogue.is-interjection .voyage-speaker{color:#d3b7ef}.voyage-dialogue.is-interjection p{color:#eee2fa}
+
+/* Inspected objects need their full paper/table height, not the prose-only dialogue height. */
+html body .alex-talk:has(.alex-stationery:not([hidden]),.alex-price-list:not([hidden])){width:min(800px,90%);top:50%;transform:translate(-50%,-50%);height:auto!important;max-height:calc(100dvh - 48px)!important;padding:32px 24px 42px!important;overflow:auto}
+@media(max-height:650px){
+ html body .alex-talk:has(.alex-stationery:not([hidden]),.alex-price-list:not([hidden])){padding:24px 20px 32px!important}
+ .alex-talk:has(.alex-stationery:not([hidden]),.alex-price-list:not([hidden]))>p{font-size:17px;line-height:1.45;margin:6px 0}
+}

@@ -1,3 +1,4 @@
+import {localizeMarkup,localizeText} from '../i18n/display.js';
 import {point} from '../interaction-marks.js';
 // Registered against the printed coastal symbols on the 1870 original crop.
 // Sea corridors are feasible reconstructions, not the fictional Málaga's logbook.
@@ -10,18 +11,18 @@ export const stops=[
  {name:'耶路撒冷',x:782,y:253,path:'M760 243 L766 248 L770 249 L774 248 L778 250 L782 253',land:true,fantasy:'jerusalem',caption:'耶路撒冷。姨姨交给我的差事。'}
 ];
 export class RoutePlan{
- constructor({step,save,finish,reduced}){Object.assign(this,{step,save,finish,reduced});this.elapsed=0;this.animating=false;this.selected=step-1;this.root=document.getElementById('route');this.ink=document.getElementById('route-ink');this.pen=document.getElementById('unfold');this.pen.innerHTML=point();this.render();}
+ constructor({step,save,finish,reduced}){Object.assign(this,{step,save,finish,reduced});this.elapsed=0;this.animating=false;this.selected=step-1;this.root=document.getElementById('route');this.ink=document.getElementById('route-ink');this.pen=document.getElementById('unfold');this.pen.innerHTML=localizeMarkup(point());this.render();}
  sync(step){if(this.step!==step){this.step=step;this.animating=false;this.selected=step-1;this.render();}}
  activate(){if(this.animating){this.complete();return;}if(this.step===6){this.finish();return;}this.step++;this.selected=this.step-1;this.animating=!this.reduced();this.elapsed=0;this.save(this.step);this.render();if(!this.animating)this.complete();}
  tick(dt){if(!this.animating)return;this.elapsed+=dt;const t=Math.min(1,this.elapsed/1200);this.root.style.setProperty('--ink-progress',String(t));if(t===1)this.complete();}
  complete(){this.animating=false;this.root.classList.remove('writing');this.root.style.setProperty('--ink-progress','1');this.showFantasy(this.selected);this.positionHotspot();}
- positionHotspot(){const done=this.step===stops.length&&!this.animating;this.pen.classList.toggle('plan-complete',done);const host=done?this.root.querySelector('.plan-sheet'):document.getElementById('med-map');if(this.pen.parentElement!==host)host.append(this.pen);if(done){this.pen.textContent='收起旅行计划';this.pen.style.left='';this.pen.style.top='';this.pen.setAttribute('aria-label','收起旅行计划，继续剧情');return;}if(!this.pen.querySelector('.interaction-point'))this.pen.innerHTML=point();const index=this.animating?this.step-1:this.step,stop=stops[index];this.pen.style.left=stop.x/885*100+'%';this.pen.style.top=stop.y/320*100+'%';this.pen.setAttribute('aria-label',this.animating?'完成当前线路动画':'标记'+stop.name);}
+ positionHotspot(){const done=this.step===stops.length&&!this.animating;this.pen.classList.toggle('plan-complete',done);const host=done?this.root.querySelector('.plan-sheet'):document.getElementById('med-map');if(this.pen.parentElement!==host)host.append(this.pen);if(done){this.pen.textContent=localizeText('收起旅行计划');this.pen.style.left='';this.pen.style.top='';this.pen.setAttribute('aria-label',localizeText('收起旅行计划，继续剧情'));return;}if(!this.pen.querySelector('.interaction-point'))this.pen.innerHTML=localizeMarkup(point());const index=this.animating?this.step-1:this.step,stop=stops[index];this.pen.style.left=stop.x/885*100+'%';this.pen.style.top=stop.y/320*100+'%';this.pen.setAttribute('aria-label',localizeText(this.animating?'完成当前线路动画':'标记'+stop.name));}
 
- showFantasy(i){const f=document.getElementById('route-fantasy'),stop=stops[i];f.hidden=!stop?.fantasy;f.dataset.place=stop?.fantasy||'';f.querySelector('figcaption').textContent=stop?.caption||'';}
- render(){this.root.classList.toggle('writing',this.animating);this.ink.innerHTML='';
+ showFantasy(i){const f=document.getElementById('route-fantasy'),stop=stops[i];f.hidden=!stop?.fantasy;f.dataset.place=stop?.fantasy||'';f.querySelector('figcaption').textContent=localizeText(stop?.caption||'');}
+ render(){this.root.classList.toggle('writing',this.animating);this.ink.innerHTML=localizeMarkup('');
  stops.slice(0,this.step).forEach((stop,i)=>{const latest=i===this.step-1,labelY=i===5?stop.y+38:i===4?stop.y-24:stop.y-17;
- this.ink.insertAdjacentHTML('beforeend',`${stop.path?`<path class="route-line ${stop.land?'land':''} ${latest?'new-line':''}" d="${stop.path}" pathLength="1"/>`:''}<g class="route-marker ${latest?'new-marker':''}" role="button" tabindex="0" aria-label="回看${stop.name}" data-index="${i}"><circle cx="${stop.x}" cy="${stop.y}" r="3.5"/><text x="${stop.x}" y="${labelY}" text-anchor="middle">${stop.name}</text></g>`);
+ this.ink.insertAdjacentHTML('beforeend',localizeMarkup(`${stop.path?`<path class="route-line ${stop.land?'land':''} ${latest?'new-line':''}" d="${stop.path}" pathLength="1"/>`:''}<g class="route-marker ${latest?'new-marker':''}" role="button" tabindex="0" aria-label="回看${stop.name}" data-index="${i}"><circle cx="${stop.x}" cy="${stop.y}" r="3.5"/><text x="${stop.x}" y="${labelY}" text-anchor="middle">${stop.name}</text></g>`));
  });
  for(const marker of this.ink.querySelectorAll('[data-index]')){const revisit=()=>{if(this.animating)this.complete();this.selected=+marker.dataset.index;this.showFantasy(this.selected);};marker.onclick=revisit;marker.onkeydown=e=>{if(e.key==='Enter'||e.code==='Space'){e.preventDefault();e.stopPropagation();revisit();}};}
- document.getElementById('route-status').textContent=this.step===6?'海路 ━　骑马陆路 ┄':this.step?'海路 ━':'';this.showFantasy(this.animating?-1:this.selected);this.root.style.setProperty('--ink-progress',this.animating?'0':'1');this.positionHotspot();}
+ document.getElementById('route-status').textContent=localizeText(this.step===6?'海路 ━　骑马陆路 ┄':this.step?'海路 ━':'');this.showFantasy(this.animating?-1:this.selected);this.root.style.setProperty('--ink-progress',this.animating?'0':'1');this.positionHotspot();}
 }

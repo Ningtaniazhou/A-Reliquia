@@ -1,5 +1,7 @@
+import {localizeMarkup,localizeText} from './i18n/display.js';
 import {sceneCheckpoint,restartButton} from './ui/scene-checkpoint.js';
 import {readPreferences} from './ui/preferences.js';
+import {phoneQuery,isPhone} from './ui/input-device.js';
 import {installSharedControls} from './ui/shared-controls.js';
 import {soundIcon,updateSoundButton} from './ui/sound-button.js';
 import {growthBook,writingReturn} from './growth/scene.js';
@@ -35,16 +37,17 @@ const portal=new ChapterPortal(root,{
  enter:()=>act('ENTER_CHAPTER'),isActive:()=>state.scene==='chapter2',blocked:()=>orientationBlocked,
  save:value=>{if(state.scene==='chapter2'){state.chapterState=value;persist();}},
  preferences:value=>{Object.assign(settings,value);sound.mute(settings.muted);sound.setVolume(settings.volume);saveSettings();},
- complete:()=>{state=reduce(state,'ENTER_CHAPTER');elapsed=0;busy=0;persist();sound.set('chapter2');root.dataset.scene='chapter2';root.innerHTML='';},
+ complete:()=>{state=reduce(state,'ENTER_CHAPTER');elapsed=0;busy=0;persist();sound.set('chapter2');root.dataset.scene='chapter2';root.innerHTML=localizeMarkup('');},
 });
 const loaded=new Map();
 const preload=names=>Promise.all(names.map(n=>{if(loaded.has(n))return loaded.get(n);const p=new Promise((res,rej)=>{const im=new Image();im.onload=()=>res();im.onerror=()=>rej(Error(n));im.src='./assets/'+n;});loaded.set(n,p);return p;}));
-const portrait=matchMedia('(orientation: portrait) and (max-width: 900px)');
-let orientationBlocked=portrait.matches;
-function syncOrientation(){orientationBlocked=portrait.matches;root.inert=orientationBlocked;root.classList.toggle('orientation-paused',orientationBlocked);sound.pause(audioPaused());portal.frame?.contentWindow?.reliquiaChapterPause?.(paused||document.hidden||orientationBlocked);portal.layout();last=performance.now();}
+const portrait=matchMedia('(orientation: portrait)');
+let orientationBlocked=isPhone()&&portrait.matches;
+function syncOrientation(){orientationBlocked=isPhone()&&portrait.matches;root.inert=orientationBlocked;root.classList.toggle('orientation-paused',orientationBlocked);sound.pause(audioPaused());portal.frame?.contentWindow?.reliquiaChapterPause?.(paused||document.hidden||orientationBlocked);portal.layout();last=performance.now();}
 portrait.addEventListener('change',syncOrientation);
+phoneQuery.addEventListener('change',syncOrientation);
 let loading=false;
-function announce(t){live.textContent=t;}
+function announce(t){live.textContent=localizeText(t);}
 function persist(){if(!localPreview)saved=writeSave(storage,state);}
 function speedButton(){return ['road-ready','travel'].includes(state.scene)?`<button class="travel-speed ${travelRate===2?'active':''}" data-action="SPEED" aria-pressed="${travelRate===2}" aria-label="${travelRate===2?'原速':'二倍速'}"><svg class="travel-speed-icon" viewBox="0 0 32 24" width="24" height="18" fill="currentColor" aria-hidden="true"><path d="M3 3L15 12 3 21Z"/>${travelRate===2?'':'<path d="M17 3L29 12 17 21Z"/>'}</svg><span>${travelRate===2?'原速':'二倍速'}</span></button>`:'';}
 function soundLabel(){return soundIcon(settings.muted||settings.volume===0);}
@@ -53,7 +56,7 @@ function toolbar(){if(state.scene==='chapter2')return '';return `<nav class="too
 function render(){openingCheckpoint?.capture(state);
  root.className=[paused?'paused':'',settings.reduced?'reduce-motion':''].join(' ');root.dataset.scene=state.scene;root.dataset.spread=state.spread;root.dataset.revealed=state.revealed;
  let scene=state.scene==='chapter2'?'':state.scene==='writing-return'?writingReturn(state):state.scene==='growth'?growthBook(pending==='GROW_TURN'?reduce(state,'GROW_TURN'):state,revealIndex,pending==='GROW_TURN'):state.scene==='arrival'?arrival(state):state.scene==='preface'?(pending==='TURN'?book(reduce(state,'TURN'),-1,true):preface()):['window','room'].includes(state.scene)?room(state):state.scene==='book'?book(pending==='TURN'?reduce(state,'TURN'):state,revealIndex,pending==='TURN'):road(state);
- root.innerHTML=scene+toolbar()+speedButton();syncSoundButton();syncOrientation();syncBusy();sound.set(coverHost&&!coverHost.entered?'cover':state.scene);updateTravel();updateCamera();if(state.scene==='writing-return')paintRetreat(root,elapsed,settings.reduced);
+ root.innerHTML=localizeMarkup(scene+toolbar()+speedButton());syncSoundButton();syncOrientation();syncBusy();sound.set(coverHost&&!coverHost.entered?'cover':state.scene);updateTravel();updateCamera();if(state.scene==='writing-return')paintRetreat(root,elapsed,settings.reduced);
  root.style.setProperty('--stage-ratio',root.clientWidth/root.clientHeight);
  if(state.scene==='chapter2'||(state.scene==='growth'&&state.growthSpread===growthSpreads.length-1&&state.growthPages[state.growthSpread]===growthCount(state.growthSpread))){portal.mount();portal.layout();if(state.scene==='chapter2'&&portal.ready)portal.activate();}else portal.destroy();
 }
@@ -61,13 +64,13 @@ function syncBusy(){if(portal.button)portal.button.disabled=busy>0;root.setAttri
 function growthAction(){const n=state.growthPages[state.growthSpread];return n<growthCount(state.growthSpread)?(n===0?'GROW_LEFT':'GROW_RIGHT'):state.growthSpread<growthSpreads.length-1?'GROW_TURN':'ENTER_CHAPTER';}
 function focusAction(){const action=state.scene==='growth'?growthAction():state.scene==='preface'?'TURN':state.scene==='room'?(studyComplete(state)?'OPEN':'INSPECT:'+(studyItems.find(item=>!state.studied?.includes(item.id))?.id||'ring')):state.scene==='book'?(state.revealed===0?'LEFT':state.revealed===1?'RIGHT':state.spread===0?'TURN':'ENTER_ROAD'):state.scene==='road-ready'?'DRIVE':state.scene==='door'?'ENTER_HOUSE':state.scene==='arrival'&&state.arrivalSeen?(state.arrivalLine===arrivalLines.length-1?'WRITE_YEARS':'AUNT_NEXT'):null;if(action==='ENTER_CHAPTER'){portal.button?.focus({preventScroll:true});return;}if(action)root.querySelector(`[data-action="${action}"]`)?.focus({preventScroll:true});}
 function change(action){const next=reduce(state,action);if(next===state)return;state=next;elapsed=0;travelSaved=0;revealIndex=-1;pending=null;busy=0;persist();render();focusAction();}
-async function ensureScene(names){loading=true;const note=document.createElement('div');note.className='load-note';note.setAttribute('aria-label','载入中');document.body.append(note);try{await preload(names);return true;}catch(e){const panel=document.createElement('section');panel.className='error-panel';panel.innerHTML='<p>这一页还没有载入。</p><button>重新载入</button>';panel.querySelector('button').onclick=()=>location.reload();document.body.append(panel);return false;}finally{note.remove();loading=false;}}
+async function ensureScene(names){loading=true;const note=document.createElement('div');note.className='load-note';note.setAttribute('aria-label',localizeText('载入中'));document.body.append(note);try{await preload(names);return true;}catch(e){const panel=document.createElement('section');panel.className='error-panel';panel.innerHTML=localizeMarkup('<p>这一页还没有载入。</p><button>重新载入</button>');panel.querySelector('button').onclick=()=>location.reload();document.body.append(panel);return false;}finally{note.remove();loading=false;}}
 async function act(action){
  quietTime=0;root.querySelectorAll('.attention').forEach(p=>p.classList.remove('attention'));
  if(action==='SETTINGS'){openSettings();return;}
  if(action==='SOUND'){settings.muted=!settings.muted&&sound.ctx?.state!=='running'?false:!settings.muted;sound.mute(settings.muted);saveSettings();await sound.unlock();syncSoundButton();return;}
  if(paused||loading||orientationBlocked)return;
- if(action==='SPEED'&&['road-ready','travel'].includes(state.scene)){travelRate=travelRate===1?2:1;const button=root.querySelector('.travel-speed');button.outerHTML=speedButton();root.querySelector('.travel-speed')?.focus({preventScroll:true});announce(travelRate===2?'旅途已加速。':'恢复正常速度。');return;}
+ if(action==='SPEED'&&['road-ready','travel'].includes(state.scene)){travelRate=travelRate===1?2:1;const button=root.querySelector('.travel-speed');button.outerHTML=localizeMarkup(speedButton());root.querySelector('.travel-speed')?.focus({preventScroll:true});announce(travelRate===2?'旅途已加速。':'恢复正常速度。');return;}
  if(action.startsWith('INSPECT:')&&state.scene==='room'){await sound.unlock();openStudy(action.slice(8));return;}
  if(portal.progress!==null)return;
  if(action==='BACK'&&state.scene==='writing-return')return;
@@ -111,9 +114,9 @@ function saveSettings(){try{storage.setItem('reliquia.settings',JSON.stringify(s
 // Holding the opening picture still must not suspend the cover's shared music.
 function audioPaused(){const visualHold=coverHost&&!coverHost.entered&&document.documentElement.classList.contains('cover-preview');return document.hidden||orientationBlocked||(paused&&!visualHold);}
 function pause(value){paused=value;root.classList.toggle('paused',paused);sound.pause(audioPaused());}
-function dialog(html){if(menu)return null;pause(true);menu=document.createElement('dialog');menu.className='dialog';menu.innerHTML=html;document.body.append(menu);menu.addEventListener('cancel',e=>{e.preventDefault();closeDialog();});menu.showModal();return menu;}
+function dialog(html){if(menu)return null;pause(true);menu=document.createElement('dialog');menu.className='dialog';menu.innerHTML=localizeMarkup(html);document.body.append(menu);menu.addEventListener('cancel',e=>{e.preventDefault();closeDialog();});menu.showModal();return menu;}
 function closeDialog(){if(!menu)return;menu.close();menu.remove();menu=null;const after=onDialogClose;onDialogClose=null;pause(false);last=performance.now();if(after)after();else focusAction();}
-function openSettings(){const d=dialog('<h2>设置</h2><label>音量 <input id="opening-volume" type="range" min="0" max="1" step=".05"></label><button id="opening-resume">返回游戏</button>');if(!d)return;d.dataset.settings='true';restartButton(d,()=>{const entry=openingCheckpoint.restore();if(!entry)return;closeDialog();state=entry;elapsed=0;busy=0;pending=null;persist();render();});const restart=document.createElement('button');restart.textContent='重新开始本章';restart.onclick=()=>{const chapterState=state.chapterState;closeDialog();openingCheckpoint.clear();state={...initial(),chapterState};elapsed=0;busy=0;pending=null;persist();render();};d.append(restart);d.querySelector('#opening-volume').value=settings.volume;d.querySelector('#opening-volume').oninput=e=>{settings.volume=+e.target.value;sound.setVolume(settings.volume);saveSettings();};d.querySelector('#opening-resume').onclick=closeDialog;}
+function openSettings(){const d=dialog('<h2>设置</h2><label>音量 <input id="opening-volume" type="range" min="0" max="1" step=".05"></label><button id="opening-resume">返回游戏</button>');if(!d)return;d.dataset.settings='true';restartButton(d,()=>{const entry=openingCheckpoint.restore();if(!entry)return;closeDialog();state=entry;elapsed=0;busy=0;pending=null;persist();render();});const restart=document.createElement('button');restart.textContent=localizeText('重新开始本章');restart.onclick=()=>{const chapterState=state.chapterState;closeDialog();openingCheckpoint.clear();state={...initial(),chapterState};elapsed=0;busy=0;pending=null;persist();render();};d.append(restart);d.querySelector('#opening-volume').value=settings.volume;d.querySelector('#opening-volume').oninput=e=>{settings.volume=+e.target.value;sound.setVolume(settings.volume);saveSettings();};d.querySelector('#opening-resume').onclick=closeDialog;}
 function openStudy(id){
  const item=studyItems.find(item=>item.id===id);if(!item)return;
  const d=dialog(studyDetail(item));if(!d)return;

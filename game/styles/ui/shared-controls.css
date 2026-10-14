@@ -36,3 +36,7 @@ body .utilities:has([data-game-control]){z-index:46!important}
 .chapter-marker-inline{padding:4px 8px;background:#17131cba;border-radius:2px;color:#dfca9b;font:16px/1.5 'Songti SC',serif;white-space:nowrap;margin-right:16px}
 .book-staged .chapter-marker,.cover-preview .chapter-marker,.cover-preview .chapter-marker-inline{visibility:hidden}
 @media(hover:none) and (pointer:coarse) and (max-width:1000px){.chapter-marker{top:14px;left:14px;font-size:12px}.chapter-marker-inline{font-size:12px;margin-right:8px}}
+
+/* Game text is an interaction surface, never a text-selection target. */
+html body,html body *{-webkit-user-select:none!important;user-select:none!important}
+html body input,html body textarea,html body [contenteditable=true]{-webkit-user-select:text!important;user-select:text!important}

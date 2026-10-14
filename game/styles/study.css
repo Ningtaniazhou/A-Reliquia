@@ -26,6 +26,6 @@
 .study-return span{font-size:22px}
 .reduce-motion .unread .study-glow{animation:none;opacity:.65}
 @media(max-height:500px){.study-intro{top:54px;font-size:12px;padding:8px 12px}.study-reading{padding:18px 20px 8px}.study-dialog h2{margin-bottom:10px}.study-dialog .study-zh{font-size:18px;line-height:1.6}.study-dialog .study-pt{font-size:16px;line-height:1.4}.study-dialog .study-note{font-size:14px}.study-dialog .study-source{margin-top:12px}}
-@media(orientation:portrait) and (max-width:900px){.study-dialog{visibility:hidden}}
+@media(hover:none) and (pointer:coarse) and (orientation:portrait) and (max-width:1000px){.study-dialog{visibility:hidden}}
 
 .study-copy:focus{outline:none}.study-copy:focus-visible{outline:1px solid #b99b6f;outline-offset:3px}

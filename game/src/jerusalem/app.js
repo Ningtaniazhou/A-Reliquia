@@ -1,3 +1,4 @@
+import {localizeText} from '../i18n/display.js';
 import {isPhone} from '../ui/mobile.js';
 import {chapterEntryURL,consumeChapterEntry} from '../ui/chapter-entry.js';
 consumeChapterEntry();
@@ -14,7 +15,7 @@ import {topicAvailable,relicItems,contextForTopic} from './chapter-content.js';
 import {holyDone,travelReady} from './state.js';
 import {updateSoundButton} from '../ui/sound-button.js';
 import {arrival,letters,dialogue,dialogueRow,places,topics,topicIds} from './content.js';
-import {initial,normalize,read,save,begin,advance,WIDTH,SAVE_KEY} from './state.js';
+import {initial,normalize,read,save,begin,advance,finish,WIDTH,SAVE_KEY} from './state.js';
 import {JerusalemAudio} from './audio.js';
 import {drawActor} from '../voyage/scale.js';
 import {walkFrame} from '../voyage/motion.js';
@@ -46,7 +47,7 @@ for(const item of relicItems)itemById.set(item.id,item);
 function persist(){if(!preview)rememberChapter(s.endSeen?'dream':'jerusalem');checkpoint.capture(s); $('.j-save-warning').hidden=save(storage,s); }
 function stop(){keys.clear();target=null;moving=false;}
 function blocked(){return !ready||paused||!!fade||s.arrival<arrival.length||!!s.dialogue||!!menu||bagOpen||s.letterOpen||ending;}
-function hint(text,seconds=5){$('.j-hint').textContent=text;hintUntil=time+seconds;$('.j-hint').hidden=false;}
+function hint(text,seconds=5){$('.j-hint').textContent=localizeText(text);hintUntil=time+seconds;$('.j-hint').hidden=false;}
 function music(){if(ending){sound.request(s.bridgeElapsed<6?'caravan':null,3);sound.rain(0);return;}if(s.arrival<arrival.length){sound.request(s.arrival<2?'voyageDeck':null,2);sound.rain(s.arrival>=2?.22:0);return;}const cue=s.room==='holy'?'sepulchre':s.room==='fatmeRoom'||s.room==='camp'&&s.toasted?'caravan':s.room==='wild'||s.room==='camp'?'malta':'jerusalemRain';sound.request(cue,1.7);sound.rain(['street','forecourt'].includes(s.room)?.23:s.room==='lobby'?.09:s.room==='room'?.055:0);}
 function askScholar(){chapter.scholar();ui();}
 function settings(){stop();pause(true);$('#settings').showModal();}
@@ -54,7 +55,7 @@ function pause(on){paused=on;stop();sound.pause(on);document.body.classList.togg
 function preference(){document.body.classList.toggle('reduced',prefs.reduced);prefs.volume=Math.max(0,Math.min(1,Number(prefs.volume)||0));sound.update();$('#volume').value=prefs.volume;updateSoundButton($('#mute'),prefs.muted||prefs.volume===0,{shortcut:'M'});try{storage.setItem('reliquia.jerusalem-study.settings',JSON.stringify(prefs));}catch{}}
 const backpack=new Backpack($('.voyage-bag'),{signal:abort.signal,onClose:()=>bag()});
 function letterItem(){itemById.set('aunt-letter',{id:'aunt-letter',name:'写给姨姨的信',shortName:s.letter==='sent'?'信 · 已交寄':'信 · 待交寄',icon:'./assets/jerusalem/letter.webp',text:(s.letter==='sent'?'前台已收下信件，答应代为交寄。信的记录留在我的背包中。':'信已经封好，可以交给大堂前台代寄。')+'\n\n'+letters.join('\n\n')});}
-function bag(){if(paused||fade||s.arrival<arrival.length||s.dialogue||menu||s.letterOpen||ending||!ready)return;stop();bagOpen=!bagOpen;if(bagOpen){letterItem();backpack.open(s.items,{checked:true});backpack.q('.backpack-heading p').textContent='旅途所得';}else{backpack.close();screen.focus();}ui();}
+function bag(){if(paused||fade||s.arrival<arrival.length||s.dialogue||menu||s.letterOpen||ending||!ready)return;stop();bagOpen=!bagOpen;if(bagOpen){letterItem();backpack.open(s.items,{checked:true});backpack.q('.backpack-heading p').textContent=localizeText('旅途所得');}else{backpack.close();screen.focus();}ui();}
 function talk(id){if(paused||fade||bagOpen||!ready)return;stop();menu=null;s=begin(s,id);persist();ui();}
 function next(){if(paused||!ready||fade)return;
  if(s.arrival<arrival.length){s.arrival++;persist();music();if(s.arrival===arrival.length){fade={t:0,room:'street',x:s.x,swapped:true,reveal:true};}ui();return;}
@@ -101,21 +102,21 @@ function interact(id){if(blocked())return;const p=id?spots().find(p=>p.id===id):
  if(p.id==='desk')return showMenu('desk');
  talk(p.id);
 }
-function updateLetter(){const n=s.letterPage;$('.j-letter p').textContent=letters[n];$('#letter-back').disabled=n===0;$('#letter-next').textContent='›';$('#letter-next').setAttribute('aria-label',n===letters.length-1?'折好信件':'下一页 D');$('#letter-back').textContent='‹';}
+function updateLetter(){const n=s.letterPage;$('.j-letter p').textContent=localizeText(letters[n]);$('#letter-back').disabled=n===0;$('#letter-next').textContent=localizeText('›');$('#letter-next').setAttribute('aria-label',localizeText(n===letters.length-1?'折好信件':'下一页 D'));$('#letter-back').textContent=localizeText('‹');}
 function previousLetter(){if(!paused&&s.letterOpen&&s.letterPage>0){s.letterPage--;persist();ui();}}
-function nextLetter(){if(paused||!s.letterOpen)return;if(s.letterPage<letters.length-1){s.letterPage++;persist();ui();}else{s.letterOpen=false;if(s.letter==='none')talk('seal');else{persist();ui();}}}
+function nextLetter(){if(paused||!s.letterOpen)return;if(s.letterPage<letters.length-1){s.letterPage++;persist();ui();}else{s.letterOpen=false;if(s.letter==='none'){s=finish(s,'seal');talk('seal');}else{persist();ui();}}}
 function ui(){const busy=!!s.dialogue||!!menu||s.letterOpen||ending||!!fade||s.arrival<arrival.length;
- $('.voyage-place').textContent=places[s.room]+(s.room==='camp'&&s.toasted?' · 夜':'');$('.j-objective').textContent=objective(s);$('.j-objective').hidden=busy||bagOpen;canvas.setAttribute('aria-label',places[s.room]+(isPhone()?'，点击地面行走，点击动作按钮交互':'，A D 行走，E 交互'));
+ $('.voyage-place').textContent=localizeText(places[s.room]+(s.room==='camp'&&s.toasted?' · 夜':''));$('.j-objective').textContent=localizeText(objective(s));$('.j-objective').hidden=busy||bagOpen;canvas.setAttribute('aria-label',localizeText(places[s.room]+(isPhone()?'，点击地面行走，点击动作按钮交互':'，A D 行走，E 交互')));
  $('.j-talk').hidden=!s.dialogue;$('.j-menu').hidden=!menu;$('.j-letter').hidden=!s.letterOpen;$('.j-ending').hidden=!ending;$('.voyage-bag').hidden=!bagOpen;
  $('.voyage-hud').hidden=s.arrival<arrival.length||!!fade;$('.utilities').hidden=!!fade;$('.voyage-hud').inert=busy||bagOpen;$('.j-scholar').hidden=s.arrival<arrival.length||!scholarAvailable(s);$('.j-scholar').disabled=busy||bagOpen;$('.j-scholar i').hidden=!scholarPending(s);
 
- if(s.dialogue){const entry=dialogue[s.dialogue],row=dialogueRow(s.dialogue,s.cursors[s.dialogue]||0,s);const view=presentation(s.dialogue,entry,s.cursors[s.dialogue]||0);$('.j-talk small').textContent=view.label;$('.j-talk small').hidden=!view.label;$('.j-talk p').textContent=row[1];$('.j-talk').classList.toggle('thought',view.thought);$('.j-talk').classList.toggle('interjection',row[0]==='托普修斯');$('.j-talk').scrollTop=0;}
- if(menu){$('.j-menu h2').textContent=menu.title;const box=$('.j-menu div');box.replaceChildren();menu.rows.forEach((r,i)=>{const b=document.createElement('button');b.textContent=r.label;b.setAttribute('aria-label',r.label);if(i===selected){const key=document.createElement('kbd');key.textContent='␣';key.setAttribute('aria-label','空格键');b.append(key);}b.classList.toggle('selected',i===selected);b.onclick=()=>{if(!paused){selected=i;r.run();}};box.append(b);});}
+ if(s.dialogue){const entry=dialogue[s.dialogue],row=dialogueRow(s.dialogue,s.cursors[s.dialogue]||0,s);const view=presentation(s.dialogue,entry,s.cursors[s.dialogue]||0);$('.j-talk small').textContent=localizeText(view.label);$('.j-talk small').hidden=!view.label;$('.j-talk p').textContent=localizeText(row[1]);$('.j-talk').classList.toggle('thought',view.thought);$('.j-talk').classList.toggle('interjection',row[0]==='托普修斯');$('.j-talk').scrollTop=0;}
+ if(menu){$('.j-menu h2').textContent=localizeText(menu.title);const box=$('.j-menu div');box.replaceChildren();menu.rows.forEach((r,i)=>{const b=document.createElement('button');b.textContent=localizeText(r.label);b.setAttribute('aria-label',localizeText(r.label));if(i===selected){const key=document.createElement('kbd');key.textContent=localizeText('␣');key.setAttribute('aria-label',localizeText('空格键'));b.append(key);}b.classList.toggle('selected',i===selected);b.onclick=()=>{if(!paused){selected=i;r.run();}};box.append(b);});}
  if(s.letterOpen)updateLetter();
- const markers=$('.voyage-markers');markers.replaceChildren();for(const p of spots()){const b=document.createElement('button');b.className='voyage-spot';b.dataset.spot=p.id;b.setAttribute('aria-label',p.label);setPixelPrompt(b,p.label);b.onclick=()=>interact(p.id);markers.append(b);}position();black();
+ const markers=$('.voyage-markers');markers.replaceChildren();for(const p of spots()){const b=document.createElement('button');b.className='voyage-spot';b.dataset.spot=p.id;b.setAttribute('aria-label',localizeText(p.label));setPixelPrompt(b,p.label);b.onclick=()=>interact(p.id);markers.append(b);}position();black();
 }
 function position(){camera=s.room==='street'?Math.round(Math.max(0,Math.min(WIDTH-960,s.x-420))):0;const n=nearest();for(const b of $('.voyage-markers').children){const p=spots().find(p=>p.id===b.dataset.spot);b.style.left=((p.x-camera)/960*100)+'%';let y=Math.min(p.y,302);const faces=s.room==='lobby'?[{x:736,y:262},{x:425,y:322}]:s.room==='street'?[{x:570,y:287},{x:875,y:307},{x:1135,y:312},{x:1785,y:307},{x:2350,y:321},{x:2610,y:307}]:[];faces.push(...({fatmeRoom:[{x:775,y:316},{x:250,y:326}],forecourt:[{x:345,y:291},{x:510,y:306},{x:847,y:294}],holy:[{x:200,y:352},{x:615,y:320}],camp:[{x:272,y:320},{x:795,y:318}]}[s.room]||[]));for(const face of faces)if(Math.abs(p.x-face.x)<95)y=Math.min(y,face.y-18);const heroTop=heroFeet(s.room)-156;if(Math.abs(p.x-s.x)<72)y=Math.min(y,heroTop-14);b.style.top=(y/540*100)+'%';b.hidden=blocked()||p.id!==n?.id;}}
-function black(){const el=$('.j-black');el.hidden=!fade&&s.arrival>=arrival.length;if(fade){el.style.opacity=fade.reveal?Math.max(0,1-fade.t/1.4):fade.t<.45?fade.t/.45:fade.t<.9?1:Math.max(0,1-(fade.t-.9)/.5);$('.j-black small').hidden=true;$('.j-black p').textContent='';$('#arrival-next').hidden=true;}else if(s.arrival<arrival.length){el.style.opacity=1;$('.j-black small').hidden=false;$('.j-black p').textContent=arrival[s.arrival];$('#arrival-next').hidden=false;}}
+function black(){const el=$('.j-black');el.hidden=!fade&&s.arrival>=arrival.length;if(fade){el.style.opacity=fade.reveal?Math.max(0,1-fade.t/1.4):fade.t<.45?fade.t/.45:fade.t<.9?1:Math.max(0,1-(fade.t-.9)/.5);$('.j-black small').hidden=true;$('.j-black p').textContent=localizeText('');$('#arrival-next').hidden=true;}else if(s.arrival<arrival.length){el.style.opacity=1;$('.j-black small').hidden=false;$('.j-black p').textContent=localizeText(arrival[s.arrival]);$('#arrival-next').hidden=false;}}
 function npc(id,x,feet=475,height=156,facing=1){const im=images[id];if(!im)return;const w=im.width/im.height*height;ctx.save();ctx.translate(Math.round(x),feet);ctx.scale(facing,1);ctx.drawImage(im,-w/2,-height,w,height);ctx.restore();}
 function rain(rect={x:0,y:0,w:960,h:500},count=110){ctx.save();ctx.beginPath();ctx.rect(rect.x,rect.y,rect.w,rect.h);ctx.clip();const t=prefs.reduced?0:time;ctx.fillStyle='#b7cee0';ctx.globalAlpha=.27;for(let i=0;i<count;i++){const x=((i*137.31+t*17-camera*.17)%960+960)%960;const y=(i*67.4+t*(195+i%7*13))%540;ctx.fillRect(Math.floor(x),Math.floor(y),1,i%3+5);}ctx.restore();}
 function blendSection(im,x,w,h,overlap){
@@ -140,7 +141,7 @@ function paint(){if(!ready)return;ctx.imageSmoothingEnabled=false;ctx.clearRect(
   blendSection(images.right,2160-camera,720,550,60);
   // Same human scale as 3-1–3-3. Residents stay in their own street positions.
   npc('friar',570-camera,465,178);npc('woman',875-camera,450,143,-1);npc('porter',1135-camera,461,149);npc('resident',1785-camera,457,150);npc('bedouin',2350-camera,477,156);npc('resident',2610-camera,439,132,-1);npc('mule',1595-camera,443,119);
-  ctx.font='13px "Songti SC",serif';ctx.textAlign='center';ctx.fillStyle='#eee0bc';ctx.fillText('地 中 海 旅 馆',1368-camera,237);
+  ctx.font='13px "Songti SC",serif';ctx.textAlign='center';ctx.fillStyle='#eee0bc';ctx.fillText(localizeText('地 中 海 旅 馆'),1368-camera,237);
  }else{ctx.drawImage(images[s.room],0,0,960,540);if(s.room==='camp'&&s.toasted){ctx.globalAlpha=dusk;ctx.drawImage(images.campMoon,0,0,960,540);ctx.globalAlpha=1;{ctx.globalAlpha=dusk*(ending?bridgeFrame(s.bridgeElapsed).embers:s.dialogue==='fire'||s.danced?0:1);ctx.drawImage(images.campEmbers,0,images.campEmbers.height*190/540,images.campEmbers.width,images.campEmbers.height*350/540,0,190,960,350);ctx.globalAlpha=1;}}if(s.room==='lobby'){npc('potte',425,478);npc('clerk',736,407,145);/* The counter occludes the clerk below the tabletop. */ctx.drawImage(images.lobby,512,312,320,121,512,312,320,121);}}
  if(s.room==='fatmeRoom'){npc('fatmeLady',775,476,159);const walking=Math.abs(dancerX-dancerTarget())>1;const bob=walking&&!prefs.reduced?Math.sin(time*13)*1.5:0;if(s.fatmePaid===1)npc('circassian',dancerX,478+bob,153);if(s.fatmePaid>=2)npc('nubian',dancerX,475+bob,149);}
  if(s.room==='forecourt')npc('mule',95,461,105);
@@ -179,7 +180,7 @@ restartButton($('#settings'),async()=>{bridge.hide();const entry=checkpoint.rest
 window.addEventListener('keydown',key);window.addEventListener('keyup',e=>keys.delete(e.code));window.addEventListener('blur',stop);document.addEventListener('pointerdown',()=>{if(!paused)void sound.unlock();},{capture:true});document.addEventListener('visibilitychange',()=>pause(document.hidden||$('#settings').open));window.addEventListener('pagehide',()=>{persist();sound.stop();});window.addEventListener('pageshow',()=>{if(ready){music();}});
 window.jerusalemStatus=()=>({state:structuredClone(s),ready,paused,camera,worldWidth:WIDTH,viewWidth:960,menu:menu?{id:menu.id,labels:menu.rows.map(r=>r.label),selected}:null,bagOpen,ending,bridge:bridge.status(),transition:!!fade,music:sound.desired,playing:sound.current?.name,voices:sound.voices.size,rain:!!sound.rainVoice,errors:[...sound.errors],heroFeet:heroFeet(s.room),spots:spots()});
 preference();ui();music();requestAnimationFrame(frame);
-loading.then(()=>{ready=true;$('.j-loading').hidden=true;ending=s.complete&&!s.endSeen;if(ending)bridge.start(false);music();ui();paint();}).catch(e=>{$('.j-loading').textContent='雨城暂时未能载入。请刷新重试。';console.error(e);});
+loading.then(()=>{ready=true;$('.j-loading').hidden=true;ending=s.complete&&!s.endSeen;if(ending)bridge.start(false);music();ui();paint();}).catch(e=>{$('.j-loading').textContent=localizeText('雨城暂时未能载入。请刷新重试。');console.error(e);});
 
 // Shared cross-chapter controls and latest preferences.
 installSharedControls({readyForCover:()=>ready,audioReady:()=>sound.paused||sound.ctx?.state==='running',soundButton:'#mute',settingsButton:'#settings-button',bagButton:'#bag-button',getPreferences:()=>prefs,applyPreferences:p=>{Object.assign(prefs,p);preference();},toggleSettings:()=>{$('#settings').open?$('#settings').close():settings();},closeTop:()=>{if($('#settings').open){$('#settings').close();return true;}return false;},unlock:()=>sound.unlock(),pixel:true});

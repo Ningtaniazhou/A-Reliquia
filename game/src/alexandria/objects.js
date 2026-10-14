@@ -1,3 +1,4 @@
+import {localizeText} from '../i18n/display.js';
 import {MARY_SIGNATURE} from '../ui/mary-stationery.js';
 // Optional observations: no inventory, currency balance, or plot prerequisites.
 export function inspectionSpots(a){const all={
@@ -13,6 +14,6 @@ export const menuPrices=`<table aria-label="餐厅价目表"><caption>价目表 
 export function drawMenu(c){c.fillStyle='#503d29';c.fillRect(364,366,30,24);c.fillStyle='#ebd4a1';c.fillRect(366,364,26,22);c.fillStyle='#a28352';c.fillRect(378,366,2,18);for(let y=368;y<384;y+=4){c.fillRect(368,y,8,2);c.fillRect(382,y,8,2);}}
 
 // Cream shop card beside the counter gloves; lettering remains separate from the art.
-export function drawShopCard(c){c.save();c.fillStyle='#74512f';c.fillRect(682,351,60,39);c.fillStyle='#efdfb8';c.fillRect(684,349,56,37);c.strokeStyle='#b79561';c.strokeRect(688,353,48,29);c.fillStyle='#63432b';c.textAlign='center';c.textBaseline='middle';c.font='italic 600 16px Georgia, serif';c.fillText(MARY_SIGNATURE,712,367,44);c.restore();}
+export function drawShopCard(c){c.save();c.fillStyle='#74512f';c.fillRect(682,351,60,39);c.fillStyle='#efdfb8';c.fillRect(684,349,56,37);c.strokeStyle='#b79561';c.strokeRect(688,353,48,29);c.fillStyle='#63432b';c.textAlign='center';c.textBaseline='middle';c.font='italic 600 16px Georgia, serif';c.fillText(localizeText(MARY_SIGNATURE),712,367,44);c.restore();}
 
 export function drawLedger(c){c.fillStyle='#52372c';c.fillRect(575,390,40,23);c.fillStyle='#ead7ad';c.fillRect(577,388,36,21);c.fillStyle='#987a4e';c.fillRect(594,389,2,18);for(let y=392;y<407;y+=4){c.fillRect(580,y,11,1);c.fillRect(598,y,11,1);}}

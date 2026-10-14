@@ -1,3 +1,4 @@
+import {localizeText} from '../i18n/display.js';
 import {readPreferences} from '../ui/preferences.js';
 import {installSharedControls} from '../ui/shared-controls.js';
 import {restartButton} from '../ui/scene-checkpoint.js';
@@ -19,21 +20,21 @@ const smooth=v=>{v=clamp(v);return v*v*(3-2*v);};
 function storeSettings(){try{storage.setItem(SETTINGS,JSON.stringify(settings));}catch{}}
 function appearance(){document.body.classList.toggle('reduced',settings.reduced);updateSoundButton($('mute'),settings.muted||settings.volume===0);$('volume').value=settings.volume;sound.update();}
 function scene(name){stage.dataset.scene=name;}
-function resetMotion(){for(const key of ['walking','curtain','black','bob'])stage.style.setProperty('--'+key,0);stage.style.setProperty('--aunt-opacity',1);stage.style.setProperty('--teo-opacity',1);$('motion-caption').textContent='';}
+function resetMotion(){for(const key of ['walking','curtain','black','bob'])stage.style.setProperty('--'+key,0);stage.style.setProperty('--aunt-opacity',1);stage.style.setProperty('--teo-opacity',1);$('motion-caption').textContent=localizeText('');}
 function render(){
  resetMotion();scene(id);const b=beats.find(b=>b.id===id)||beats[0];
- $('act').textContent=b.act;$('speaker').textContent=b.speaker;$('text-kind').textContent='';$('text-kind').hidden=true;$('zh').textContent=b.zh;$('pt').textContent='';$('pt').hidden=true;
- $('next').textContent='›';$('next').disabled=!ready||paused;$('back').disabled=id==='meal'||!ready;$('side-door').hidden=id!=='relaxed';$('side-door').disabled=!ready||paused;
- $('progress').textContent=`${beats.indexOf(b)+1} / ${beats.length}`;
+ $('act').textContent=localizeText(b.act);$('speaker').textContent=localizeText(b.speaker);$('text-kind').textContent=localizeText('');$('text-kind').hidden=true;$('zh').textContent=localizeText(b.zh);$('pt').textContent=localizeText('');$('pt').hidden=true;
+ $('next').textContent=localizeText('›');$('next').disabled=!ready||paused;$('back').disabled=id==='meal'||!ready;$('side-door').hidden=id!=='relaxed';$('side-door').disabled=!ready||paused;
+ $('progress').textContent=localizeText(`${beats.indexOf(b)+1} / ${beats.length}`);
  aunt.hidden=['watched','relaxed','street','feast','heaven','farewell'].includes(id);teo.hidden=['street','feast','heaven','farewell'].includes(id);
  setImage(aunt,'aunt-seated');setImage(teo,id==='relaxed'?'teo-relaxed':id==='watched'?'teo-watch':'teo-pious');
- teo.alt=id==='relaxed'?'特奥多里科松开领口，翘着腿，带着玩世不恭的笑':id==='watched'?'特奥多里科站着望向姨姨离开的门':'特奥多里科挺直腰背，拘谨地拿着面包皮';
+ teo.alt=localizeText(id==='relaxed'?'特奥多里科松开领口，翘着腿，带着玩世不恭的笑':id==='watched'?'特奥多里科站着望向姨姨离开的门':'特奥多里科挺直腰背，拘谨地拿着面包皮');
  $('subtitle').style.opacity='1';
 }
 function commit(next){id=next;transition=null;save(storage,id);render();}
 function start(name){if(!ready||paused||transition)return;const cfg=transitions[name];transition={name,...cfg,elapsed:0};stepSound=-1;scene(name);$('next').disabled=true;$('side-door').hidden=true;$('subtitle').style.opacity='.7';
  if(name==='depart'){setImage(aunt,'aunt-walk');setImage(teo,'teo-watch');aunt.hidden=false;sound.noise(.25,.08,500);}
- if(name==='curtain'){sound.cloth();$('motion-caption').textContent='';}
+ if(name==='curtain'){sound.cloth();$('motion-caption').textContent=localizeText('');}
  if(name==='escape'){setImage(teo,'teo-walk');sound.door();}
  if(name==='visit')sound.door();
 }
@@ -50,7 +51,7 @@ function animate(now){const dt=lastTime?Math.min(now-lastTime,80):0;lastTime=now
    const cover=p<.36?smooth(p/.36):p<.60?1:1-smooth((p-.60)/.40);stage.style.setProperty('--curtain',cover);
    if(p>=.47&&teo.dataset.asset!=='teo-relaxed'){setImage(teo,'teo-relaxed');scene('relaxed');$('side-door').hidden=true;sound.release();}
    $('subtitle').style.opacity=String(p<.36?1-p/.36:p<.60?0:(p-.60)/.40);
-   if(p>.60){const b=beats.find(b=>b.id==='relaxed');$('zh').textContent=b.zh;$('pt').textContent='';$('pt').hidden=true;$('speaker').textContent=b.speaker;$('text-kind').textContent='';$('text-kind').hidden=true;}
+   if(p>.60){const b=beats.find(b=>b.id==='relaxed');$('zh').textContent=localizeText(b.zh);$('pt').textContent=localizeText('');$('pt').hidden=true;$('speaker').textContent=localizeText(b.speaker);$('text-kind').textContent=localizeText('');$('text-kind').hidden=true;}
   }else if(tr.name==='escape'){
    stage.style.setProperty('--walking',smooth(p/.86));stage.style.setProperty('--teo-opacity',1-smooth((p-.72)/.14));stage.style.setProperty('--bob',settings.reduced?0:Math.sin(p*35)*1.8);stage.style.setProperty('--black',smooth((p-.82)/.18));
    if(!settings.reduced&&p<.84){const n=Math.floor(p*7);if(n!==stepSound){sound.step();stepSound=n;}}
@@ -71,7 +72,7 @@ $('volume').addEventListener('input',e=>{settings.volume=Number(e.target.value);
 
 $('restart').addEventListener('click',()=>{commit('meal');$('settings').close();});
 $('retry').addEventListener('click',()=>location.reload());
-for(const [title,body] of sourceNotes){const section=document.createElement('section');section.className='source-entry';const h=document.createElement('h3'),p=document.createElement('p');h.textContent=title;p.textContent=body;section.append(h,p);$('source-list').append(section);}
+for(const [title,body] of sourceNotes){const section=document.createElement('section');section.className='source-entry';const h=document.createElement('h3'),p=document.createElement('p');h.textContent=localizeText(title);p.textContent=localizeText(body);section.append(h,p);$('source-list').append(section);}
 document.addEventListener('keydown',e=>{if((e.target.matches('button,input')&&!['KeyA','KeyD'].includes(e.code))||$('settings').open||$('sources').open)return;if(e.code==='KeyD'||e.code==='Space'||e.key==='Enter'){e.preventDefault();act();}else if(e.code==='KeyA'||e.key==='ArrowLeft'){e.preventDefault();if(ready&&!paused){transition=null;commit(previous(id));}}else if(e.key==='Escape'){e.preventDefault();openDialog($('settings'));}});
 document.addEventListener('visibilitychange',()=>pause(document.hidden||$('settings').open||$('sources').open));
 window.addEventListener('pagehide',()=>sound.stop());

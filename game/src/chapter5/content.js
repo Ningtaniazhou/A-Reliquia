@@ -1,5 +1,6 @@
+import {localizeRow} from '../i18n/chapter5.js';
 // IN-CM 2021 p.256; Chinese adaptation A, user-approved connecting dialogue O.
-const row=(id,who,text,type='A',thought=false)=>({id,who,text,type,thought,source:'IN-CM 2021, p.256'});
+const row=(id,who,text,type='A',thought=false)=>localizeRow({id,who,text,type,thought,source:'IN-CM 2021, p.256'});
 export const opening=[row('C5-wake-1','','阳光照着帐篷口。溪流旁，昨夜的火堆只剩下灰白的木炭。','O')];
 export const breakfast=[row('C5-potte-1','波特','可算起来了！靴子给您拿来了。'),row('C5-potte-2','波特','今早想吃木薯羹，还是喝咖啡？')];
 export const meals={tapioca:[row('C5-meal-tapioca-1','特奥多里科','木薯羹，波特！煮得甜些，软些，让我尝尝葡萄牙的滋味！'),row('C5-meal-tapioca-2','波特','好，我去看看锅。您先坐一会儿。','O')],coffee:[row('C5-meal-coffee-1','特奥多里科','咖啡吧，波特。热热的一杯。','O'),row('C5-meal-coffee-2','波特','已经煮上了。马上给您倒。','O')]};

@@ -1,3 +1,5 @@
+import {localizeMarkup,localizeText} from '../i18n/display.js';
+import {tr,trMarkup} from '../i18n/ui.js';
 import {isPhone} from '../ui/mobile.js';
 import {bookCamera,pageTextMatrix} from './page-layout.js';
 import * as T from '../../vendor/three/three.module.js';
@@ -6,10 +8,10 @@ import {introduction,credits,beacon} from './content.js';
 import {poses,motions,ease,turnLift} from './motion.js';
 const css=new URL('../../styles/book/book.css',import.meta.url);if(!document.querySelector('link[data-book-style]')){const l=document.createElement('link');l.rel='stylesheet';l.href=css;l.dataset.bookStyle='';document.head.append(l);}
 // One scene and one physical book own all opening/ending states. No game saves are changed here.
-export async function mountBook(host,{mode='front',lastPage=null,arrival=false,getPreferences=()=>({}),paused=()=>false,onEnter=()=>{},onFront=()=>{},enterLabel='进入书中世界',onState=()=>{}}={}){
- host.classList.add('book-host');host.innerHTML='<div class="book-loading" role="status"></div>';
+export async function mountBook(host,{mode='front',lastPage=null,arrival=false,getPreferences=()=>({}),paused=()=>false,onEnter=()=>{},onFront=()=>{},enterLabel=tr('进入书中世界'),onState=()=>{}}={}){
+ host.classList.add('book-host');host.innerHTML=localizeMarkup('<div class="book-loading" role="status"></div>');
  let renderer;
- try{renderer=new T.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});}catch{host.innerHTML=`<div class="book-fallback"><p>此浏览器未能显示三维书本。</p><article>${mode==='ending'?credits:introduction}</article><button class="start">${enterLabel}</button></div>`;host.querySelector('button').onclick=onEnter;return {dispose(){},pause(){},paintingRect:{x:innerWidth*.25,y:innerHeight*.25,width:innerWidth*.5,height:innerHeight*.5},snapshot:()=>({phase:'fallback'})};}
+ try{renderer=new T.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});}catch{host.innerHTML=localizeMarkup(trMarkup(`<div class="book-fallback"><p>此浏览器未能显示三维书本。</p><article>${mode==='ending'?credits:introduction}</article><button class="start">${enterLabel}</button></div>`));host.querySelector('button').onclick=onEnter;return {dispose(){},pause(){},paintingRect:{x:innerWidth*.25,y:innerHeight*.25,width:innerWidth*.5,height:innerHeight*.5},snapshot:()=>({phase:'fallback'})};}
  renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.outputColorSpace=T.SRGBColorSpace;renderer.setClearColor(0x000000,0);
  const scene=new T.Scene(),camera=new T.OrthographicCamera(-4,4,3,-3,.1,80);
  scene.add(new T.HemisphereLight(0xfff9ed,0x465354,1.9));
@@ -17,10 +19,10 @@ export async function mountBook(host,{mode='front',lastPage=null,arrival=false,g
  const fill=new T.DirectionalLight(0xcce1e7,1.2);fill.position.set(7,-2,5);scene.add(fill);
  const ground=new T.Mesh(new T.PlaneGeometry(200,200),new T.ShadowMaterial({opacity:.28}));ground.position.z=-.41;ground.receiveShadow=true;scene.add(ground);
  let model;
- try{model=await createBook();}catch{renderer.dispose();host.innerHTML='<div class="book-fallback"><p>书本图画暂时未能载入。</p><button>重新载入</button></div>';host.querySelector('button').onclick=()=>location.reload();return {dispose(){},snapshot:()=>({phase:'error'})};}
- scene.add(model.root);host.innerHTML='';host.append(renderer.domElement);renderer.domElement.setAttribute('aria-label','绿色精装书三维模型');
+ try{model=await createBook();}catch{renderer.dispose();host.innerHTML=localizeMarkup(trMarkup('<div class="book-fallback"><p>书本图画暂时未能载入。</p><button>重新载入</button></div>'));host.querySelector('button').onclick=()=>location.reload();return {dispose(){},snapshot:()=>({phase:'error'})};}
+ scene.add(model.root);host.innerHTML=localizeMarkup('');host.append(renderer.domElement);renderer.domElement.setAttribute('aria-label',localizeText(tr('绿色精装书三维模型')));
  const overlay=document.createElement('div');overlay.className='book-overlays';host.append(overlay);
- overlay.innerHTML=`<article class="book-copy" hidden><div class="book-copy-scroll" tabindex="0" role="region"></div><div class="book-copy-actions" hidden><button class="book-enter start">${enterLabel}</button></div><span class="book-scroll-note" hidden>向下阅读 ↓</span></article><button class="book-hand" hidden>${beacon}<span></span></button><span class="book-live" aria-live="polite"></span>`;
+ overlay.innerHTML=localizeMarkup(trMarkup(`<article class="book-copy" hidden><div class="book-copy-scroll" tabindex="0" role="region"></div><div class="book-copy-actions" hidden><button class="book-enter start">${enterLabel}</button></div><span class="book-scroll-note" hidden>向下阅读 ↓</span></article><button class="book-hand" hidden>${beacon}<span></span></button><span class="book-live" aria-live="polite"></span>`));
  const panel=overlay.querySelector('.book-copy'),scroll=overlay.querySelector('.book-copy-scroll'),actions=overlay.querySelector('.book-copy-actions'),entry=overlay.querySelector('.book-enter'),hint=overlay.querySelector('.book-scroll-note'),handle=overlay.querySelector('.book-hand'),live=overlay.querySelector('.book-live');
  let phase='front',disposed=false,dirty=true,animation=null,raf,last=performance.now(),reading=0,readEnd=false,atEndFor=0,width=1,height=1,paperWidth=1,paperHeight=1,fitKey='';
  let arrivalTime=arrival?0:4;
@@ -29,8 +31,8 @@ export async function mountBook(host,{mode='front',lastPage=null,arrival=false,g
  const pose={...poses.front};
  const reduced=()=>getPreferences().reduced||matchMedia('(prefers-reduced-motion: reduce)').matches;
  function setPhase(p){dirty=true;phase=p;host.dataset.bookPhase=p;panel.hidden=!['intro','ending','closing'].includes(p);handle.hidden=true;onState(p);if(p==='intro'||p==='ending'){
-  fitKey='';entry.disabled=false;scroll.innerHTML=p==='intro'?introduction:credits;scroll.scrollTop=0;scroll.setAttribute('aria-label',p==='intro'?'书封介绍':'片尾信息');actions.hidden=p!=='intro';panel.classList.toggle('book-credits',p==='ending');reading=0;atEndFor=0;readEnd=false;
- }live.textContent=({front:'圣遗物。展开前护封，进入书本世界。',intro:'前护封已展开。',ending:'读到最后一页。右侧是制作信息与致谢。',back:'书已合上。点击书脊上的光点，翻回封面。'})[p]||'';}
+  fitKey='';entry.disabled=false;scroll.innerHTML=localizeMarkup(p==='intro'?introduction:credits);scroll.scrollTop=0;scroll.setAttribute('aria-label',localizeText(p==='intro'?tr('书封介绍'):tr('片尾信息')));actions.hidden=p!=='intro';panel.classList.toggle('book-credits',p==='ending');reading=0;atEndFor=0;readEnd=false;
+ }live.textContent=localizeText(({front:tr('圣遗物。展开前护封，进入书本世界。'),intro:tr('前护封已展开。'),ending:tr('读到最后一页。右侧是制作信息与致谢。'),back:tr('书已合上。点击书脊上的光点，翻回封面。')})[p]||'');}
  function motion(target,duration){return new Promise(resolve=>{animation={from:{...pose},target,duration:reduced()?.14:duration,elapsed:0,resolve};});}
  async function sequence(name){for(const [target,duration] of motions[name]){if(disposed)return;await motion(target,duration);}}
  async function open(){if(phase!=='front'||paused())return;setPhase('opening');await sequence('open');if(!disposed){setPhase('intro');scroll.focus({preventScroll:true});}}
@@ -41,9 +43,10 @@ export async function mountBook(host,{mode='front',lastPage=null,arrival=false,g
  function putPanel(parent,x0,x1,z){const tl=project(parent,x0,1.74,z),tr=project(parent,x1,1.74,z),bl=project(parent,x0,-1.73,z);const projectedWidth=Math.hypot(tr.x-tl.x,tr.y-tl.y),projectedHeight=Math.hypot(bl.x-tl.x,bl.y-tl.y);
  if(phase!=='closing'){paperWidth=projectedWidth;paperHeight=projectedHeight;}
  const w=paperWidth,h=paperHeight;panel.style.width=w+'px';panel.style.height=h+'px';panel.style.transform=`matrix(${(tr.x-tl.x)/w},${(tr.y-tl.y)/w},${(bl.x-tl.x)/h},${(bl.y-tl.y)/h},${tl.x},${tl.y})`;
- const nextFit=[phase,Math.round(w),Math.round(h)].join(':');if(!isPhone()&&phase!=='closing'&&nextFit!==fitKey){fitKey=nextFit;let font=Math.min(19,Math.max(14,w*.046));panel.style.setProperty('--book-font',font+'px');while(scroll.scrollHeight>scroll.clientHeight+1&&font>11){font-=.25;panel.style.setProperty('--book-font',font+'px');}}
+ // Preserve legible type; overflow belongs to the scroll surface, not font shrinking.
+ const nextFit=[phase,Math.round(w),Math.round(h)].join(':');if(!isPhone()&&phase!=='closing'&&nextFit!==fitKey){fitKey=nextFit;const font=Math.min(19,Math.max(14,w*.046));panel.style.setProperty('--book-font',font+'px');}
  }
- function putHand(parent,x,y,z,label){const p=project(parent,x,y,z);handle.style.left=p.x+'px';handle.style.top=p.y+'px';handle.setAttribute('aria-label',label);handle.removeAttribute('title');const caption=handle.querySelector('span');caption.textContent='';caption.hidden=true;handle.hidden=false;}
+ function putHand(parent,x,y,z,label){const p=project(parent,x,y,z);handle.style.left=p.x+'px';handle.style.top=p.y+'px';handle.setAttribute('aria-label',localizeText(label));handle.removeAttribute('title');const caption=handle.querySelector('span');caption.textContent=localizeText('');caption.hidden=true;handle.hidden=false;}
  function applyPose(){model.front.rotation.y=pose.front;model.fold.rotation.y=pose.fold;model.back.rotation.y=pose.back;model.root.rotation.y=pose.turn;model.root.position.z=pose.lift+(animation&&'turn' in animation.target?turnLift(Math.min(1,animation.elapsed/animation.duration)):0);model.root.updateMatrixWorld(true);
  bookCamera(camera,width,height,pose);
  }
@@ -58,7 +61,7 @@ export async function mountBook(host,{mode='front',lastPage=null,arrival=false,g
  const arrivalProgress=Math.min(1,arrivalTime/4);renderer.domElement.style.opacity=arrival?arrivalProgress:1;
  panel.style.opacity=arrival?Math.max(0,(arrivalProgress-.45)/.55):1;
 if(phase==='intro')putPanel(model.fold,-.15,-SIZE.flap+.15,-.006);if(phase==='closing')panel.hidden=pose.back<Math.PI/2;if(phase==='ending'||phase==='closing')putPanel(model.backFold,-SIZE.flap+.1,-.1,.009);
- if(phase==='front')putHand(model.front,SIZE.w,0,.045,'展开护封');else if(phase==='back')putHand(model.rig,-.10,0,SIZE.t/2,'翻回封面');else if(phase==='ending'&&readEnd)putHand(model.back,SIZE.w,0,.06,'合上书');
+ if(phase==='front')putHand(model.front,SIZE.w,0,.045,tr('展开护封'));else if(phase==='back')putHand(model.rig,-.10,0,SIZE.t/2,tr('翻回封面'));else if(phase==='ending'&&readEnd)putHand(model.back,SIZE.w,0,.06,tr('合上书'));
  if(!panel.hidden){const overflow=scroll.scrollHeight>scroll.clientHeight+4;hint.hidden=!overflow||scroll.scrollTop+scroll.clientHeight>=scroll.scrollHeight-4;}
  }
  function resize(){dirty=true;const r=host.getBoundingClientRect();width=Math.max(1,r.width);height=Math.max(1,r.height);renderer.setSize(width,height);position();}
@@ -72,7 +75,7 @@ if(phase==='intro')putPanel(model.fold,-.15,-SIZE.flap+.15,-.006);if(phase==='cl
  position();if(dirty){renderer.render(scene,camera);dirty=false;}}
  raf=requestAnimationFrame(frame);
  }
- renderer.domElement.addEventListener('webglcontextlost',e=>{if(disposed)return;e.preventDefault();host.dataset.contextLost='true';live.textContent='画面暂时中断，请刷新恢复。';});
+ renderer.domElement.addEventListener('webglcontextlost',e=>{if(disposed)return;e.preventDefault();host.dataset.contextLost='true';live.textContent=localizeText(tr('画面暂时中断，请刷新恢复。'));});
  renderer.domElement.addEventListener('webglcontextrestored',()=>{dirty=true;delete host.dataset.contextLost;});
  if(['ending','back','intro'].includes(mode)){Object.assign(pose,poses[mode]);setPhase(mode);}else setPhase('front');resize();renderer.render(scene,camera);raf=requestAnimationFrame(frame);
  // Project the actual printed arch, including camera tilt, instead of estimating its bounds.

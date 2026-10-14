@@ -1,3 +1,6 @@
+import {localizeMarkup,localizeText} from '../i18n/display.js';
+import {tr,trMarkup} from '../i18n/ui.js';
+const localeStyle=document.createElement('link');localeStyle.rel='stylesheet';localeStyle.href=new URL('../../styles/ui/locale.css',import.meta.url);document.head.append(localeStyle);
 import {isPhone,installPhoneOrientation} from './mobile.js';
 import './presentation.js';
 import {KEYS,LABELS,SETTINGS_HELP} from './conventions.js';
@@ -13,10 +16,10 @@ export function installSharedControls({readyForCover=()=>true,soundButton,settin
  apply(readPreferences(getPreferences()));const unwatch=watchPreferences(apply);
  function refresh(){
   for(const [selector,role,key] of [[soundButton,'sound','M'],[settingsButton,'settings','P'],[bagButton,'bag','Tab']]){const b=find(selector);if(!b)continue;if(b.dataset.gameControl!==role)b.dataset.gameControl=role;b.classList.toggle('pixel-control',typeof pixel==='function'?pixel():pixel);if(b.getAttribute('aria-keyshortcuts')!==key)b.setAttribute('aria-keyshortcuts',key);
-   if(role==='settings'){const label=b.classList.contains('pixel-control')?'设置 <kbd>P</kbd>':LABELS.settings;if(b.innerHTML!==label)b.innerHTML=label;b.title=isPhone()?'设置':'设置（P）';}
-   if(role==='bag')b.title=isPhone()?'背包':'背包（Tab）';
+   if(role==='settings'){const label=b.classList.contains('pixel-control')?trMarkup('设置 <kbd>P</kbd>'):LABELS.settings;if(b.innerHTML!==label)b.innerHTML=localizeMarkup(label);b.title=localizeText(isPhone()?tr('设置'):tr('设置（P）'));}
+   if(role==='bag')b.title=localizeText(isPhone()?tr('背包'):tr('背包（Tab）'));
   }
-  const panel=find(settingsPanel);if(panel&&!panel.querySelector('.shared-settings-help')){const p=document.createElement('p');p.className='shared-settings-help';p.textContent=SETTINGS_HELP;panel.append(p);}
+  const panel=find(settingsPanel);if(panel&&!panel.querySelector('.shared-settings-help')){const p=document.createElement('p');p.className='shared-settings-help';p.textContent=localizeText(SETTINGS_HELP);panel.append(p);}
  }
  refresh();const removeOrientation=installPhoneOrientation({toggleSettings,closeTop,settingsPanel,enabled});let queued=false;const observer=new MutationObserver(()=>{if(!queued){queued=true;queueMicrotask(()=>{queued=false;refresh();});}});observer.observe(document.body,{childList:true,subtree:true});
  // Where supported, treat opted-in game sound as media playback on phones.
